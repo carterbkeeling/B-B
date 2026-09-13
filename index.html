@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B+B's Umerica Adventure 2026</title>
+<meta name="description" content="A chaotic zine-style countdown to Betty's Shanghai-to-Las-Vegas adventure, starting November 1, 2026.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     TAPE / TORN-PAPER SVG FILTERS (decorative, reused via CSS)
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="roughPaper">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.045" numOctaves="3" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="9"/>
+  </filter>
+</svg>
+
+<!-- ============================================================
+     SKIP LINK + KONAMI HINT (screen reader / keyboard friendly)
+     ============================================================ -->
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============================================================
+     HEADER / NAV — zine "table of contents" style tab bar
+     ============================================================ -->
+<header class="site-header">
+  <div class="tape tape-left" aria-hidden="true"></div>
+  <div class="tape tape-right" aria-hidden="true"></div>
+
+  <!-- Easter Egg #1: click the mini heart doodle 5x for a secret message -->
+  <button type="button" id="doodleHeart" class="corner-doodle" title="???" aria-label="a little doodle">
+    <svg viewBox="0 0 24 24" width="34" height="34"><path fill="currentColor" d="M12 21s-6.7-4.35-9.3-8.1C.8 9.9 1.7 6.4 4.9 5.2c2-.75 3.9.1 5.1 1.9C11.2 5.3 13.1 4.45 15.1 5.2c3.2 1.2 4.1 4.7 2.2 7.7C18.7 16.65 12 21 12 21z"/></svg>
+  </button>
+  <p id="doodleHeartMsg" class="secret-msg" hidden>psst. it's always been you. 💌</p>
+
+  <h1 class="site-title" id="siteTitle" tabindex="0">
+    <span class="title-line-1">B<span class="plus">+</span>B's</span>
+    <span class="title-line-2">UMERICA<br>ADVENTURE</span>
+    <span class="title-year">2026</span>
+  </h1>
+  <p class="site-subtitle">a zine / mixtape / love letter for a girl flying from Shanghai to Las Vegas</p>
+
+  <nav class="zine-toc" aria-label="Site sections">
+    <p class="toc-label">✂ TABLE OF CONTENTS ✂ <span class="toc-sub">(tear along dotted line)</span></p>
+    <ul>
+      <li><button class="toc-btn" data-target="home" aria-current="page">01. HOME</button></li>
+      <li><button class="toc-btn" data-target="history-of-us">02. HISTORY OF US</button></li>
+      <li><button class="toc-btn" data-target="itinerary">03. ITINERARY</button></li>
+      <li><button class="toc-btn" data-target="vegas-history">04. HISTORY OF VEGAS</button></li>
+      <li><button class="toc-btn" data-target="prep-guide">05. PREP GUIDE</button></li>
+      <li><button class="toc-btn" data-target="todo">06. CARTER'S TO-DO</button></li>
+      <!-- Secret 7th tab — hidden until the Konami code is entered. See script.js -->
+      <li id="secretTocItem" hidden><button class="toc-btn secret-toc-btn" data-target="secret">?? JACKPOT ??</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============================================================
+     SECTION 1: HOME
+     ============================================================ -->
+<section id="home" class="page active" aria-labelledby="home-heading">
+  <div class="hero">
+    <!-- PLACEHOLDER IMAGE: replace images/vegas-strip-bg.jpg with a real
+         nighttime photo of the Las Vegas Strip. Recommended size ~1600x900. -->
+    <img class="hero-bg" src="images/vegas-strip-bg.jpg" alt="The Las Vegas Strip at night (placeholder photo — swap for the real thing)">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="eyebrow-sticker">SHANGHAI ✈ LAS VEGAS</p>
+      <h2 id="home-heading" class="visually-hidden">Countdown to Betty's Arrival</h2>
+
+      <!-- COUNTDOWN STATE (shown before Nov 1, 2026) -->
+      <div id="countdownState" class="countdown-wrap">
+        <p class="countdown-kicker">SHE LANDS IN...</p>
+        <div id="countdown" class="countdown" role="timer" aria-live="polite">
+          <div class="cd-block"><span id="cd-days" class="cd-num">00</span><span class="cd-unit">days</span></div>
+          <div class="cd-block"><span id="cd-hours" class="cd-num">00</span><span class="cd-unit">hrs</span></div>
+          <div class="cd-block"><span id="cd-mins" class="cd-num">00</span><span class="cd-unit">min</span></div>
+          <div class="cd-block"><span id="cd-secs" class="cd-num">00</span><span class="cd-unit">sec</span></div>
+        </div>
+        <p class="countdown-footnote">calculated live in Las Vegas (Pacific) time — double-click the clock, i dare you</p>
+      </div>
+
+      <!-- CELEBRATION STATE (shown once the countdown hits zero) -->
+      <div id="celebrationState" class="celebration-wrap" hidden>
+        <p class="celebration-kicker">🎉 IT'S HAPPENING 🎉</p>
+        <h2 class="shes-here">SHE'S HERE</h2>
+        <div class="dayof-wrap">
+          <p class="countdown-kicker">DAY OF THE ADVENTURE:</p>
+          <div class="dayof-number"><span id="dayOfCount">1</span></div>
+          <p class="countdown-footnote" id="dayOfDate">—</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="zine-strip">
+    <div class="polaroid tilt-l">
+      <!-- PLACEHOLDER IMAGE: swap with a real photo of you two -->
+      <img src="images/photo-1.jpg" alt="Placeholder photo of Carter and Betty — swap with a real one">
+      <p class="polaroid-caption">exhibit A: we're cute</p>
+    </div>
+    <div class="ransom-note">
+      <p><span class="ransom-letter r1">S</span><span class="ransom-letter r2">H</span><span class="ransom-letter r3">E</span> <span class="ransom-letter r4">I</span><span class="ransom-letter r1">S</span> <span class="ransom-letter r2">C</span><span class="ransom-letter r3">O</span><span class="ransom-letter r4">M</span><span class="ransom-letter r1">I</span><span class="ransom-letter r2">N</span><span class="ransom-letter r3">G</span></p>
+    </div>
+    <!-- Easter Egg: sticker that wiggles + reveals a tooltip joke on hover -->
+    <button type="button" class="sticker sticker-corner wiggle-on-click" data-joke="warning: extremely high risk of falling in love (again)">
+      ⚠️ VEGAS ADVISORY
+    </button>
+  </div>
+
+  <!-- Easter Egg: fake broken button / fake error that's actually a love note -->
+  <div class="fake-error-zone">
+    <button type="button" id="doNotClickBtn" class="do-not-click-btn">🚫 DO NOT CLICK THIS BUTTON</button>
+    <div id="fakeErrorBox" class="fake-error-box" hidden role="alert">
+      <p class="fake-error-title">⚠ SYSTEM ERROR 0x1LU2U</p>
+      <p class="fake-error-body">Just kidding. There's no error. I just really like you and wanted an excuse to say so on a website. Ok bye. 🖤</p>
+      <button type="button" class="fake-error-close">close (if you must)</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2: SATIRICAL HISTORY OF US
+     ============================================================ -->
+<section id="history-of-us" class="page" aria-labelledby="history-heading">
+  <h2 id="history-heading" class="section-title">02. THE (SATIRICAL) HISTORY OF US</h2>
+  <p class="section-kicker">as reported by unreliable narrators, tabloids, and one (1) museum</p>
+
+  <!-- Mock Wikipedia infobox -->
+  <div class="wiki-infobox">
+    <p class="wiki-infobox-title">Carter &amp; Betty</p>
+    <!-- PLACEHOLDER IMAGE: swap with a real "how we met" photo -->
+    <img src="images/photo-2.jpg" alt="Placeholder: how we met photo">
+    <table>
+      <tbody>
+        <tr><th>Also known as</th><td>B+B, "the long-distance ones," [PLACEHOLDER: your couple nickname]</td></tr>
+        <tr><th>Genre</th><td>Slow burn, romantic comedy, international epic</td></tr>
+        <tr><th>Origin</th><td>[PLACEHOLDER: how you actually met — app? mutual friend? chaos?]</td></tr>
+        <tr><th>First contact</th><td>[PLACEHOLDER: date/story of first message or meeting]</td></tr>
+        <tr><th>Distance</th><td>Shanghai ⇄ Las Vegas, ~6,900 miles, 0 miles that matter</td></tr>
+        <tr><th>Status</th><td>Extremely, suspiciously happy</td></tr>
+        <tr><th>Currently</th><td>Counting down to November 1, 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Timeline mixing real (exaggerated) entries with parody bits -->
+  <ol class="timeline">
+    <li class="timeline-entry">
+      <span class="timeline-date">[PLACEHOLDER DATE]</span>
+      <h3>T-Minus Zero: First Contact</h3>
+      <p>[PLACEHOLDER TEXT: tell the real story of how you two met / first talked. Keep it slightly exaggerated for the bit — e.g. "the algorithm, in a rare act of competence, ..."]</p>
+    </li>
+
+    <li class="timeline-entry tabloid">
+      <span class="timeline-date">[PLACEHOLDER DATE]</span>
+      <div class="tabloid-card">
+        <p class="tabloid-masthead">THE DAILY SHANGHAI-VEGAS TATTLER</p>
+        <h3 class="tabloid-headline">"LOCAL BOY CAN'T STOP TEXTING GIRL 12 TIME ZONES AWAY," SOURCES CONFIRM</h3>
+        <p class="tabloid-body">[PLACEHOLDER TEXT: parody tabloid blurb about an early relationship milestone — first video call, first "goodnight," whatever was true and ridiculous.]</p>
+        <p class="tabloid-credit">not a real newspaper. yet.</p>
+      </div>
+    </li>
+
+    <li class="timeline-entry museum">
+      <span class="timeline-date">[PLACEHOLDER DATE]</span>
+      <div class="museum-placard">
+        <p class="museum-eyebrow">GALLERY 3 — MODERN ROMANCE</p>
+        <h3>Exhibit: "The First 'I Miss You'"</h3>
+        <p>[PLACEHOLDER TEXT: fake museum-placard description of a milestone, written in stiff art-history voice, e.g. "Rendered in the medium of a 2am text message, this piece marks the artist's shift from casual to devastatingly smitten."]</p>
+        <p class="museum-meta">Medium: [PLACEHOLDER]. On loan from: Carter's phone.</p>
+      </div>
+    </li>
+
+    <li class="timeline-entry">
+      <span class="timeline-date">[PLACEHOLDER DATE]</span>
+      <h3>The "Wait, Is This Serious?" Arc</h3>
+      <p>[PLACEHOLDER TEXT: real story beat — the moment you both realized this was a real relationship, not just a fling across an ocean.]</p>
+    </li>
+
+    <li class="timeline-entry tabloid">
+      <span class="timeline-date">[PLACEHOLDER DATE]</span>
+      <div class="tabloid-card">
+        <p class="tabloid-masthead">VEGAS AFTER DARK WEEKLY</p>
+        <h3 class="tabloid-headline">EXCLUSIVE: MAN SPOTTED PRICING FLIGHTS TO SHANGHAI "JUST TO LOOK," CLEARLY LYING</h3>
+        <p class="tabloid-body">[PLACEHOLDER TEXT: parody bit about planning to visit, or Betty planning her trip, told like scandalous gossip.]</p>
+        <p class="tabloid-credit">allegedly true.</p>
+      </div>
+    </li>
+
+    <li class="timeline-entry">
+      <span class="timeline-date">NOV 1, 2026</span>
+      <h3>The Adventure Begins</h3>
+      <p>Betty touches down in Las Vegas. Chaos, love, and questionable buffet decisions ensue. [PLACEHOLDER TEXT: add specifics once you know the flight/plan.]</p>
+    </li>
+  </ol>
+
+  <!-- Easter egg: fake "how well do you know Betty" mini quiz -->
+  <div class="mini-quiz">
+    <p class="mini-quiz-title">🎮 SECRET SIDE QUEST: How Well Do You Know This Website's Author?</p>
+    <p class="mini-quiz-q" id="quizQuestion">What is Carter definitely NOT doing right now?</p>
+    <div class="mini-quiz-options" id="quizOptions">
+      <button type="button" data-correct="false">Missing Betty a normal, reasonable amount</button>
+      <button type="button" data-correct="true">Missing Betty a normal, reasonable amount</button>
+      <button type="button" data-correct="false">Refreshing flight trackers for fun</button>
+      <button type="button" data-correct="false">Planning outfit #4 for the airport pickup</button>
+    </div>
+    <p class="mini-quiz-result" id="quizResult" hidden></p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3: ITINERARY & DATE IDEAS
+     ============================================================ -->
+<section id="itinerary" class="page" aria-labelledby="itinerary-heading">
+  <h2 id="itinerary-heading" class="section-title">03. ITINERARY &amp; DATE IDEAS</h2>
+  <p class="section-kicker">a very official, extremely flexible, subject-to-chaos schedule</p>
+
+  <div class="itinerary-grid">
+
+    <article class="itin-card tilt-r">
+      <p class="itin-day">DAY 1 — TOUCHDOWN</p>
+      <h3>Welcome to Umerica</h3>
+      <ul>
+        <li>Airport pickup with a ridiculous handmade sign [PLACEHOLDER: sign text idea]</li>
+        <li>[PLACEHOLDER: dinner spot near the airport / hotel — something low-key, jet-lag friendly]</li>
+        <li>Collapse. Rest. No agenda tonight, promise.</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-l">
+      <p class="itin-day">CLASSIC VEGAS</p>
+      <h3>The Strip Walk</h3>
+      <ul>
+        <li>Bellagio fountains at golden hour</li>
+        <li>Walk the Strip, Venetian → Caesars → Paris (mini Eiffel Tower selfie, mandatory)</li>
+        <li>[PLACEHOLDER: pick ONE big Vegas show — Cirque du Soleil, a residency, a magic show]</li>
+        <li>[PLACEHOLDER: fancy dinner reservation — somewhere with a view or a scene]</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-r">
+      <p class="itin-day">OFFBEAT DAY TRIP</p>
+      <h3>Seven Magic Mountains</h3>
+      <ul>
+        <li>Giant neon-painted boulder towers in the desert, ~30 min south of the Strip. Free, surreal, extremely photogenic.</li>
+        <li>Golden hour = best light. Bring water, it's the desert.</li>
+        <li>[PLACEHOLDER: pair with lunch on the way back — somewhere with A/C and good tacos]</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-l">
+      <p class="itin-day">NATURE DAY</p>
+      <h3>Red Rock Canyon</h3>
+      <ul>
+        <li>13-mile scenic loop drive, or an easy hike if Betty's up for it (Calico Tanks is a good moderate option)</li>
+        <li>Insane red-rock views, way fewer crowds than the Strip</li>
+        <li>[PLACEHOLDER: pack a little picnic? or plan a stop at Red Rock Casino for A/C + food afterward]</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-r">
+      <p class="itin-day">DIVE BAR NIGHT</p>
+      <h3>Old Vegas Bar Crawl</h3>
+      <ul>
+        <li>Skip the Strip prices — hit a few classic Vegas dive bars downtown / Fremont East</li>
+        <li>[PLACEHOLDER: pick 2-3 specific bars you like — dive bars, a piano bar, a weird themed one]</li>
+        <li>End at the Fremont Street Experience for the light canopy show</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-l">
+      <p class="itin-day">LAZY DAY</p>
+      <h3>Pool + Do Nothing</h3>
+      <ul>
+        <li>Hotel pool, good sunglasses, zero plans</li>
+        <li>[PLACEHOLDER: order room service or find a good poolside snack spot]</li>
+        <li>This day exists on purpose. Rest is part of the itinerary.</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-r">
+      <p class="itin-day">DAY TRIP</p>
+      <h3>Hoover Dam / Lake Mead</h3>
+      <ul>
+        <li>~45 min from the Strip — genuinely impressive engineering, great photos</li>
+        <li>[PLACEHOLDER: add Lake Mead overlook or a short boat/kayak rental if weather's good]</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-l">
+      <p class="itin-day">FINAL NIGHT</p>
+      <h3>Something Just For Us</h3>
+      <ul>
+        <li>[PLACEHOLDER: plan something meaningful and low-key for the last night — rooftop, a favorite spot, whatever feels like "us"]</li>
+        <li>No stickers or jokes needed here. Just the two of you.</li>
+      </ul>
+    </article>
+
+    <article class="itin-card tilt-r photo-card">
+      <!-- PLACEHOLDER IMAGE: swap with a real photo relevant to date ideas -->
+      <img src="images/photo-5.jpg" alt="Placeholder photo for the itinerary section">
+      <p class="itin-day">BONUS</p>
+      <h3>Wildcard Slot Machine</h3>
+      <p>Hit the lever if you're stuck on what to do next. (It's rigged to only give good outcomes.)</p>
+      <button type="button" id="slotMachineBtn" class="slot-lever">🎰 PULL THE LEVER</button>
+      <p id="slotResult" class="slot-result" aria-live="polite"></p>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4: HISTORY OF LAS VEGAS
+     ============================================================ -->
+<section id="vegas-history" class="page" aria-labelledby="vegas-history-heading">
+  <h2 id="vegas-history-heading" class="section-title">04. HISTORY OF LAS VEGAS</h2>
+  <p class="section-kicker">a chaotic zine's guide to the facts (the facts are real, we promise, the jokes are extra)</p>
+
+  <article class="vegas-history-block">
+    <h3>1905: A Railroad Town Is Born</h3>
+    <p>Las Vegas officially became a town on May 15, 1905, when 110 acres of land next to the railroad tracks were auctioned off in the Nevada desert. Water — from natural artesian springs — was the actual reason anyone stopped here at all, long before neon and slot machines entered the picture. Yes, Vegas started as a place people stopped for <em>water</em>. The irony of that, given the current fountain situation on the Strip, is not lost on anyone.</p>
+  </article>
+
+  <article class="vegas-history-block">
+    <h3>1931: Gambling Goes Legal (and the Dam Shows Up)</h3>
+    <p>Nevada legalized casino gambling in 1931 — the same year construction began on the Hoover Dam nearby. Thousands of dam workers needed somewhere to spend their paychecks, and Vegas, ever the opportunist, obliged. This is the actual origin of Vegas-as-playground: a massive infrastructure project next door with a very bored, very paid workforce.</p>
+  </article>
+
+  <article class="vegas-history-block">
+    <h3>1940s–60s: The Mob Era</h3>
+    <p>Organized crime money built much of the early Strip. Bugsy Siegel's Flamingo (1946) is the most famous example — mob-financed, glamorous, and reportedly so over budget that it may have contributed to Siegel's own demise in 1947. For decades after, mob-linked money quietly financed casino after casino, skimming profits off the top in cash before anyone in a suit noticed. It's less "gangster movie glamor" and more "extremely aggressive small business ownership," but sure, glamor too.</p>
+  </article>
+
+  <article class="vegas-history-block split">
+    <div>
+      <h3>1950s–60s: The Rat Pack Era</h3>
+      <p>Frank Sinatra, Dean Martin, Sammy Davis Jr., Peter Lawford, and Joey Bishop turned the Sands Hotel into the coolest room on Earth, performing loose, improvised shows together and cementing Vegas as <em>the</em> place for entertainment, not just gambling. This is also the era that gave Vegas its "Rat Pack tuxedo and a martini" image — one it has never fully let go of, even while wearing a "Vegas Vacation" tank top and flip-flops.</p>
+    </div>
+    <!-- PLACEHOLDER IMAGE: swap with a real historical Vegas photo (public-domain archival image recommended) -->
+    <figure class="figure-frame">
+      <img src="images/photo-6.jpg" alt="Placeholder: archival-style Old Vegas photo">
+      <figcaption>[PLACEHOLDER: caption a real archival Rat Pack-era photo here]</figcaption>
+    </figure>
+  </article>
+
+  <article class="vegas-history-block">
+    <h3>1966–70s: Howard Hughes and the Corporate Takeover</h3>
+    <p>Reclusive billionaire Howard Hughes moved into the top floor of the Desert Inn in 1966 and, when asked to leave, simply bought the hotel instead. He went on to buy several more Vegas properties, helping shift ownership away from mob syndicates toward corporations — a trend Nevada formalized with 1969 legislation making it easier for public companies to own casinos. Boring on paper; it's genuinely the reason Vegas became a "real" industry instead of a laundering operation with a lounge singer.</p>
+  </article>
+
+  <article class="vegas-history-block">
+    <h3>1989–90s: The Megaresort Boom</h3>
+    <p>Steve Wynn's Mirage opened in 1989 with an erupting volcano out front, kicking off the megaresort era: Excalibur, Luxor, MGM Grand, and Bellagio all followed within a decade. Vegas rebranded itself as a family destination for a hot minute in the early '90s (yes, really — there were roller coasters marketed at children next to the casino floor) before quietly going back to being extremely for adults.</p>
+  </article>
+
+  <article class="vegas-history-block split reverse">
+    <div>
+      <h3>The Neon Boneyard</h3>
+      <p>As casinos got renovated or imploded (a genuine Vegas pastime — implosions are televised events), their iconic neon signs didn't just vanish. Many were rescued and now live at the Neon Museum's "Neon Boneyard," an outdoor graveyard of glowing Vegas history you can actually tour at night, when the restored signs light back up. It's part museum, part beautiful junkyard, entirely worth a visit.</p>
+    </div>
+    <!-- PLACEHOLDER IMAGE: swap with a real Neon Museum / boneyard photo -->
+    <figure class="figure-frame">
+      <img src="images/photo-7.jpg" alt="Placeholder: Neon Boneyard photo">
+      <figcaption>[PLACEHOLDER: caption a real Neon Boneyard photo here]</figcaption>
+    </figure>
+  </article>
+
+  <article class="vegas-history-block">
+    <h3>Today: 40+ Million Visitors a Year</h3>
+    <p>Modern Las Vegas pulls in tens of millions of visitors annually, has reinvented itself as a major sports town (hello, Golden Knights and Raiders), and somehow still finds room for both a giant sphere-shaped video screen and a bar shaped like a UFO. It remains, as it has been for over a century, a town built entirely on giving people a very good excuse to leave their normal life for a few days. Which, conveniently, is exactly what Betty is about to do.</p>
+  </article>
+</section>
+
+<!-- ============================================================
+     SECTION 5: PREP GUIDE FOR BETTY
+     ============================================================ -->
+<section id="prep-guide" class="page" aria-labelledby="prep-heading">
+  <h2 id="prep-heading" class="section-title">05. PREP GUIDE FOR BETTY</h2>
+  <p class="section-kicker">a survival zine for Shanghai → Las Vegas, early November edition</p>
+
+  <div class="prep-grid">
+
+    <div class="prep-card">
+      <h3>🌡 Weather (Early November)</h3>
+      <ul>
+        <li>Daytime highs: roughly 70–78°F (21–26°C) — warm, sunny, very pleasant</li>
+        <li>Nighttime lows: can drop to 45–52°F (7–11°C) — the desert cools off FAST after sunset</li>
+        <li>Basically zero rain expected, but it's the desert — always check [PLACEHOLDER: link to weather forecast closer to the date]</li>
+        <li>Bring layers. Shorts by day, a jacket by night. Non-negotiable.</li>
+      </ul>
+    </div>
+
+    <div class="prep-card">
+      <h3>🧳 What to Pack</h3>
+      <ul>
+        <li>Comfortable walking shoes (the Strip is deceptively enormous — you WILL walk miles)</li>
+        <li>A nice outfit or two for a show / fancy dinner</li>
+        <li>A light jacket or sweater for chilly evenings and over-air-conditioned casinos</li>
+        <li>Sunglasses + sunscreen — desert sun is no joke even when it's "cool"</li>
+        <li>A portable phone charger (you will be taking a lot of photos of neon signs)</li>
+        <li>[PLACEHOLDER: passport / visa docs checklist specific to your trip]</li>
+      </ul>
+    </div>
+
+    <div class="prep-card">
+      <h3>🔌 Outlets &amp; Electronics</h3>
+      <ul>
+        <li>US outlets use Type A/B plugs at 120V — different from Mainland China's Type A/I plugs at 220V</li>
+        <li>You will need a plug adapter (and possibly a voltage converter for anything not dual-voltage — most modern phone/laptop chargers ARE dual-voltage, but double check)</li>
+        <li>[PLACEHOLDER: confirm what specific devices you're bringing so we can double-check adapter needs]</li>
+      </ul>
+    </div>
+
+    <div class="prep-card">
+      <h3>💵 Tipping Culture</h3>
+      <ul>
+        <li>Tipping is expected (not optional-feeling) in the US: restaurants ~18–20%, bartenders $1–2/drink</li>
+        <li>Vegas-specific: tip your dealer if you gamble, tip housekeeping a few dollars a day, tip valet a few dollars when they bring your car</li>
+        <li>Yes, this catches almost every visitor off guard. No, we don't fully understand it either.</li>
+      </ul>
+    </div>
+
+    <div class="prep-card">
+      <h3>🎰 Vegas-isms Glossary</h3>
+      <ul>
+        <li><strong>"The Strip"</strong> — the main stretch of casinos on Las Vegas Blvd (not actually inside city limits, weirdly)</li>
+        <li><strong>"Comp"</strong> — something free the casino gives you (a room, a meal) to keep you gambling</li>
+        <li><strong>"Whale"</strong> — a huge-stakes gambler the casino treats like royalty (not us, we're getting the free popcorn tier)</li>
+        <li><strong>"Downtown"</strong> — Fremont Street area, Old Vegas vibe, different from and cheaper than the Strip</li>
+        <li><strong>"The House always wins"</strong> — the entire business model, said cheerfully by everyone who still gambles anyway</li>
+        <li>[PLACEHOLDER: add more terms as they come up]</li>
+      </ul>
+    </div>
+
+    <div class="prep-card">
+      <h3>🇺🇸 Culture Notes</h3>
+      <ul>
+        <li>Portions at restaurants are huge — sharing is normal and expected</li>
+        <li>Tap water is safe to drink everywhere</li>
+        <li>Small talk with strangers (cashiers, servers) is normal, not weird — a "how's it going" doesn't require a real answer</li>
+        <li>[PLACEHOLDER: any other culture notes specific to things Betty's asked about]</li>
+      </ul>
+    </div>
+
+    <!-- PLACEHOLDER IMAGE: swap with a real, relevant photo (e.g. Betty packing, or a "welcome kit" flatlay) -->
+    <div class="prep-card photo-card">
+      <img src="images/photo-8.jpg" alt="Placeholder photo for the prep guide section">
+      <p class="polaroid-caption">[PLACEHOLDER: caption]</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6: CARTER'S TO-DO LIST
+     ============================================================ -->
+<section id="todo" class="page" aria-labelledby="todo-heading">
+  <h2 id="todo-heading" class="section-title">06. CARTER'S TO-DO LIST</h2>
+  <p class="section-kicker">checked-off state saves automatically — edit the list in index.html as your plans firm up</p>
+
+  <!-- PLACEHOLDER IMAGE -->
+  <div class="polaroid tilt-r todo-photo">
+    <img src="images/photo-9.jpg" alt="Placeholder photo for the to-do list section">
+    <p class="polaroid-caption">carter, "working"</p>
+  </div>
+
+  <ul class="todo-list" id="todoList">
+    <li><label><input type="checkbox" data-id="todo-1"> Book restaurant reservations for at least 2 special dinners</label></li>
+    <li><label><input type="checkbox" data-id="todo-2"> Clean the apartment (actually clean, not "shove stuff in a closet" clean)</label></li>
+    <li><label><input type="checkbox" data-id="todo-3"> Buy Betty a Vegas welcome gift</label></li>
+    <li><label><input type="checkbox" data-id="todo-4"> Wash the sheets + get fresh towels ready</label></li>
+    <li><label><input type="checkbox" data-id="todo-5"> Buy groceries she actually likes (not just what I like)</label></li>
+    <li><label><input type="checkbox" data-id="todo-6"> Book the big show / event tickets in advance</label></li>
+    <li><label><input type="checkbox" data-id="todo-7"> Print or save the itinerary somewhere we can actually find it</label></li>
+    <li><label><input type="checkbox" data-id="todo-8"> Charge the good camera, clear storage space on phone</label></li>
+    <li><label><input type="checkbox" data-id="todo-9"> Make a "welcome to Vegas" playlist for the car</label></li>
+    <li><label><input type="checkbox" data-id="todo-10"> Double check flight arrival time + set a pickup reminder</label></li>
+    <li><label><input type="checkbox" data-id="todo-11"> Fill the fridge with her favorite snacks/drinks</label></li>
+    <li><label><input type="checkbox" data-id="todo-12"> [PLACEHOLDER: add more to-dos here as you think of them]</label></li>
+  </ul>
+
+  <p class="todo-progress" id="todoProgress" aria-live="polite">0 / 12 done. no pressure. (some pressure.)</p>
+</section>
+
+<!-- ============================================================
+     SECRET SECTION — only reachable via the Konami Code easter egg
+     ============================================================ -->
+<section id="secret" class="page secret-page" aria-labelledby="secret-heading" hidden>
+  <h2 id="secret-heading" class="section-title">?? THE JACKPOT PAGE ??</h2>
+  <p class="section-kicker">you found it. up up down down left right left right B A. respect.</p>
+  <div class="jackpot-card">
+    <p class="jackpot-line">🎰 🎰 🎰 JACKPOT 🎰 🎰 🎰</p>
+    <p>Congratulations, you nerd. You cracked the code (literally). Since you clearly have the patience to dig through a whole website for hidden nonsense, here's the real prize:</p>
+    <p class="jackpot-note">[PLACEHOLDER: write a real secret note here for Betty to find if SHE'S the one who finds this page — a private joke, a confession, a coupon for something silly, whatever you want.]</p>
+    <p class="jackpot-signature">— Carter</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <p>made with chaos, tape, and a genuinely stupid amount of love. <span id="footerYear">© 2026</span></p>
+  <!-- Easter egg: clicking the year reveals a joke "established" date -->
+  <p class="footer-secret" id="footerSecret" hidden>est. the day Carter stopped pretending he wasn't obsessed with her</p>
+  <p class="footer-hint">psst — there are 10+ secrets hidden on this site. good luck. 🔎</p>
+</footer>
+
+<!-- Confetti canvas, used for celebration + easter eggs -->
+<canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+<!-- Falling hearts container, used by the "type BETTY" easter egg -->
+<div id="heartsLayer" aria-hidden="true"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
