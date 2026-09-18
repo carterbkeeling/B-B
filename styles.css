@@ -168,23 +168,16 @@ h1,h2,h3{ font-family: var(--font-display); letter-spacing: .02em; }
 .corner-doodle{
   position: absolute;
   top: 14px; left: 14px;
+  display: inline-block;
   background: none;
   border: none;
   color: var(--hotpink);
   padding: 6px;
   z-index: 3;
+  text-decoration: none;
   transition: transform .2s ease;
 }
 .corner-doodle:hover{ transform: scale(1.25) rotate(-10deg); }
-.corner-doodle-img{
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 30%;
-  border: 2px solid var(--hotpink);
-  display: block;
-}
 
 .secret-msg{
   position: absolute;
