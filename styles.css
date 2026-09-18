@@ -176,6 +176,15 @@ h1,h2,h3{ font-family: var(--font-display); letter-spacing: .02em; }
   transition: transform .2s ease;
 }
 .corner-doodle:hover{ transform: scale(1.25) rotate(-10deg); }
+.corner-doodle-img{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  border: 2px solid var(--hotpink);
+  display: block;
+}
 
 .secret-msg{
   position: absolute;
@@ -263,7 +272,6 @@ h1,h2,h3{ font-family: var(--font-display); letter-spacing: .02em; }
   padding-bottom: 8px;
   font-size: 1rem;
 }
-.toc-sub{ font-weight: 400; font-size: .8em; opacity: .7; }
 
 .zine-toc ul{
   list-style: none;
