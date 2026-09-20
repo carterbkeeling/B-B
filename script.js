@@ -569,11 +569,11 @@
     var count;
     try {
       var stored = localStorage.getItem(HIT_KEY);
-      count = stored ? parseInt(stored, 10) : 4021 + Math.floor(Math.random() * 40);
+      count = stored ? parseInt(stored, 10) : 0;
       count += 1;
       localStorage.setItem(HIT_KEY, String(count));
     } catch (e) {
-      count = 4022;
+      count = 1;
     }
     var digits = String(count).padStart(6, "0").split("");
     el.innerHTML = "";

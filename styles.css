@@ -872,7 +872,7 @@ main{ display: block; }
 .deco-bl{ bottom: 8%; left: 4%; }
 .deco-br{ bottom: 10%; right: 5%; }
 .deco-mr{ top: 44%; right: 3%; }
-.deco-ml{ top: 30%; left: 6%; }
+.deco-ml{ top: 14%; left: 6%; }
 @media (max-width: 760px){
   .deco-ml, .deco-mr{ display: none; } /* avoid crowding the countdown on small screens */
   .deco-tl, .deco-tr{ transform: scale(.7) rotate(-4deg); }
