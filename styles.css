@@ -328,7 +328,7 @@ main{ display: block; }
 
 .hero{
   position: relative;
-  min-height: 78vh;
+  min-height: 120vh;
   display: flex;
   align-items: center;
   justify-content: center;
