@@ -584,61 +584,6 @@
     });
   })();
 
-  /* --- Guestbook (localStorage only — no shared server) ------------------ */
-  (function initGuestbook() {
-    var form = document.getElementById("guestbookForm");
-    var list = document.getElementById("guestbookList");
-    var nameInput = document.getElementById("guestbookName");
-    var msgInput = document.getElementById("guestbookMsg");
-    if (!form || !list) return;
-    var GB_KEY = "bb-umerica-guestbook-v1";
-
-    function loadEntries() {
-      try {
-        var raw = localStorage.getItem(GB_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) { return []; }
-    }
-    function saveEntries(entries) {
-      try { localStorage.setItem(GB_KEY, JSON.stringify(entries)); } catch (e) { /* ignore */ }
-    }
-    function render() {
-      var entries = loadEntries();
-      list.innerHTML = "";
-      if (entries.length === 0) {
-        var empty = document.createElement("li");
-        empty.className = "gb-empty";
-        empty.textContent = "no entries yet — be the first to sign!";
-        list.appendChild(empty);
-        return;
-      }
-      entries.slice().reverse().forEach(function (entry) {
-        var li = document.createElement("li");
-        var nameSpan = document.createElement("span");
-        nameSpan.className = "gb-name";
-        nameSpan.textContent = entry.name + ": ";
-        li.appendChild(nameSpan);
-        li.appendChild(document.createTextNode(entry.msg));
-        list.appendChild(li);
-      });
-    }
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var name = nameInput.value.trim().slice(0, 40);
-      var msg = msgInput.value.trim().slice(0, 140);
-      if (!name || !msg) return;
-      var entries = loadEntries();
-      entries.push({ name: name, msg: msg });
-      saveEntries(entries);
-      render();
-      form.reset();
-      nameInput.focus();
-    });
-
-    render();
-  })();
-
   /* --- Webring widget: loops through the site's own tabs ----------------- */
   (function initWebring() {
     var prevBtn = document.getElementById("webringPrev");
@@ -732,12 +677,10 @@
     var bubble = document.getElementById("mascotBubble");
     if (!mascot || !bubble) return;
     var lines = [
-      "hi carter's website visitor 👋",
-      "is it november yet",
-      "*vibrates excitedly*",
-      "psst, try the guestbook",
-      "12 time zones is a lot, ngl",
-      "[PLACEHOLDER: your own mascot one-liner]"
+      "Whoa mama",
+      "is it November yet",
+      "Where are you",
+      "Are u also freaking out"
     ];
     var reactTimer = null;
     mascot.addEventListener("click", function () {
