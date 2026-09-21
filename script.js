@@ -167,7 +167,7 @@
     var original = countdownEl.innerHTML;
     countdownEl.innerHTML =
       '<p style="font-family:var(--font-hand);font-size:1.1rem;max-width:22em;">' +
-      "fun fact: this number is smaller than the number of times Carter has checked flight prices today. [PLACEHOLDER: swap in a real fun stat]" +
+      "regardless of how many days this countdown clock reads at time of viewing I can confidently say it's way too long" +
       "</p>";
     setTimeout(function () {
       countdownEl.innerHTML = original;
