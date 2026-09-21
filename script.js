@@ -510,4 +510,179 @@
     });
   });
 
+  /* =====================================================================
+     6. "HOMEMADE WEB" CHROME — letters, typewriter, hit counter,
+        guestbook, webring, cursor customizer + trail, idle mascot.
+     ===================================================================== */
+
+  /* --- Hover-reactive per-letter headers -------------------------------- */
+  function wrapLetters(el) {
+    var text = el.textContent;
+    el.textContent = "";
+    var i = 0;
+    text.split("").forEach(function (ch) {
+      if (ch === " ") {
+        el.appendChild(document.createTextNode(" "));
+        return;
+      }
+      var span = document.createElement("span");
+      span.className = "ch";
+      span.style.setProperty("--i", i);
+      span.textContent = ch;
+      el.appendChild(span);
+      i++;
+    });
+  }
+  document.querySelectorAll(".letters").forEach(wrapLetters);
+
+  /* --- Typewriter reveal on the History of Us intro ---------------------- */
+  var historyTypewriter = document.getElementById("historyTypewriter");
+  var typewriterPlayed = false;
+  var TYPEWRITER_TEXT =
+    "loading two people's entire timeline into one browser tab... " +
+    "[PLACEHOLDER: swap this line for your own dramatic opening]";
+  function playTypewriter() {
+    if (typewriterPlayed || !historyTypewriter) return;
+    typewriterPlayed = true;
+    historyTypewriter.classList.add("typing");
+    var i = 0;
+    var timer = setInterval(function () {
+      historyTypewriter.textContent = TYPEWRITER_TEXT.slice(0, i + 1);
+      i++;
+      if (i >= TYPEWRITER_TEXT.length) {
+        clearInterval(timer);
+        setTimeout(function () { historyTypewriter.classList.remove("typing"); }, 1500);
+      }
+    }, 28);
+  }
+  var historyTocBtn = document.querySelector('.toc-btn[data-target="history-of-us"]');
+  if (historyTocBtn) historyTocBtn.addEventListener("click", playTypewriter);
+  if (document.getElementById("history-of-us") && document.getElementById("history-of-us").classList.contains("active")) {
+    playTypewriter();
+  }
+
+  /* --- Odometer-style hit counter (decorative only, no backend) --------- */
+  (function initHitCounter() {
+    var el = document.getElementById("hitCounter");
+    if (!el) return;
+    var digits = "000000".split("");
+    el.innerHTML = "";
+    digits.forEach(function (d) {
+      var span = document.createElement("span");
+      span.textContent = d;
+      el.appendChild(span);
+    });
+  })();
+
+  /* --- Webring widget: loops through the site's own tabs ----------------- */
+  (function initWebring() {
+    var prevBtn = document.getElementById("webringPrev");
+    var nextBtn = document.getElementById("webringNext");
+    if (!prevBtn || !nextBtn) return;
+    var order = Array.prototype.map.call(tocButtons, function (b) { return b.dataset.target; })
+      .filter(function (id) { return id !== "secret"; });
+    function currentIndex() {
+      var current = document.querySelector(".page.active");
+      var idx = current ? order.indexOf(current.id) : 0;
+      return idx === -1 ? 0 : idx;
+    }
+    nextBtn.addEventListener("click", function () {
+      var idx = (currentIndex() + 1) % order.length;
+      showPage(order[idx]);
+    });
+    prevBtn.addEventListener("click", function () {
+      var idx = (currentIndex() - 1 + order.length) % order.length;
+      showPage(order[idx]);
+    });
+  })();
+
+  /* --- Cursor customizer (2-3 alternate cursors + easy way back) --------- */
+  (function initCursorCustomizer() {
+    var buttons = document.querySelectorAll("#cursorOptions button");
+    if (!buttons.length) return;
+    var CURSOR_KEY = "bb-umerica-cursor-v1";
+    var cursorClasses = ["cursor-heart", "cursor-star", "cursor-sparkle"];
+
+    function applyCursor(choice) {
+      cursorClasses.forEach(function (c) { document.body.classList.remove(c); });
+      if (choice && choice !== "default") document.body.classList.add("cursor-" + choice);
+      buttons.forEach(function (b) { b.classList.toggle("active", b.dataset.cursor === choice); });
+      try { localStorage.setItem(CURSOR_KEY, choice); } catch (e) { /* ignore */ }
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () { applyCursor(btn.dataset.cursor); });
+    });
+
+    var saved = "default";
+    try { saved = localStorage.getItem(CURSOR_KEY) || "default"; } catch (e) { /* ignore */ }
+    applyCursor(saved);
+  })();
+
+  /* --- Cursor-trail sparkles (toggleable in case it's distracting) ------- */
+  (function initCursorTrail() {
+    var toggle = document.getElementById("trailToggle");
+    if (!toggle) return;
+    var TRAIL_KEY = "bb-umerica-trail-v1";
+    var trailChars = ["✨", "💖", "⭐"];
+    var lastSpawn = 0;
+    var enabled = false;
+
+    function spawnTrail(x, y) {
+      var now = Date.now();
+      if (now - lastSpawn < 60) return; // throttle
+      lastSpawn = now;
+      var el = document.createElement("span");
+      el.className = "cursor-sparkle-trail";
+      el.textContent = trailChars[Math.floor(Math.random() * trailChars.length)];
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+      document.body.appendChild(el);
+      setTimeout(function () { el.remove(); }, 750);
+    }
+
+    function onMove(e) { spawnTrail(e.clientX, e.clientY); }
+
+    function setEnabled(val) {
+      enabled = val;
+      toggle.checked = val;
+      if (val) {
+        window.addEventListener("mousemove", onMove);
+      } else {
+        window.removeEventListener("mousemove", onMove);
+      }
+      try { localStorage.setItem(TRAIL_KEY, val ? "1" : "0"); } catch (e) { /* ignore */ }
+    }
+
+    toggle.addEventListener("change", function () { setEnabled(toggle.checked); });
+
+    var saved = false;
+    try { saved = localStorage.getItem(TRAIL_KEY) === "1"; } catch (e) { /* ignore */ }
+    setEnabled(saved);
+  })();
+
+  /* --- Idle pixel mascot: reacts when clicked ----------------------------- */
+  (function initMascot() {
+    var mascot = document.getElementById("mascot");
+    var bubble = document.getElementById("mascotBubble");
+    if (!mascot || !bubble) return;
+    var lines = [
+      "Whoa mama",
+      "is it November yet",
+      "Where are you",
+      "Are u also freaking out"
+    ];
+    var reactTimer = null;
+    mascot.addEventListener("click", function () {
+      mascot.classList.add("reacting");
+      bubble.textContent = lines[Math.floor(Math.random() * lines.length)];
+      bubble.hidden = false;
+      clearTimeout(reactTimer);
+      reactTimer = setTimeout(function () {
+        mascot.classList.remove("reacting");
+        bubble.hidden = true;
+      }, 1800);
+    });
+  })();
+
 })();

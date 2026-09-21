@@ -32,9 +32,9 @@
   <div class="tape tape-right" aria-hidden="true"></div>
 
   <!-- Easter Egg #1: click the mini heart doodle 5x for a secret message -->
-  <button type="button" id="doodleHeart" class="corner-doodle" title="???" aria-label="a little doodle">
-    <svg viewBox="0 0 24 24" width="34" height="34"><path fill="currentColor" d="M12 21s-6.7-4.35-9.3-8.1C.8 9.9 1.7 6.4 4.9 5.2c2-.75 3.9.1 5.1 1.9C11.2 5.3 13.1 4.45 15.1 5.2c3.2 1.2 4.1 4.7 2.2 7.7C18.7 16.65 12 21 12 21z"/></svg>
-  </button>
+  <a id="doodleHeart" class="corner-doodle" href="images/heart-doodle.jpg" target="_blank" rel="noopener" title="???" aria-label="a little heart doodle — click to see the photo">
+    <img src="images/corner-heart-doodle.jpg" width="34" height="34" alt="" style="display:block;object-fit:cover;border-radius:6px">
+  </a>
   <p id="doodleHeartMsg" class="secret-msg" hidden>psst. it's always been you. 💌</p>
 
   <h1 class="site-title" id="siteTitle" tabindex="0">
@@ -42,13 +42,13 @@
     <span class="title-line-2">UMERICA<br>ADVENTURE</span>
     <span class="title-year">2026</span>
   </h1>
-  <p class="site-subtitle">a zine / mixtape / love letter for a girl flying from Shanghai to Las Vegas</p>
+  <p class="site-subtitle">A Complete Travel Guide</p>
 
   <nav class="zine-toc" aria-label="Site sections">
-    <p class="toc-label">✂ TABLE OF CONTENTS ✂ <span class="toc-sub">(tear along dotted line)</span></p>
+    <p class="toc-label">TABLE OF CONTENTS</p>
     <ul>
-      <li><button class="toc-btn" data-target="home" aria-current="page">01. HOME</button></li>
-      <li><button class="toc-btn" data-target="history-of-us">02. HISTORY OF US</button></li>
+      <li><button class="toc-btn" data-target="home" aria-current="page">01. COUNTDOWN</button></li>
+      <li><button class="toc-btn" data-target="history-of-us">02. B+B HISTORY</button></li>
       <li><button class="toc-btn" data-target="itinerary">03. ITINERARY</button></li>
       <li><button class="toc-btn" data-target="vegas-history">04. HISTORY OF VEGAS</button></li>
       <li><button class="toc-btn" data-target="prep-guide">05. PREP GUIDE</button></li>
@@ -71,6 +71,27 @@
     <img class="hero-bg" src="images/vegas-strip-bg.jpg" alt="The Las Vegas Strip at night (placeholder photo — swap for the real thing)">
     <div class="hero-overlay"></div>
 
+    <!-- Corkboard clutter pinned OVER the skyline photo. All decorative. -->
+    <div class="hero-deco deco-tr tilt-r" aria-hidden="true">
+      <div class="mini-sticker">The Mojave Desert Beckons</div>
+    </div>
+    <!-- PLACEHOLDER IMAGE: swap with a real photo of you two -->
+    <div class="hero-deco deco-bl polaroid tilt-r small-polaroid" aria-hidden="true">
+      <img src="images/photo-3.jpg" alt="">
+      <p class="polaroid-caption">You are the reason Nevada exists!</p>
+    </div>
+    <div class="hero-deco deco-mr tilt-l">
+      <a href="https://www.youtube.com/watch?v=OHeHOb3E-2g&list=RDOHeHOb3E-2g&start_radio=1" target="_blank" rel="noopener" aria-label="washi tape (secret link)">
+        <div class="washi-tape"></div>
+      </a>
+    </div>
+    <div class="hero-deco deco-br tilt-r" aria-hidden="true">
+      <div class="handwritten-note">Your lips will be very chapped</div>
+    </div>
+    <div class="hero-deco deco-ml tilt-r" aria-hidden="true">
+      <svg viewBox="0 0 40 40" width="34" height="34"><path fill="#ff2d55" d="M20 35s-11-7.2-15.4-13.4C1.3 16.5 2.8 10.7 8.2 8.7c3.3-1.2 6.5.2 8.5 3.1 2-2.9 5.2-4.3 8.5-3.1 5.4 2 6.9 7.8 3.6 12.9C31 27.8 20 35 20 35z"/></svg>
+    </div>
+
     <div class="hero-content">
       <p class="eyebrow-sticker">SHANGHAI ✈ LAS VEGAS</p>
       <h2 id="home-heading" class="visually-hidden">Countdown to Betty's Arrival</h2>
@@ -84,7 +105,7 @@
           <div class="cd-block"><span id="cd-mins" class="cd-num">00</span><span class="cd-unit">min</span></div>
           <div class="cd-block"><span id="cd-secs" class="cd-num">00</span><span class="cd-unit">sec</span></div>
         </div>
-        <p class="countdown-footnote">calculated live in Las Vegas (Pacific) time — double-click the clock, i dare you</p>
+        <p class="countdown-footnote">Calculated live in Las Vegas, NV (PDT)(Click that Clock B)</p>
       </div>
 
       <!-- CELEBRATION STATE (shown once the countdown hits zero) -->
@@ -98,30 +119,39 @@
         </div>
       </div>
     </div>
+
+    <!-- Marquee ticker #1: inside jokes / trip facts. Pinned to the very
+         bottom of the hero (not inside .hero-content) so it never collides
+         with the corkboard clutter pinned around the edges. -->
+    <div class="ticker hero-ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-content">✈ 13 TIME ZONES APART, 18 HOUR FLIGHT, A MILLION SMILES TO BE HAD •  🧋 LET ME KNOW YOUR COFFEE ORDER FOR WHEN YOU LAND  •  🎰 THE HOUSE ALWAYS WINS, EXCEPT WHEN BETTY'S PLAYING  •  🖤 ELVIS AWAITS  •  🛫 WALKIE TALKIES CHARGED AND READY FOR THE ROAD  •  🌵 SEASONABLY COOL TEMPERATURES BUT STILL KINDA WAY TOO BRIGHT & HOT  •  </span>
+        <span class="ticker-content" aria-hidden="true">✈ 13 TIME ZONES APART, 18 HOUR FLIGHT, A MILLION SMILES TO BE HAD •  🧋 LET ME KNOW YOUR COFFEE ORDER FOR WHEN YOU LAND  •  🎰 THE HOUSE ALWAYS WINS, EXCEPT WHEN BETTY'S PLAYING  •  🖤 ELVIS AWAITS  •  🛫 WALKIE TALKIES CHARGED AND READY FOR THE ROAD  •  🌵 SEASONABLY COOL TEMPERATURES BUT STILL KINDA WAY TOO BRIGHT & HOT  •  </span>
+      </div>
+    </div>
   </div>
 
   <div class="zine-strip">
     <div class="polaroid tilt-l">
       <!-- PLACEHOLDER IMAGE: swap with a real photo of you two -->
       <img src="images/photo-1.jpg" alt="Placeholder photo of Carter and Betty — swap with a real one">
-      <p class="polaroid-caption">exhibit A: we're cute</p>
+      <p class="polaroid-caption">I'm Ready For You</p>
     </div>
     <div class="ransom-note">
       <p><span class="ransom-letter r1">S</span><span class="ransom-letter r2">H</span><span class="ransom-letter r3">E</span> <span class="ransom-letter r4">I</span><span class="ransom-letter r1">S</span> <span class="ransom-letter r2">C</span><span class="ransom-letter r3">O</span><span class="ransom-letter r4">M</span><span class="ransom-letter r1">I</span><span class="ransom-letter r2">N</span><span class="ransom-letter r3">G</span></p>
     </div>
     <!-- Easter Egg: sticker that wiggles + reveals a tooltip joke on hover -->
-    <button type="button" class="sticker sticker-corner wiggle-on-click" data-joke="warning: extremely high risk of falling in love (again)">
-      ⚠️ VEGAS ADVISORY
-    </button>
+    <button type="button" class="sticker sticker-corner wiggle-on-click" data-joke="I'M FREAKING OUT">
+      ⚠️ ADVISORY</button>
   </div>
 
   <!-- Easter Egg: fake broken button / fake error that's actually a love note -->
   <div class="fake-error-zone">
-    <button type="button" id="doNotClickBtn" class="do-not-click-btn">🚫 DO NOT CLICK THIS BUTTON</button>
+    <button type="button" id="doNotClickBtn" class="do-not-click-btn">🚫 DO NOT CLICK</button>
     <div id="fakeErrorBox" class="fake-error-box" hidden role="alert">
       <p class="fake-error-title">⚠ SYSTEM ERROR 0x1LU2U</p>
-      <p class="fake-error-body">Just kidding. There's no error. I just really like you and wanted an excuse to say so on a website. Ok bye. 🖤</p>
-      <button type="button" class="fake-error-close">close (if you must)</button>
+      <p class="fake-error-body">Just kidding there's no error. I just figured out how to create this button thing and wanted another spot on the website to say I love you.</p>
+      <button type="button" class="fake-error-close">press to close</button>
     </div>
   </div>
 </section>
@@ -129,9 +159,10 @@
 <!-- ============================================================
      SECTION 2: SATIRICAL HISTORY OF US
      ============================================================ -->
-<section id="history-of-us" class="page" aria-labelledby="history-heading">
-  <h2 id="history-heading" class="section-title">02. THE (SATIRICAL) HISTORY OF US</h2>
+<section id="history-of-us" class="page pattern-graph" aria-labelledby="history-heading">
+  <h2 id="history-heading" class="section-title letters">02. THE (SATIRICAL) HISTORY OF US</h2>
   <p class="section-kicker">as reported by unreliable narrators, tabloids, and one (1) museum</p>
+  <p class="typewriter-line" id="historyTypewriter" aria-live="polite"></p>
 
   <!-- Mock Wikipedia infobox -->
   <div class="wiki-infobox">
@@ -219,9 +250,17 @@
 <!-- ============================================================
      SECTION 3: ITINERARY & DATE IDEAS
      ============================================================ -->
-<section id="itinerary" class="page" aria-labelledby="itinerary-heading">
-  <h2 id="itinerary-heading" class="section-title">03. ITINERARY &amp; DATE IDEAS</h2>
+<section id="itinerary" class="page pattern-dots" aria-labelledby="itinerary-heading">
+  <h2 id="itinerary-heading" class="section-title letters">03. ITINERARY &amp; DATE IDEAS</h2>
   <p class="section-kicker">a very official, extremely flexible, subject-to-chaos schedule</p>
+
+  <!-- Marquee ticker #2: "coming up next" -->
+  <div class="ticker ticker-alt" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-content">📼 COMING UP NEXT: &nbsp;DAY 1 TOUCHDOWN &nbsp;▸&nbsp; CLASSIC VEGAS STRIP WALK &nbsp;▸&nbsp; SEVEN MAGIC MOUNTAINS &nbsp;▸&nbsp; RED ROCK CANYON &nbsp;▸&nbsp; DIVE BAR NIGHT &nbsp;▸&nbsp; POOL + DO NOTHING &nbsp;▸&nbsp; HOOVER DAM &nbsp;▸&nbsp; FINAL NIGHT &nbsp;▸&nbsp; </span>
+      <span class="ticker-content" aria-hidden="true">📼 COMING UP NEXT: &nbsp;DAY 1 TOUCHDOWN &nbsp;▸&nbsp; CLASSIC VEGAS STRIP WALK &nbsp;▸&nbsp; SEVEN MAGIC MOUNTAINS &nbsp;▸&nbsp; RED ROCK CANYON &nbsp;▸&nbsp; DIVE BAR NIGHT &nbsp;▸&nbsp; POOL + DO NOTHING &nbsp;▸&nbsp; HOOVER DAM &nbsp;▸&nbsp; FINAL NIGHT &nbsp;▸&nbsp; </span>
+    </div>
+  </div>
 
   <div class="itinerary-grid">
 
@@ -308,7 +347,7 @@
       <!-- PLACEHOLDER IMAGE: swap with a real photo relevant to date ideas -->
       <img src="images/photo-5.jpg" alt="Placeholder photo for the itinerary section">
       <p class="itin-day">BONUS</p>
-      <h3>Wildcard Slot Machine</h3>
+      <h3>Wildcard Slot Machine <span class="blink-tag">NEW!</span></h3>
       <p>Hit the lever if you're stuck on what to do next. (It's rigged to only give good outcomes.)</p>
       <button type="button" id="slotMachineBtn" class="slot-lever">🎰 PULL THE LEVER</button>
       <p id="slotResult" class="slot-result" aria-live="polite"></p>
@@ -320,9 +359,17 @@
 <!-- ============================================================
      SECTION 4: HISTORY OF LAS VEGAS
      ============================================================ -->
-<section id="vegas-history" class="page" aria-labelledby="vegas-history-heading">
-  <h2 id="vegas-history-heading" class="section-title">04. HISTORY OF LAS VEGAS</h2>
+<section id="vegas-history" class="page pattern-stars" aria-labelledby="vegas-history-heading">
+  <h2 id="vegas-history-heading" class="section-title letters">04. HISTORY OF LAS VEGAS</h2>
   <p class="section-kicker">a chaotic zine's guide to the facts (the facts are real, we promise, the jokes are extra)</p>
+
+  <!-- Marquee ticker #3: did-you-know facts -->
+  <div class="ticker ticker-alt2" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-content">🎲 DID YOU KNOW: Vegas was founded over a water spring, not a card table &nbsp;•&nbsp; 🎲 the Flamingo (1946) was mob-financed and wildly over budget &nbsp;•&nbsp; 🎲 Howard Hughes once bought a hotel just so he wouldn't have to move out of it &nbsp;•&nbsp; 🎲 the Neon Boneyard is a graveyard for old casino signs you can tour at night &nbsp;•&nbsp; </span>
+      <span class="ticker-content" aria-hidden="true">🎲 DID YOU KNOW: Vegas was founded over a water spring, not a card table &nbsp;•&nbsp; 🎲 the Flamingo (1946) was mob-financed and wildly over budget &nbsp;•&nbsp; 🎲 Howard Hughes once bought a hotel just so he wouldn't have to move out of it &nbsp;•&nbsp; 🎲 the Neon Boneyard is a graveyard for old casino signs you can tour at night &nbsp;•&nbsp; </span>
+    </div>
+  </div>
 
   <article class="vegas-history-block">
     <h3>1905: A Railroad Town Is Born</h3>
@@ -382,8 +429,8 @@
 <!-- ============================================================
      SECTION 5: PREP GUIDE FOR BETTY
      ============================================================ -->
-<section id="prep-guide" class="page" aria-labelledby="prep-heading">
-  <h2 id="prep-heading" class="section-title">05. PREP GUIDE FOR BETTY</h2>
+<section id="prep-guide" class="page pattern-check" aria-labelledby="prep-heading">
+  <h2 id="prep-heading" class="section-title letters">05. PREP GUIDE FOR BETTY</h2>
   <p class="section-kicker">a survival zine for Shanghai → Las Vegas, early November edition</p>
 
   <div class="prep-grid">
@@ -462,8 +509,8 @@
 <!-- ============================================================
      SECTION 6: CARTER'S TO-DO LIST
      ============================================================ -->
-<section id="todo" class="page" aria-labelledby="todo-heading">
-  <h2 id="todo-heading" class="section-title">06. CARTER'S TO-DO LIST</h2>
+<section id="todo" class="page pattern-paper" aria-labelledby="todo-heading">
+  <h2 id="todo-heading" class="section-title letters">06. CARTER'S TO-DO LIST</h2>
   <p class="section-kicker">checked-off state saves automatically — edit the list in index.html as your plans firm up</p>
 
   <!-- PLACEHOLDER IMAGE -->
@@ -506,11 +553,66 @@
 
 </main>
 
+<!-- ============================================================
+     PERSISTENT "HOMEMADE WEB" CHROME — same cluster on every tab,
+     lives outside the tab-switched <main> so it never gets hidden.
+     ============================================================ -->
+<section class="web-chrome" aria-label="assorted homemade web widgets (purely for fun)">
+
+  <div class="chrome-row blinkie-strip" role="list" aria-label="blinkie badges">
+    <div class="blinkie blinkie-1" role="listitem"><span>CERTIFIED</span><span>DESERT</span><span>RAT</span></div>
+    <div class="blinkie blinkie-2 blink" role="listitem"><span>★ I WANT YOU</span><span>TO STAY FOREVA★</span></div>
+    <div class="blinkie blinkie-3" role="listitem"><span>GONNA EAT</span><span>A LOT OF KINDA</span><span>EXPENSIVE FOOD</span></div>
+    <div class="blinkie blinkie-4 blink" role="listitem"><span>STILL DOING</span><span>RESEARCH ON</span><span>GO CART RENTALS</span></div>
+    <div class="blinkie blinkie-5" role="listitem"><span>PLEASE:</span><span>ENJOY THE INTERNET'S BOUNTY</span></div>
+    <div class="blinkie blinkie-6" role="listitem"><span>NOV 1</span><span>OR BUST</span></div>
+  </div>
+
+  <div class="chrome-row chrome-widgets">
+
+    <div class="webring-widget">
+      <p class="webring-title">🔗 B+B WEBRING <span class="webring-pop">(pop. 2)</span></p>
+      <div class="webring-nav">
+        <button type="button" id="webringPrev">← prev site</button>
+        <span class="webring-here">you are here</span>
+        <button type="button" id="webringNext">next site →</button>
+      </div>
+      <p class="webring-fineprint">it's a webring of exactly one site. every link leads back here. </p>
+    </div>
+
+    <div class="hit-counter-widget">
+      <p class="hit-counter-label">YOU ARE VISITOR #</p>
+      <div class="hit-counter" id="hitCounter" aria-live="off">000000</div>
+      <p class="hit-counter-fine">All the other visitors are just me from editing this</p>
+    </div>
+
+    <div class="cursor-widget">
+      <p class="cursor-widget-label">✏️ CUSTOMIZE YOUR CURSOR <span class="blink-tag">TRY ME</span></p>
+      <div class="cursor-options" id="cursorOptions">
+        <button type="button" data-cursor="default">default</button>
+        <button type="button" data-cursor="heart">💗 heart</button>
+        <button type="button" data-cursor="star">⭐ star</button>
+        <button type="button" data-cursor="sparkle">✨ sparkle</button>
+      </div>
+      <label class="trail-toggle"><input type="checkbox" id="trailToggle"> sparkle cursor-trail</label>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Idle pixel-art mascot, floats over every tab. Click it. -->
+<button type="button" id="mascot" class="mascot" aria-label="a tiny pixel critter — click it, it reacts">
+  <span class="mascot-sprite" id="mascotSprite" aria-hidden="true"></span>
+  <span class="mascot-tag blink-tag">CLICK ME</span>
+  <span class="mascot-bubble" id="mascotBubble" hidden></span>
+</button>
+
 <footer class="site-footer">
-  <p>made with chaos, tape, and a genuinely stupid amount of love. <span id="footerYear">© 2026</span></p>
+  <p><span id="footerYear">CK Creative Enterprises © 2026</span></p>
   <!-- Easter egg: clicking the year reveals a joke "established" date -->
-  <p class="footer-secret" id="footerSecret" hidden>est. the day Carter stopped pretending he wasn't obsessed with her</p>
-  <p class="footer-hint">psst — there are 10+ secrets hidden on this site. good luck. 🔎</p>
+  <p class="footer-secret" id="footerSecret" hidden>Owe Money</p>
+  <p class="footer-hint">psst try to find all of the secrets on this site I actually don't really know where they all are</p>
 </footer>
 
 <!-- Confetti canvas, used for celebration + easter eggs -->
