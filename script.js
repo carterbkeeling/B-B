@@ -565,17 +565,7 @@
   (function initHitCounter() {
     var el = document.getElementById("hitCounter");
     if (!el) return;
-    var HIT_KEY = "bb-umerica-hits-v1";
-    var count;
-    try {
-      var stored = localStorage.getItem(HIT_KEY);
-      count = stored ? parseInt(stored, 10) : 0;
-      count += 1;
-      localStorage.setItem(HIT_KEY, String(count));
-    } catch (e) {
-      count = 1;
-    }
-    var digits = String(count).padStart(6, "0").split("");
+    var digits = "000000".split("");
     el.innerHTML = "";
     digits.forEach(function (d) {
       var span = document.createElement("span");
