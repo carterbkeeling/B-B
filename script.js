@@ -538,9 +538,7 @@
   /* --- Typewriter reveal on the History of Us intro ---------------------- */
   var historyTypewriter = document.getElementById("historyTypewriter");
   var typewriterPlayed = false;
-  var TYPEWRITER_TEXT =
-    "loading two people's entire timeline into one browser tab... " +
-    "[PLACEHOLDER: swap this line for your own dramatic opening]";
+  var TYPEWRITER_TEXT = "Loading our whole timeline via the internet";
   function playTypewriter() {
     if (typewriterPlayed || !historyTypewriter) return;
     typewriterPlayed = true;
