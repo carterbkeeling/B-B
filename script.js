@@ -366,13 +366,15 @@
   var quizOptions = document.getElementById("quizOptions");
   var quizResult = document.getElementById("quizResult");
   if (quizOptions) {
-    quizOptions.querySelectorAll("button").forEach(function (btn) {
+    var quizButtons = quizOptions.querySelectorAll("button");
+    var quizClicked = new Set();
+    quizButtons.forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var correct = btn.dataset.correct === "true";
+        quizClicked.add(btn);
         quizResult.hidden = false;
-        quizResult.textContent = correct
-          ? "Correct! (this was a trick question, both answers were the same, love is not a logic puzzle)"
-          : "Wrong! Try again. (there is a correct answer somewhere in here, probably)";
+        quizResult.textContent = quizClicked.size >= quizButtons.length
+          ? "Heheh trick question I'm just trying not to go completely crazy in anticipation for your arrival"
+          : "Wrong - try again";
       });
     });
   }
