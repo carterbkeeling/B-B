@@ -753,6 +753,11 @@ main{ display: block; }
 .prep-card ul{ margin: 0; padding-left: 18px; }
 .prep-card li{ margin-bottom: 8px; font-size: .95rem; }
 .prep-card.photo-card img{ border: 2px solid var(--ink); margin-bottom: 10px; }
+.prep-card .scroll-list{
+  max-height: 190px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
 
 /* ---------------------------------------------------------------------
    10. TO-DO LIST
