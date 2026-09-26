@@ -383,14 +383,14 @@
   var slotBtn = document.getElementById("slotMachineBtn");
   var slotResult = document.getElementById("slotResult");
   var slotIdeas = [
-    "Order the weirdest thing on a diner menu at 2am.",
-    "Find the tackiest souvenir shop on the Strip and buy each other something ugly.",
-    "Photobooth strip at a random casino, no questions asked.",
-    "Karaoke. Yes, really. [PLACEHOLDER: pick a spot]",
-    "Rooftop bar, one drink each, watch the lights.",
-    "Rent bikes and ride somewhere neither of you has been.",
-    "Skip the plan entirely and just wander until something looks fun.",
-    "Ice cream at midnight. No justification needed."
+    "Go-Kart ride through the desert",
+    "Go on an evening walk with the Jewish men",
+    "Visit every casino on the strip and leave a Yelp review for each one",
+    "Hit the shooting range with Ruben",
+    "$2 Shrimp Cocktail Special at Durango Station",
+    "Find a solution to water scarcity in the Las Vegas valley",
+    "New car shopping with Carter",
+    "Get into pickleball or golf together"
   ];
   if (slotBtn) {
     slotBtn.addEventListener("click", function () {
