@@ -515,7 +515,6 @@ main{ display: block; }
 #history-of-us{ position: relative; }
 .history-photo-attach{
   position: absolute;
-  top: 1662px;
   right: 5vw;
   width: 260px;
   margin: 0;
@@ -524,6 +523,8 @@ main{ display: block; }
   box-shadow: 4px 6px 14px rgba(0,0,0,.25);
 }
 .history-photo-attach img{ width: 100%; display: block; }
+.history-photo-attach-2{ top: 1662px; }
+.history-photo-attach-3{ top: 2514px; }
 @media (max-width: 900px){
   .history-photo-attach{ position: static; width: 260px; margin: 24px 0; }
 }
