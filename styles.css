@@ -575,6 +575,15 @@ main{ display: block; }
   margin-bottom: 8px;
 }
 .timeline-entry h3{ margin: 6px 0; font-size: 1.3rem; }
+.timeline-entry.split-half{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 640px){
+  .timeline-entry.split-half{ grid-template-columns: 1fr; }
+}
 
 .tabloid-card{
   background: #fefaf0;
