@@ -1070,6 +1070,14 @@ main{ display: block; }
     radial-gradient(circle at 15% 25%, rgba(0,0,0,.04), transparent 40%),
     radial-gradient(circle at 85% 75%, rgba(0,0,0,.04), transparent 40%);
 }
+.pattern-hearts{
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(rgba(255,45,85,.14) 2px, transparent 2px),
+    radial-gradient(rgba(255,45,85,.14) 2px, transparent 2px);
+  background-size: 34px 34px;
+  background-position: 0 0, 17px 17px;
+}
 
 /* ---------------------------------------------------------------------
    18. PERSISTENT WEB CHROME (blinkies, webring, hit counter, guestbook…)
