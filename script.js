@@ -45,6 +45,8 @@
   var tocButtons = document.querySelectorAll(".toc-btn");
   var pages = document.querySelectorAll(".page");
 
+  var jackpotAudio = document.getElementById("jackpotAudio");
+
   function showPage(id, opts) {
     opts = opts || {};
     var found = false;
@@ -55,6 +57,14 @@
       if (match) p.hidden = false;
     });
     if (!found) return;
+    if (jackpotAudio) {
+      if (id === "secret") {
+        jackpotAudio.currentTime = 0;
+        jackpotAudio.play().catch(function () {});
+      } else {
+        jackpotAudio.pause();
+      }
+    }
     tocButtons.forEach(function (b) {
       var isMatch = b.dataset.target === id;
       if (isMatch) {
