@@ -872,7 +872,7 @@ main{ display: block; }
    11. SECRET PAGE
    --------------------------------------------------------------------- */
 .secret-page{ background: var(--ink); color: var(--paper); }
-#secret{ position: relative; overflow: hidden; }
+#secret{ position: relative; overflow: hidden; text-align: center; }
 .banana-blanket{
   position: absolute;
   inset: 0;
@@ -884,6 +884,16 @@ main{ display: block; }
   pointer-events: none;
   user-select: none;
   filter: drop-shadow(2px 3px 5px rgba(0,0,0,.45));
+  animation-name: banana-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes banana-float{
+  0%{ transform: translate(-50%, -50%) translate(0, 0) rotate(var(--start-rot, 0deg)); }
+  25%{ transform: translate(-50%, -50%) translate(8px, -10px) rotate(calc(var(--start-rot, 0deg) + 90deg)); }
+  50%{ transform: translate(-50%, -50%) translate(0, -16px) rotate(calc(var(--start-rot, 0deg) + 180deg)); }
+  75%{ transform: translate(-50%, -50%) translate(-8px, -10px) rotate(calc(var(--start-rot, 0deg) + 270deg)); }
+  100%{ transform: translate(-50%, -50%) translate(0, 0) rotate(calc(var(--start-rot, 0deg) + 360deg)); }
 }
 .secret-page .section-title{ position: relative; z-index: 1; background: var(--acid); color: var(--ink); box-shadow: 5px 5px 0 var(--hotpink); }
 .jackpot-card{

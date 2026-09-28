@@ -360,8 +360,10 @@
       img.style.width = size + "px";
       img.style.top = Math.random() * 100 + "%";
       img.style.left = Math.random() * 100 + "%";
-      img.style.transform = "translate(-50%, -50%) rotate(" + (Math.random() * 360) + "deg)";
+      img.style.setProperty("--start-rot", (Math.random() * 360) + "deg");
       img.style.opacity = 0.85 + Math.random() * 0.15;
+      img.style.animationDuration = (14 + Math.random() * 12) + "s";
+      img.style.animationDelay = "-" + (Math.random() * 20) + "s";
       bananaBlanket.appendChild(img);
     }
   }
@@ -604,13 +606,21 @@
   });
 
   function unlockSecretSection() {
-    launchBananaRain(5000);
+    launchBananaRain(9000);
     fillBananaBlanket();
     if (!secretUnlocked) {
       secretUnlocked = true;
       document.getElementById("secretTocItem").hidden = false;
     }
     showPage("secret");
+  }
+
+  /* Clicking anywhere on the Jackpot page re-triggers the banana rain. */
+  var secretPage = document.getElementById("secret");
+  if (secretPage) {
+    secretPage.addEventListener("click", function () {
+      launchBananaRain(9000);
+    });
   }
 
   /* Egg 11: console message for anyone who opens devtools. */
