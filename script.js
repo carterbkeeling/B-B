@@ -46,6 +46,20 @@
   var pages = document.querySelectorAll(".page");
 
   var jackpotAudio = document.getElementById("jackpotAudio");
+  var siteAudio = document.getElementById("siteAudio");
+
+  // Autoplay-with-sound is blocked by browsers until a user gesture happens,
+  // so try immediately, then fall back to starting on the first interaction.
+  if (siteAudio) {
+    var trySitePlay = function () { siteAudio.play().catch(function () {}); };
+    trySitePlay();
+    ["pointerdown", "keydown"].forEach(function (evt) {
+      window.addEventListener(evt, function startOnGesture() {
+        if (siteAudio.paused) trySitePlay();
+        window.removeEventListener(evt, startOnGesture);
+      });
+    });
+  }
 
   function showPage(id, opts) {
     opts = opts || {};
@@ -63,6 +77,13 @@
         jackpotAudio.play().catch(function () {});
       } else {
         jackpotAudio.pause();
+      }
+    }
+    if (siteAudio) {
+      if (id === "secret") {
+        siteAudio.pause();
+      } else {
+        siteAudio.play().catch(function () {});
       }
     }
     tocButtons.forEach(function (b) {
