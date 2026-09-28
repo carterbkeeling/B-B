@@ -701,11 +701,20 @@
     playTypewriter();
   }
 
-  /* --- Odometer-style hit counter (decorative only, no backend) --------- */
+  /* --- Odometer-style hit counter, increments once per page load ------- */
   (function initHitCounter() {
     var el = document.getElementById("hitCounter");
     if (!el) return;
-    var digits = "000000".split("");
+    var STORAGE_KEY = "bb-umerica-visitor-count-v1";
+    var count = 1;
+    try {
+      var stored = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+      count = (isNaN(stored) ? 0 : stored) + 1;
+      localStorage.setItem(STORAGE_KEY, String(count));
+    } catch (e) {
+      /* localStorage unavailable (private mode etc.) — just show 1 */
+    }
+    var digits = String(count).padStart(6, "0").split("");
     el.innerHTML = "";
     digits.forEach(function (d) {
       var span = document.createElement("span");
