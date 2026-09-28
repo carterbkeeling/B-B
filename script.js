@@ -400,7 +400,8 @@
     "$2 Shrimp Cocktail Special at Durango Station",
     "Find a solution to water scarcity in the Las Vegas valley",
     "New car shopping with Carter",
-    "Get into pickleball or golf together"
+    "Get into pickleball or golf together",
+    "Clue: cursive icon & invisible text!"
   ];
   if (slotBtn) {
     slotBtn.addEventListener("click", function () {
@@ -434,6 +435,15 @@
   if (footerYear) {
     footerYear.addEventListener("click", function () {
       footerSecret.hidden = !footerSecret.hidden;
+    });
+  }
+
+  /* Egg 12: cursive "Las Vegas" icon on Date Ideas page -> Konami code clue. */
+  var dateIdeasClueBtn = document.getElementById("dateIdeasClueBtn");
+  var dateIdeasCluePopup = document.getElementById("dateIdeasCluePopup");
+  if (dateIdeasClueBtn) {
+    dateIdeasClueBtn.addEventListener("click", function () {
+      dateIdeasCluePopup.hidden = !dateIdeasCluePopup.hidden;
     });
   }
 
