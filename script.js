@@ -47,17 +47,37 @@
 
   var jackpotAudio = document.getElementById("jackpotAudio");
   var siteAudio = document.getElementById("siteAudio");
+  var boogiePausedByUser = false;
 
   // Autoplay-with-sound is blocked by browsers until a user gesture happens,
   // so try immediately, then fall back to starting on the first interaction.
   if (siteAudio) {
-    var trySitePlay = function () { siteAudio.play().catch(function () {}); };
+    var trySitePlay = function () {
+      if (boogiePausedByUser) return;
+      siteAudio.play().catch(function () {});
+    };
     trySitePlay();
     ["pointerdown", "keydown"].forEach(function (evt) {
       window.addEventListener(evt, function startOnGesture() {
         if (siteAudio.paused) trySitePlay();
         window.removeEventListener(evt, startOnGesture);
       });
+    });
+  }
+
+  /* Egg 13: "Pause/Resume the Boogie" button toggles the background music. */
+  var boogieToggleBtn = document.getElementById("boogieToggleBtn");
+  if (boogieToggleBtn && siteAudio) {
+    boogieToggleBtn.addEventListener("click", function () {
+      if (siteAudio.paused) {
+        boogiePausedByUser = false;
+        siteAudio.play().catch(function () {});
+        boogieToggleBtn.textContent = "Pause the Boogie";
+      } else {
+        boogiePausedByUser = true;
+        siteAudio.pause();
+        boogieToggleBtn.textContent = "Resume the Boogie";
+      }
     });
   }
 
@@ -82,7 +102,7 @@
     if (siteAudio) {
       if (id === "secret") {
         siteAudio.pause();
-      } else {
+      } else if (!boogiePausedByUser) {
         siteAudio.play().catch(function () {});
       }
     }

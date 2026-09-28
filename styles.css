@@ -508,6 +508,23 @@ main{ display: block; }
   border: none;
   padding: 8px 14px;
 }
+#home{ position: relative; }
+.boogie-toggle-btn{
+  position: absolute;
+  bottom: 16px;
+  right: 5vw;
+  font-family: var(--font-zine);
+  font-weight: 700;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-thick);
+  padding: 10px 16px;
+  box-shadow: 4px 4px 0 var(--ink);
+  cursor: pointer;
+  font-size: .85rem;
+  z-index: 2;
+}
+.boogie-toggle-btn:hover{ transform: scale(1.03); }
 
 /* ---------------------------------------------------------------------
    6. HISTORY OF US
