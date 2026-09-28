@@ -229,6 +229,7 @@
 
   function makePiece() {
     return {
+      type: "confetti",
       x: Math.random() * canvas.width,
       y: -20 - Math.random() * canvas.height * 0.5,
       w: 6 + Math.random() * 6,
@@ -241,10 +242,52 @@
     };
   }
 
+  var bananaSources = [
+    "images/bananas/banana-1.webp",
+    "images/bananas/banana-2.png",
+    "images/bananas/banana-3.webp",
+    "images/bananas/banana-4.webp",
+    "images/bananas/banana-5.webp"
+  ];
+  var bananaImages = bananaSources.map(function (src) {
+    var img = new Image();
+    img.src = src;
+    return img;
+  });
+
+  function makeBananaPiece() {
+    var size = 30 + Math.random() * 55;
+    return {
+      type: "banana",
+      img: bananaImages[Math.floor(Math.random() * bananaImages.length)],
+      x: Math.random() * canvas.width,
+      y: -40 - Math.random() * canvas.height * 0.5,
+      size: size,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 6,
+      speedY: 1.5 + Math.random() * 2.5,
+      speedX: (Math.random() - 0.5) * 1.5
+    };
+  }
+
   var confettiTimer = null;
   function launchConfetti(durationMs) {
     var count = 160;
     for (var i = 0; i < count; i++) confettiPieces.push(makePiece());
+    canvas.style.display = "block";
+    if (!confettiRunning) {
+      confettiRunning = true;
+      requestAnimationFrame(confettiLoop);
+    }
+    if (confettiTimer) clearTimeout(confettiTimer);
+    confettiTimer = setTimeout(function () {
+      confettiPieces = [];
+    }, durationMs || 3000);
+  }
+
+  function launchBananaRain(durationMs) {
+    var count = 70;
+    for (var i = 0; i < count; i++) confettiPieces.push(makeBananaPiece());
     canvas.style.display = "block";
     if (!confettiRunning) {
       confettiRunning = true;
@@ -270,12 +313,37 @@
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate((p.rotation * Math.PI) / 180);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      if (p.type === "banana") {
+        ctx.drawImage(p.img, -p.size / 2, -p.size / 2, p.size, p.size);
+      } else {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      }
       ctx.restore();
     });
     confettiPieces = confettiPieces.filter(function (p) { return p.y < canvas.height + 30; });
     requestAnimationFrame(confettiLoop);
+  }
+
+  /* Static banana wallpaper for the Jackpot page, filled once on first unlock. */
+  var bananaBlanket = document.getElementById("bananaBlanket");
+  function fillBananaBlanket() {
+    if (!bananaBlanket || bananaBlanket.dataset.filled) return;
+    bananaBlanket.dataset.filled = "true";
+    var count = 45;
+    for (var i = 0; i < count; i++) {
+      var img = document.createElement("img");
+      img.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+      img.alt = "";
+      img.className = "banana-deco";
+      var size = 40 + Math.random() * 150;
+      img.style.width = size + "px";
+      img.style.top = Math.random() * 100 + "%";
+      img.style.left = Math.random() * 100 + "%";
+      img.style.transform = "translate(-50%, -50%) rotate(" + (Math.random() * 360) + "deg)";
+      img.style.opacity = 0.85 + Math.random() * 0.15;
+      bananaBlanket.appendChild(img);
+    }
   }
 
   /* -------------------------------------------------------------------
@@ -516,7 +584,8 @@
   });
 
   function unlockSecretSection() {
-    launchConfetti(5000);
+    launchBananaRain(5000);
+    fillBananaBlanket();
     if (!secretUnlocked) {
       secretUnlocked = true;
       document.getElementById("secretTocItem").hidden = false;

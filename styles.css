@@ -840,8 +840,23 @@ main{ display: block; }
    11. SECRET PAGE
    --------------------------------------------------------------------- */
 .secret-page{ background: var(--ink); color: var(--paper); }
-.secret-page .section-title{ background: var(--acid); color: var(--ink); box-shadow: 5px 5px 0 var(--hotpink); }
+#secret{ position: relative; overflow: hidden; }
+.banana-blanket{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.banana-deco{
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(2px 3px 5px rgba(0,0,0,.45));
+}
+.secret-page .section-title{ position: relative; z-index: 1; background: var(--acid); color: var(--ink); box-shadow: 5px 5px 0 var(--hotpink); }
 .jackpot-card{
+  position: relative;
+  z-index: 1;
   background: #221a33;
   border: var(--border-thick);
   padding: 24px;
