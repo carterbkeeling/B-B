@@ -350,7 +350,7 @@
   function fillBananaBlanket() {
     if (!bananaBlanket || bananaBlanket.dataset.filled) return;
     bananaBlanket.dataset.filled = "true";
-    var count = 45;
+    var count = 90;
     for (var i = 0; i < count; i++) {
       var img = document.createElement("img");
       img.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
@@ -407,7 +407,7 @@
      top banana loose; each tower quietly refills once fully emptied. */
   var towerGameArea = document.getElementById("towerGameArea");
   var TOWER_COUNT = 4;
-  var TOWER_HEIGHT = 6;
+  var TOWER_HEIGHT = 12;
 
   function addTowerBanana(stack, bananas) {
     var img = document.createElement("img");
@@ -416,6 +416,16 @@
     img.alt = "";
     stack.appendChild(img);
     bananas.push(img);
+  }
+
+  function spillOneBanana(bananas) {
+    if (bananas.length === 0) return;
+    var b = bananas.pop();
+    var dir = Math.random() > 0.5 ? 1 : -1;
+    b.style.setProperty("--spill-x", (dir * (30 + Math.random() * 50)) + "px");
+    b.style.setProperty("--spill-rot", (dir * (90 + Math.random() * 220)) + "deg");
+    b.classList.add("spilling");
+    setTimeout(function () { b.remove(); }, 650);
   }
 
   function throwHeartAt(stack, bananas) {
@@ -446,20 +456,24 @@
 
     setTimeout(function () {
       heart.remove();
-      var dir = Math.random() > 0.5 ? 1 : -1;
-      target.style.setProperty("--spill-x", (dir * (30 + Math.random() * 40)) + "px");
-      target.style.setProperty("--spill-rot", (dir * (90 + Math.random() * 180)) + "deg");
-      target.classList.add("spilling");
-      bananas.pop();
+      stack.classList.remove("wobble");
+      void stack.offsetWidth;
+      stack.classList.add("wobble");
+
+      var crumbleCount = Math.min(bananas.length, 2 + Math.floor(Math.random() * 3));
+      for (var c = 0; c < crumbleCount; c++) {
+        setTimeout(function () { spillOneBanana(bananas); }, c * 130);
+      }
+
+      var settleDelay = (crumbleCount - 1) * 130 + 650;
       setTimeout(function () {
-        target.remove();
         stack.dataset.busy = "false";
         if (bananas.length === 0) {
           setTimeout(function () {
             for (var i = 0; i < TOWER_HEIGHT; i++) addTowerBanana(stack, bananas);
           }, 1200);
         }
-      }, 650);
+      }, settleDelay);
     }, 380);
   }
 
@@ -478,6 +492,33 @@
         });
       })();
     }
+  }
+
+  /* Grow the Banana mini-game: every click makes it bigger, until it pops
+     back down to a fresh, freshly-randomized tiny banana. */
+  var growBananaBtn = document.getElementById("growBananaBtn");
+  var growBananaImg = document.getElementById("growBananaImg");
+  var growGameCount = document.getElementById("growGameCount");
+  if (growBananaBtn && growBananaImg && growGameCount) {
+    var GROW_MIN = 60;
+    var GROW_MAX = 320;
+    var GROW_STEP = 14;
+    var growClicks = 0;
+    var growSize = GROW_MIN;
+    growBananaImg.style.width = growSize + "px";
+    growBananaBtn.addEventListener("click", function () {
+      growClicks++;
+      growGameCount.textContent = growClicks;
+      growSize += GROW_STEP;
+      if (growSize > GROW_MAX) {
+        growSize = GROW_MIN;
+        growBananaImg.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+      }
+      growBananaImg.style.width = growSize + "px";
+      growBananaBtn.classList.remove("pop");
+      void growBananaBtn.offsetWidth;
+      growBananaBtn.classList.add("pop");
+    });
   }
 
   /* -------------------------------------------------------------------

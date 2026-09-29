@@ -1010,25 +1010,34 @@ main{ display: block; }
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 26px;
-  min-height: 260px;
+  gap: 30px;
+  min-height: 460px;
   padding: 10px 10px 0;
   border: 3px solid var(--ink);
-  background: linear-gradient(to bottom, #cdeeff 0%, #cdeeff 82%, #d8c99b 82%, #d8c99b 100%);
+  background: linear-gradient(to bottom, #cdeeff 0%, #cdeeff 88%, #d8c99b 88%, #d8c99b 100%);
   overflow: hidden;
 }
 .tower-stack{
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
-  width: 60px;
+  width: 70px;
   cursor: pointer;
 }
+.tower-stack.wobble{
+  animation: tower-stack-wobble .4s ease-in-out;
+}
+@keyframes tower-stack-wobble{
+  0%, 100%{ transform: translateX(0) rotate(0deg); }
+  25%{ transform: translateX(-5px) rotate(-3deg); }
+  50%{ transform: translateX(5px) rotate(3deg); }
+  75%{ transform: translateX(-3px) rotate(-1deg); }
+}
 .tower-banana{
-  width: 54px;
-  height: 34px;
+  width: 62px;
+  height: 40px;
   object-fit: contain;
-  margin-bottom: -4px;
+  margin-bottom: -6px;
 }
 .tower-banana.spilling{
   animation: tower-banana-spill .65s ease-in forwards;
@@ -1036,15 +1045,69 @@ main{ display: block; }
 }
 @keyframes tower-banana-spill{
   0%{ transform: translate(0, 0) rotate(0deg); opacity: 1; }
-  100%{ transform: translate(var(--spill-x, 60px), 50px) rotate(var(--spill-rot, 120deg)); opacity: 0; }
+  100%{ transform: translate(var(--spill-x, 60px), 60px) rotate(var(--spill-rot, 120deg)); opacity: 0; }
 }
 .tower-heart{
   position: absolute;
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   pointer-events: none;
   transition: left .38s ease-out, top .38s ease-out;
   z-index: 5;
   transform: translate(-50%, -50%);
+}
+
+.grow-game{
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-thick);
+  padding: 20px;
+  box-shadow: 8px 8px 0 var(--acid);
+}
+.grow-game-title{
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  text-align: center;
+}
+.grow-game-counter{
+  margin: 0 0 14px;
+  text-align: center;
+  font-family: var(--font-zine);
+  font-weight: 700;
+}
+.grow-game-stage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  border: 3px solid var(--ink);
+  background: linear-gradient(180deg, #fff7e0, #ffe9b3);
+  overflow: hidden;
+}
+.grow-banana-btn{
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 0;
+}
+.grow-banana-btn img{
+  display: block;
+  width: 60px;
+  transition: width .18s cubic-bezier(.34, 1.56, .64, 1);
+  pointer-events: none;
+  user-select: none;
+}
+.grow-banana-btn.pop img{
+  animation: grow-banana-pop .4s ease;
+}
+@keyframes grow-banana-pop{
+  0%{ transform: scale(1) rotate(0deg); }
+  40%{ transform: scale(1.25) rotate(12deg); }
+  100%{ transform: scale(1) rotate(0deg); }
 }
 
 /* ---------------------------------------------------------------------
