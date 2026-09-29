@@ -976,6 +976,71 @@ main{ display: block; }
   transform: scale(.2) rotate(180deg);
 }
 
+.tower-game{
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-thick);
+  padding: 20px;
+  box-shadow: 8px 8px 0 var(--hotpink);
+}
+.tower-game-title{
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  text-align: center;
+}
+.tower-game-hint{
+  margin: 0 0 14px;
+  text-align: center;
+  font-family: var(--font-zine);
+  font-size: .85rem;
+  opacity: .75;
+}
+.tower-game-area{
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 26px;
+  min-height: 260px;
+  padding: 10px 10px 0;
+  border: 3px solid var(--ink);
+  background: linear-gradient(to bottom, #cdeeff 0%, #cdeeff 82%, #d8c99b 82%, #d8c99b 100%);
+  overflow: hidden;
+}
+.tower-stack{
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  width: 60px;
+  cursor: pointer;
+}
+.tower-banana{
+  width: 54px;
+  height: 34px;
+  object-fit: contain;
+  margin-bottom: -4px;
+}
+.tower-banana.spilling{
+  animation: tower-banana-spill .65s ease-in forwards;
+  pointer-events: none;
+}
+@keyframes tower-banana-spill{
+  0%{ transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100%{ transform: translate(var(--spill-x, 60px), 50px) rotate(var(--spill-rot, 120deg)); opacity: 0; }
+}
+.tower-heart{
+  position: absolute;
+  font-size: 1.7rem;
+  pointer-events: none;
+  transition: left .38s ease-out, top .38s ease-out;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+}
+
 /* ---------------------------------------------------------------------
    12. FOOTER
    --------------------------------------------------------------------- */

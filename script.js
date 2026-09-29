@@ -403,6 +403,83 @@
     }
   }
 
+  /* Banana Toppler mini-game: click a tower to throw a heart and knock the
+     top banana loose; each tower quietly refills once fully emptied. */
+  var towerGameArea = document.getElementById("towerGameArea");
+  var TOWER_COUNT = 4;
+  var TOWER_HEIGHT = 6;
+
+  function addTowerBanana(stack, bananas) {
+    var img = document.createElement("img");
+    img.className = "tower-banana";
+    img.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+    img.alt = "";
+    stack.appendChild(img);
+    bananas.push(img);
+  }
+
+  function throwHeartAt(stack, bananas) {
+    if (stack.dataset.busy === "true" || bananas.length === 0) return;
+    stack.dataset.busy = "true";
+    var target = bananas[bananas.length - 1];
+
+    var areaRect = towerGameArea.getBoundingClientRect();
+    var targetRect = target.getBoundingClientRect();
+    var startX = stack.offsetLeft + stack.offsetWidth / 2;
+    var startY = areaRect.height;
+    var endX = targetRect.left - areaRect.left + targetRect.width / 2;
+    var endY = targetRect.top - areaRect.top + targetRect.height / 2;
+
+    var heart = document.createElement("span");
+    heart.className = "tower-heart";
+    heart.textContent = "💗";
+    heart.style.left = startX + "px";
+    heart.style.top = startY + "px";
+    towerGameArea.appendChild(heart);
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        heart.style.left = endX + "px";
+        heart.style.top = endY + "px";
+      });
+    });
+
+    setTimeout(function () {
+      heart.remove();
+      var dir = Math.random() > 0.5 ? 1 : -1;
+      target.style.setProperty("--spill-x", (dir * (30 + Math.random() * 40)) + "px");
+      target.style.setProperty("--spill-rot", (dir * (90 + Math.random() * 180)) + "deg");
+      target.classList.add("spilling");
+      bananas.pop();
+      setTimeout(function () {
+        target.remove();
+        stack.dataset.busy = "false";
+        if (bananas.length === 0) {
+          setTimeout(function () {
+            for (var i = 0; i < TOWER_HEIGHT; i++) addTowerBanana(stack, bananas);
+          }, 1200);
+        }
+      }, 650);
+    }, 380);
+  }
+
+  function initTowerGame() {
+    if (!towerGameArea || towerGameArea.dataset.filled) return;
+    towerGameArea.dataset.filled = "true";
+    for (var t = 0; t < TOWER_COUNT; t++) {
+      (function () {
+        var stack = document.createElement("div");
+        stack.className = "tower-stack";
+        towerGameArea.appendChild(stack);
+        var bananas = [];
+        for (var i = 0; i < TOWER_HEIGHT; i++) addTowerBanana(stack, bananas);
+        stack.addEventListener("click", function () {
+          throwHeartAt(stack, bananas);
+        });
+      })();
+    }
+  }
+
   /* -------------------------------------------------------------------
      4. CHECKLIST (localStorage persistence)
      ------------------------------------------------------------------- */
@@ -677,6 +754,7 @@
     launchBananaRain(9000);
     fillBananaBlanket();
     initBananaGame();
+    initTowerGame();
     if (!secretUnlocked) {
       secretUnlocked = true;
       document.getElementById("secretTocItem").hidden = false;
