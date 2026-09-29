@@ -808,7 +808,7 @@
   var secretPage = document.getElementById("secret");
   if (secretPage) {
     secretPage.addEventListener("click", function (e) {
-      if (e.target.closest(".banana-game, .tower-game")) return;
+      if (e.target.closest(".banana-game, .tower-game, .grow-game")) return;
       launchBananaRain(9000);
     });
   }
