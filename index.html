@@ -55,7 +55,7 @@
       <li><button class="toc-btn" data-target="todo">06. CARTER'S TO-DO</button></li>
       <li><button class="toc-btn" data-target="vegas-history">07. HISTORY OF VEGAS</button></li>
       <!-- Secret 7th tab — hidden until the Konami code is entered. See script.js -->
-      <li id="secretTocItem" hidden><button class="toc-btn secret-toc-btn" data-target="secret">?? JACKPOT ??</button></li>
+      <li id="secretTocItem" hidden><button class="toc-btn secret-toc-btn" data-target="secret">BONUS BANANA ROOM</button></li>
     </ul>
   </nav>
 </header>
@@ -167,7 +167,6 @@
 <section id="history-of-us" class="page pattern-graph" aria-labelledby="history-heading">
   <h2 id="history-heading" class="section-title letters">History of Betty & Carter</h2>
   <p class="section-kicker">13 years in the making, heavily weighted to the past ~3 months</p>
-  <p class="typewriter-line" id="historyTypewriter" aria-live="polite"></p>
 
   <!-- Mock Wikipedia infobox -->
   <div class="wiki-infobox">
@@ -632,6 +631,11 @@
   </ul>
 
   <p class="todo-progress" id="todoProgress" aria-live="polite">0 / 12 done. no pressure. (some pressure.)</p>
+
+  <button type="button" id="todoClueBtn" class="todo-clue-btn" aria-label="A curious tofu duo">
+    <img src="images/tofu-clue.jpg" alt="">
+  </button>
+  <p id="todoCluePopup" class="todo-clue-popup" hidden>Enter the code on the countdown page!</p>
 </section>
 
 <!-- ============================================================

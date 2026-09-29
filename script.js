@@ -799,6 +799,15 @@
     });
   }
 
+  /* Tofu duo on Carter's To-Do page -> Konami code clue. */
+  var todoClueBtn = document.getElementById("todoClueBtn");
+  var todoCluePopup = document.getElementById("todoCluePopup");
+  if (todoClueBtn) {
+    todoClueBtn.addEventListener("click", function () {
+      todoCluePopup.hidden = !todoCluePopup.hidden;
+    });
+  }
+
   /* Egg 9: type "BETTY" anywhere on the page -> hearts rain down. */
   var typedBuffer = "";
   var heartsLayer = document.getElementById("heartsLayer");
@@ -921,30 +930,6 @@
     });
   }
   document.querySelectorAll(".letters").forEach(wrapLetters);
-
-  /* --- Typewriter reveal on the History of Us intro ---------------------- */
-  var historyTypewriter = document.getElementById("historyTypewriter");
-  var typewriterPlayed = false;
-  var TYPEWRITER_TEXT = "Loading our whole timeline via the internet";
-  function playTypewriter() {
-    if (typewriterPlayed || !historyTypewriter) return;
-    typewriterPlayed = true;
-    historyTypewriter.classList.add("typing");
-    var i = 0;
-    var timer = setInterval(function () {
-      historyTypewriter.textContent = TYPEWRITER_TEXT.slice(0, i + 1);
-      i++;
-      if (i >= TYPEWRITER_TEXT.length) {
-        clearInterval(timer);
-        setTimeout(function () { historyTypewriter.classList.remove("typing"); }, 1500);
-      }
-    }, 28);
-  }
-  var historyTocBtn = document.querySelector('.toc-btn[data-target="history-of-us"]');
-  if (historyTocBtn) historyTocBtn.addEventListener("click", playTypewriter);
-  if (document.getElementById("history-of-us") && document.getElementById("history-of-us").classList.contains("active")) {
-    playTypewriter();
-  }
 
   /* --- Odometer-style hit counter, increments once per page load ------- */
   (function initHitCounter() {
