@@ -943,13 +943,19 @@ main{ display: block; }
 }
 .banana-game-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  grid-template-columns: repeat(10, 1fr);
   gap: 6px;
   padding: 14px;
   border: 3px solid var(--ink);
   background: linear-gradient(135deg, var(--hotpink), var(--yellow), var(--cyan), var(--acid), var(--orange));
   background-size: 400% 400%;
   animation: banana-game-bg-shift 8s ease infinite;
+}
+@media (max-width: 900px){
+  .banana-game-grid{ grid-template-columns: repeat(6, 1fr); }
+}
+@media (max-width: 480px){
+  .banana-game-grid{ grid-template-columns: repeat(5, 1fr); }
 }
 @keyframes banana-game-bg-shift{
   0%{ background-position: 0% 50%; }
