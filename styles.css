@@ -447,14 +447,27 @@ main{ display: block; }
 }
 
 .zine-strip{
+  position: relative;
+  z-index: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 30px;
   padding: 50px 5vw;
-  background: var(--paper-dark);
   border-bottom: var(--border-thick);
+  overflow: hidden;
+}
+.zine-strip::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: conic-gradient(from 0deg, #ff2d55, #ffd23f, #3ddcff, #d4ff3a, #9c5cff, #ff8c00, #ff2d55);
+  background-size: 300% 300%;
+  background-position: var(--zine-bg-x, 50%) var(--zine-bg-y, 50%);
+  filter: hue-rotate(var(--zine-hue, 0deg));
+  transition: background-position .25s ease-out;
 }
 .ransom-note{
   display: inline-block;

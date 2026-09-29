@@ -724,6 +724,30 @@
     });
   });
 
+  /* Egg 7b: zine-strip background cycles through a psychedelic disco swirl,
+     speeding up while the cursor moves over it. */
+  var zineStrip = document.querySelector(".zine-strip");
+  if (zineStrip) {
+    var zineHue = 0;
+    var zineMoving = false;
+    (function zineTick() {
+      zineHue = (zineHue + (zineMoving ? 6 : 0.6)) % 360;
+      zineStrip.style.setProperty("--zine-hue", zineHue + "deg");
+      requestAnimationFrame(zineTick);
+    })();
+    zineStrip.addEventListener("mousemove", function (e) {
+      zineMoving = true;
+      var rect = zineStrip.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width) * 100;
+      var y = ((e.clientY - rect.top) / rect.height) * 100;
+      zineStrip.style.setProperty("--zine-bg-x", x + "%");
+      zineStrip.style.setProperty("--zine-bg-y", y + "%");
+    });
+    zineStrip.addEventListener("mouseleave", function () {
+      zineMoving = false;
+    });
+  }
+
   /* Egg 8: footer year click -> joke "established" date, crashing in with
      a quake on the way in. */
   var footerYear = document.getElementById("footerYear");
