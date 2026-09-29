@@ -368,10 +368,28 @@
     }
   }
 
+  /* Shared giant scrolling banner for Jackpot mini-game milestones. */
+  var jackpotScrollText = document.getElementById("jackpotScrollText");
+  function showJackpotScrollText(text, targetEl) {
+    if (!jackpotScrollText || !targetEl) return;
+    var rect = targetEl.getBoundingClientRect();
+    jackpotScrollText.style.top = (rect.top + rect.height / 2) + "px";
+    jackpotScrollText.textContent = text;
+    jackpotScrollText.classList.remove("scrolling");
+    void jackpotScrollText.offsetWidth;
+    jackpotScrollText.classList.add("scrolling");
+  }
+
   /* Banana Collector mini-game: hover over a banana to "collect" it; it
      reappears in the same grid cell a moment later so it can be re-collected. */
   var bananaGameGrid = document.getElementById("bananaGameGrid");
   var bananaGameCount = document.getElementById("bananaGameCount");
+  var BANANA_MILESTONES = {
+    30: "MANY BANANA",
+    75: "WHOA MAMA",
+    100: "HOW WILL YOU CARRY ALL THESE BANANAS",
+    500: "ECOLOGICAL DESTRUCTION"
+  };
   function initBananaGame() {
     if (!bananaGameGrid || !bananaGameCount || bananaGameGrid.dataset.filled) return;
     bananaGameGrid.dataset.filled = "true";
@@ -394,6 +412,9 @@
           cell.classList.add("collected");
           totalCollected++;
           bananaGameCount.textContent = totalCollected;
+          if (BANANA_MILESTONES[totalCollected]) {
+            showJackpotScrollText(BANANA_MILESTONES[totalCollected], bananaGameGrid.closest(".banana-game"));
+          }
           setTimeout(function () {
             cell.classList.remove("collected");
             collecting = false;
@@ -469,6 +490,11 @@
       setTimeout(function () {
         stack.dataset.busy = "false";
         if (bananas.length === 0) {
+          var toppleMessages = ["BANANA DESTRUCTION", "9/11 NEVER FORGET", "THINK OF THE DAMAGE YOU'RE CAUSING"];
+          showJackpotScrollText(
+            toppleMessages[Math.floor(Math.random() * toppleMessages.length)],
+            towerGameArea.closest(".tower-game")
+          );
           setTimeout(function () {
             for (var i = 0; i < TOWER_HEIGHT; i++) addTowerBanana(stack, bananas);
           }, 1200);
@@ -513,6 +539,11 @@
       if (growSize > GROW_MAX) {
         growSize = GROW_MIN;
         growBananaImg.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+        var growMessages = ["BIG BANANA", "GENETICALLY MODIFIED", "MUCH POTASSIUM"];
+        showJackpotScrollText(
+          growMessages[Math.floor(Math.random() * growMessages.length)],
+          growBananaBtn.closest(".grow-game")
+        );
       }
       growBananaImg.style.width = growSize + "px";
       growBananaBtn.classList.remove("pop");
