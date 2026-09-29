@@ -919,6 +919,63 @@ main{ display: block; }
 }
 .jackpot-signature{ text-align: right; font-family: var(--font-hand); font-size: 1.2rem; }
 
+.banana-game{
+  position: relative;
+  z-index: 1;
+  margin-top: 28px;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-thick);
+  padding: 20px;
+  box-shadow: 8px 8px 0 var(--cyan);
+}
+.banana-game-title{
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  text-align: center;
+}
+.banana-game-counter{
+  text-align: center;
+  font-family: var(--font-zine);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.banana-game-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 6px;
+  padding: 14px;
+  border: 3px solid var(--ink);
+  background: linear-gradient(135deg, var(--hotpink), var(--yellow), var(--cyan), var(--acid), var(--orange));
+  background-size: 400% 400%;
+  animation: banana-game-bg-shift 8s ease infinite;
+}
+@keyframes banana-game-bg-shift{
+  0%{ background-position: 0% 50%; }
+  50%{ background-position: 100% 50%; }
+  100%{ background-position: 0% 50%; }
+}
+.banana-game-cell{
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.banana-game-cell img{
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  transition: opacity .15s ease, transform .15s ease;
+  pointer-events: none;
+  user-select: none;
+}
+.banana-game-cell.collected img{
+  opacity: 0;
+  transform: scale(.2) rotate(180deg);
+}
+
 /* ---------------------------------------------------------------------
    12. FOOTER
    --------------------------------------------------------------------- */

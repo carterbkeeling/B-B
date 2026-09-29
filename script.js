@@ -368,6 +368,41 @@
     }
   }
 
+  /* Banana Collector mini-game: hover over a banana to "collect" it; it
+     reappears in the same grid cell a moment later so it can be re-collected. */
+  var bananaGameGrid = document.getElementById("bananaGameGrid");
+  var bananaGameCount = document.getElementById("bananaGameCount");
+  function initBananaGame() {
+    if (!bananaGameGrid || !bananaGameCount || bananaGameGrid.dataset.filled) return;
+    bananaGameGrid.dataset.filled = "true";
+    var totalCollected = 0;
+    var CELL_COUNT = 30;
+    for (var gi = 0; gi < CELL_COUNT; gi++) {
+      (function () {
+        var cell = document.createElement("div");
+        cell.className = "banana-game-cell";
+        var img = document.createElement("img");
+        img.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+        img.alt = "";
+        cell.appendChild(img);
+        bananaGameGrid.appendChild(cell);
+
+        var collecting = false;
+        cell.addEventListener("mouseenter", function () {
+          if (collecting) return;
+          collecting = true;
+          cell.classList.add("collected");
+          totalCollected++;
+          bananaGameCount.textContent = totalCollected;
+          setTimeout(function () {
+            cell.classList.remove("collected");
+            collecting = false;
+          }, 900);
+        });
+      })();
+    }
+  }
+
   /* -------------------------------------------------------------------
      4. CHECKLIST (localStorage persistence)
      ------------------------------------------------------------------- */
@@ -641,6 +676,7 @@
   function unlockSecretSection() {
     launchBananaRain(9000);
     fillBananaBlanket();
+    initBananaGame();
     if (!secretUnlocked) {
       secretUnlocked = true;
       document.getElementById("secretTocItem").hidden = false;
