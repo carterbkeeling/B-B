@@ -487,6 +487,45 @@ main{ display: block; }
 .r3{ background: var(--acid); transform: rotate(-2deg); }
 .r4{ background: var(--hotpink); color: var(--paper); transform: rotate(4deg); }
 
+.ransom-note-box{
+  position: relative;
+  z-index: 1;
+  width: 300px;
+  height: 300px;
+  max-width: 80vw;
+  overflow: hidden;
+  background: var(--paper-dark);
+  border: var(--border-thick);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ransom-note-box::before{
+  content: "";
+  position: absolute;
+  inset: -14px;
+  z-index: -1;
+  border-radius: 14px;
+  background: conic-gradient(from 0deg, #ff2d55, #ffd23f, #3ddcff, #d4ff3a, #9c5cff, #ff8c00, #ff2d55);
+  filter: blur(16px);
+  opacity: .85;
+  animation: disco-tracer-spin 2.4s linear infinite;
+}
+@keyframes disco-tracer-spin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+.ransom-note-box .ransom-note{
+  font-size: 1.15rem;
+  white-space: nowrap;
+  animation: ransom-note-bounce 3.6s ease-in-out infinite alternate;
+}
+.ransom-note-box .ransom-note:hover{ animation: ransom-shake .4s ease-in-out infinite; }
+@keyframes ransom-note-bounce{
+  0%{ transform: translateY(-85px); }
+  100%{ transform: translateY(85px); }
+}
+
 .sticker-corner{ font-size: .85rem; }
 
 .fake-error-zone{
