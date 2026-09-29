@@ -539,7 +539,7 @@
       if (growSize > GROW_MAX) {
         growSize = GROW_MIN;
         growBananaImg.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
-        var growMessages = ["BIG BANANA", "GENETICALLY MODIFIED", "MUCH POTASSIUM"];
+        var growMessages = ["BIG BANANA", "GENETICALLY MODIFIED", "POTASSIUM OVERLOAD"];
         showJackpotScrollText(
           growMessages[Math.floor(Math.random() * growMessages.length)],
           growBananaBtn.closest(".grow-game")
