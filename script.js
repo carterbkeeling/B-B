@@ -387,7 +387,7 @@
   var BANANA_MILESTONES = {
     30: "MANY BANANA",
     75: "WHOA MAMA",
-    100: "HOW WILL YOU CARRY ALL THESE BANANAS",
+    100: "TOO MANY TO CARRY",
     500: "ECOLOGICAL DESTRUCTION"
   };
   function initBananaGame() {
@@ -490,7 +490,7 @@
       setTimeout(function () {
         stack.dataset.busy = "false";
         if (bananas.length === 0) {
-          var toppleMessages = ["BANANA DESTRUCTION", "9/11 NEVER FORGET", "THINK OF THE DAMAGE YOU'RE CAUSING"];
+          var toppleMessages = ["BANANA DESTRUCTION", "9/11 NEVER FORGET", "KING KONG"];
           showJackpotScrollText(
             toppleMessages[Math.floor(Math.random() * toppleMessages.length)],
             towerGameArea.closest(".tower-game")
