@@ -762,10 +762,12 @@
     showPage("secret");
   }
 
-  /* Clicking anywhere on the Jackpot page re-triggers the banana rain. */
+  /* Clicking anywhere on the Jackpot page re-triggers the banana rain,
+     except inside the mini-games, where a click means "play". */
   var secretPage = document.getElementById("secret");
   if (secretPage) {
-    secretPage.addEventListener("click", function () {
+    secretPage.addEventListener("click", function (e) {
+      if (e.target.closest(".banana-game, .tower-game")) return;
       launchBananaRain(9000);
     });
   }
