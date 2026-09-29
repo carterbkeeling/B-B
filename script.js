@@ -540,12 +540,45 @@
     });
   });
 
-  /* Egg 8: footer year click -> joke "established" date. */
+  /* Egg 8: footer year click -> joke "established" date, crashing in with
+     a quake on the way in. */
   var footerYear = document.getElementById("footerYear");
   var footerSecret = document.getElementById("footerSecret");
+  var quakeTimer = null;
   if (footerYear) {
     footerYear.addEventListener("click", function () {
+      var wasHidden = footerSecret.hidden;
       footerSecret.hidden = !footerSecret.hidden;
+      if (wasHidden) {
+        footerSecret.classList.remove("crash-in");
+        void footerSecret.offsetWidth;
+        footerSecret.classList.add("crash-in");
+        document.body.classList.remove("page-quake");
+        void document.body.offsetWidth;
+        document.body.classList.add("page-quake");
+        if (quakeTimer) clearTimeout(quakeTimer);
+        quakeTimer = setTimeout(function () {
+          document.body.classList.remove("page-quake");
+        }, 500);
+      }
+    });
+  }
+
+  /* Egg 14: click the countdown clock -> huge scrolling banner text. */
+  var countdownScrollEl = document.getElementById("countdownScrollText");
+  var countdownScrollPhrases = [
+    "BETTY",
+    "NOT SOON ENOUGH",
+    "TIME TORMENTS THE SOUL",
+    "I AWAIT YOUR ARRIVAL"
+  ];
+  if (countdownEl && countdownScrollEl) {
+    countdownEl.addEventListener("click", function () {
+      var phrase = countdownScrollPhrases[Math.floor(Math.random() * countdownScrollPhrases.length)];
+      countdownScrollEl.textContent = phrase;
+      countdownScrollEl.classList.remove("scrolling");
+      void countdownScrollEl.offsetWidth;
+      countdownScrollEl.classList.add("scrolling");
     });
   }
 

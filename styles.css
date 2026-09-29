@@ -936,8 +936,61 @@ main{ display: block; }
   font-family: var(--font-hand);
   margin-top: 8px;
 }
+.footer-secret.crash-in{
+  animation: footer-secret-crash .6s cubic-bezier(.36,.07,.19,.97) both;
+  transform-origin: center;
+}
+@keyframes footer-secret-crash{
+  0%{ transform: scale(4) translateY(-60px); opacity: 0; }
+  35%{ transform: scale(1) translateY(0); opacity: 1; }
+  45%{ transform: translate(-10px, 6px) rotate(-4deg); }
+  55%{ transform: translate(10px, -5px) rotate(4deg); }
+  65%{ transform: translate(-8px, 4px) rotate(-3deg); }
+  75%{ transform: translate(8px, -3px) rotate(2deg); }
+  85%{ transform: translate(-4px, 2px) rotate(-1deg); }
+  100%{ transform: translate(0, 0) rotate(0deg); }
+}
+body.page-quake{ animation: page-quake .5s ease-in-out; }
+@keyframes page-quake{
+  0%, 100%{ transform: translate(0, 0); }
+  10%{ transform: translate(-6px, 4px); }
+  20%{ transform: translate(7px, -4px); }
+  30%{ transform: translate(-8px, 3px); }
+  40%{ transform: translate(8px, -3px); }
+  50%{ transform: translate(-6px, 5px); }
+  60%{ transform: translate(6px, -5px); }
+  70%{ transform: translate(-4px, 2px); }
+  80%{ transform: translate(4px, -2px); }
+  90%{ transform: translate(-2px, 1px); }
+}
 .footer-hint{ margin-top: 14px; opacity: .6; font-size: .75rem; }
 .footer-hint-invisible{ color: var(--ink); font-size: .75rem; margin-top: 2px; user-select: text; }
+
+.countdown-scroll-text{
+  position: fixed;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 12vw, 9rem);
+  font-weight: 900;
+  letter-spacing: .02em;
+  color: var(--paper);
+  text-shadow: 3px 3px 0 var(--hotpink), -3px -3px 0 var(--ink);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 500;
+  opacity: 0;
+}
+.countdown-scroll-text.scrolling{
+  animation: countdown-scroll-across 6s linear;
+}
+@keyframes countdown-scroll-across{
+  0%{ left: 100%; opacity: 0; }
+  8%{ opacity: .5; }
+  92%{ opacity: .5; }
+  100%{ left: -100%; opacity: 0; }
+}
 
 /* ---------------------------------------------------------------------
    13. CONFETTI + HEARTS OVERLAYS
