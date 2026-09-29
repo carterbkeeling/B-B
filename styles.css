@@ -487,36 +487,6 @@ main{ display: block; }
 .r3{ background: var(--acid); transform: rotate(-2deg); }
 .r4{ background: var(--hotpink); color: var(--paper); transform: rotate(4deg); }
 
-.she-is-coming-row{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 22px 34px;
-  padding: 24px 5vw;
-}
-.disco-frame{
-  position: relative;
-  display: inline-block;
-  padding: 12px 16px;
-}
-.disco-frame::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: 10px;
-  background: conic-gradient(from 0deg, #ff2d55, #ffd23f, #3ddcff, #d4ff3a, #9c5cff, #ff8c00, #ff2d55);
-  filter: blur(11px);
-  opacity: .75;
-  animation: disco-spin 2.2s linear infinite;
-}
-.disco-frame .ransom-note{ position: relative; z-index: 1; }
-@keyframes disco-spin{
-  from{ transform: rotate(0deg); }
-  to{ transform: rotate(360deg); }
-}
-
 .sticker-corner{ font-size: .85rem; }
 
 .fake-error-zone{
