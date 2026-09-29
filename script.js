@@ -374,10 +374,30 @@
     if (!jackpotScrollText || !targetEl) return;
     var rect = targetEl.getBoundingClientRect();
     jackpotScrollText.style.top = (rect.top + rect.height / 2) + "px";
-    jackpotScrollText.textContent = text;
+
+    /* Reset instantly off-screen right so we can measure this text's actual
+       width, then scale the animation duration to it so long phrases still
+       travel all the way past the left edge instead of getting cut off. */
+    jackpotScrollText.style.transition = "none";
     jackpotScrollText.classList.remove("scrolling");
+    jackpotScrollText.style.opacity = "0";
+    jackpotScrollText.style.left = window.innerWidth + "px";
+    jackpotScrollText.textContent = text;
     void jackpotScrollText.offsetWidth;
-    jackpotScrollText.classList.add("scrolling");
+
+    var textWidth = jackpotScrollText.getBoundingClientRect().width;
+    var distance = window.innerWidth + textWidth;
+    var PIXELS_PER_SECOND = 320;
+    var duration = Math.max(5, distance / PIXELS_PER_SECOND);
+
+    jackpotScrollText.style.transition = "left " + duration + "s linear, opacity .4s ease";
+    requestAnimationFrame(function () {
+      jackpotScrollText.style.opacity = "0.5";
+      jackpotScrollText.style.left = (-textWidth) + "px";
+      setTimeout(function () {
+        jackpotScrollText.style.opacity = "0";
+      }, (duration - 0.4) * 1000);
+    });
   }
 
   /* Banana Collector mini-game: hover over a banana to "collect" it; it

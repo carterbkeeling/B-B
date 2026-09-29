@@ -948,6 +948,12 @@ main{ display: block; }
   font-size: 1.3rem;
   text-align: center;
 }
+.banana-game-hint{
+  margin: 0 0 4px;
+  text-align: center;
+  font-size: .7rem;
+  opacity: .7;
+}
 .banana-game-counter{
   text-align: center;
   font-family: var(--font-zine);
