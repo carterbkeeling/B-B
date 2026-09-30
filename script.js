@@ -1061,7 +1061,7 @@
       });
 
       if (correctCount === questions.length) {
-        vegasQuizResult.textContent = "5 for 5! You were paying attention.";
+        vegasQuizResult.textContent = "5 for 5 - you were paying attention!";
         unlockDinerSection();
         if (vegasQuizReward) vegasQuizReward.hidden = false;
       } else {
