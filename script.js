@@ -1007,6 +1007,43 @@
     });
   }
 
+  /* Pop quiz at the end of the History of Vegas page. */
+  var vegasQuizForm = document.getElementById("vegasQuizForm");
+  var vegasQuizResult = document.getElementById("vegasQuizResult");
+  var vegasQuizReward = document.getElementById("vegasQuizReward");
+  if (vegasQuizForm && vegasQuizResult) {
+    vegasQuizForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var questions = vegasQuizForm.querySelectorAll(".quiz-question");
+      var correctCount = 0;
+
+      questions.forEach(function (fieldset) {
+        var name = fieldset.querySelector("input[type=radio]").name;
+        var selected = fieldset.querySelector('input[name="' + name + '"]:checked');
+        var correctValue = fieldset.dataset.answer;
+
+        fieldset.classList.remove("quiz-correct", "quiz-incorrect", "quiz-unanswered");
+        if (!selected) {
+          fieldset.classList.add("quiz-unanswered");
+          return;
+        }
+        if (selected.value === correctValue) {
+          correctCount++;
+          fieldset.classList.add("quiz-correct");
+        } else {
+          fieldset.classList.add("quiz-incorrect");
+        }
+      });
+
+      if (correctCount === questions.length) {
+        vegasQuizResult.textContent = "5 for 5! You were paying attention.";
+        if (vegasQuizReward) vegasQuizReward.hidden = false;
+      } else {
+        vegasQuizResult.textContent = "You got " + correctCount + " of " + questions.length + " right. Give it another shot!";
+      }
+    });
+  }
+
   /* Egg 9: type "BETTY" anywhere on the page -> hearts rain down. */
   var typedBuffer = "";
   var heartsLayer = document.getElementById("heartsLayer");

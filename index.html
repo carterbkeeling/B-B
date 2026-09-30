@@ -753,6 +753,61 @@
     <h3>Today: 40+ Million Visitors a Year</h3>
     <p>Modern Las Vegas pulls in tens of millions of visitors annually, has reinvented itself as a major sports town (hello, Golden Knights and Raiders), and somehow still finds room for both a giant sphere-shaped video screen and a bar shaped like a UFO. It remains, as it has been for over a century, a town built entirely on giving people a very good excuse to leave their normal life for a few days. Which, conveniently, is exactly what Betty is about to do.</p>
   </article>
+
+  <!-- Easter egg: 5-question pop quiz on the History of Vegas content above -->
+  <div class="vegas-quiz" id="vegasQuiz">
+    <h3 class="vegas-quiz-title">Pop Quiz: Were You Paying Attention?</h3>
+    <p class="vegas-quiz-kicker">Get all 5 right for a very special reward.</p>
+
+    <form id="vegasQuizForm" novalidate>
+      <fieldset class="quiz-question" data-answer="b">
+        <legend>1. What year did Las Vegas officially become a town?</legend>
+        <label><input type="radio" name="q1" value="a"> 1890</label>
+        <label><input type="radio" name="q1" value="b"> 1905</label>
+        <label><input type="radio" name="q1" value="c"> 1931</label>
+        <label><input type="radio" name="q1" value="d"> 1946</label>
+      </fieldset>
+
+      <fieldset class="quiz-question" data-answer="b">
+        <legend>2. What actually drew people to stop in the spot that became Las Vegas, before neon and casinos?</legend>
+        <label><input type="radio" name="q2" value="a"> Gold</label>
+        <label><input type="radio" name="q2" value="b"> Water from artesian springs</label>
+        <label><input type="radio" name="q2" value="c"> Cattle ranching</label>
+        <label><input type="radio" name="q2" value="d"> Silver mining</label>
+      </fieldset>
+
+      <fieldset class="quiz-question" data-answer="a">
+        <legend>3. What massive infrastructure project began construction in 1931, the same year Nevada legalized gambling?</legend>
+        <label><input type="radio" name="q3" value="a"> Hoover Dam</label>
+        <label><input type="radio" name="q3" value="b"> Golden Gate Bridge</label>
+        <label><input type="radio" name="q3" value="c"> Route 66</label>
+        <label><input type="radio" name="q3" value="d"> The Union Pacific Railroad</label>
+      </fieldset>
+
+      <fieldset class="quiz-question" data-answer="a">
+        <legend>4. Which mob-financed hotel, opened in 1946, helped kick off Vegas as an entertainment destination?</legend>
+        <label><input type="radio" name="q4" value="a"> The Flamingo</label>
+        <label><input type="radio" name="q4" value="b"> The Sands</label>
+        <label><input type="radio" name="q4" value="c"> The Mirage</label>
+        <label><input type="radio" name="q4" value="d"> The Desert Inn</label>
+      </fieldset>
+
+      <fieldset class="quiz-question" data-answer="a">
+        <legend>5. Which billionaire moved into the Desert Inn in 1966 and, when asked to leave, just bought the hotel instead?</legend>
+        <label><input type="radio" name="q5" value="a"> Howard Hughes</label>
+        <label><input type="radio" name="q5" value="b"> Steve Wynn</label>
+        <label><input type="radio" name="q5" value="c"> Kirk Kerkorian</label>
+        <label><input type="radio" name="q5" value="d"> Frank Sinatra</label>
+      </fieldset>
+
+      <button type="submit" class="quiz-submit-btn">Check My Answers</button>
+    </form>
+
+    <p class="vegas-quiz-result" id="vegasQuizResult" role="status" aria-live="polite"></p>
+
+    <!-- Reward content goes here once decided -->
+    <div class="vegas-quiz-reward" id="vegasQuizReward" hidden></div>
+  </div>
 </section>
 
 <!-- ============================================================
