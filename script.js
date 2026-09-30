@@ -47,6 +47,7 @@
 
   var jackpotAudio = document.getElementById("jackpotAudio");
   var siteAudio = document.getElementById("siteAudio");
+  var dinerAudio = document.getElementById("dinerAudio");
   var boogiePausedByUser = false;
 
   // Autoplay-with-sound is blocked by browsers until a user gesture happens,
@@ -99,8 +100,16 @@
         jackpotAudio.pause();
       }
     }
+    if (dinerAudio) {
+      if (id === "diner") {
+        dinerAudio.currentTime = 0;
+        dinerAudio.play().catch(function () {});
+      } else {
+        dinerAudio.pause();
+      }
+    }
     if (siteAudio) {
-      if (id === "secret") {
+      if (id === "secret" || id === "diner") {
         siteAudio.pause();
       } else if (!boogiePausedByUser) {
         siteAudio.play().catch(function () {});
@@ -1007,6 +1016,22 @@
     });
   }
 
+  /* The Diner: unlocked by acing the History of Vegas quiz below. */
+  var dinerUnlocked = false;
+  function unlockDinerSection() {
+    if (!dinerUnlocked) {
+      dinerUnlocked = true;
+      var dinerTocItem = document.getElementById("dinerTocItem");
+      if (dinerTocItem) dinerTocItem.hidden = false;
+    }
+  }
+  var vegasQuizRewardBtn = document.getElementById("vegasQuizRewardBtn");
+  if (vegasQuizRewardBtn) {
+    vegasQuizRewardBtn.addEventListener("click", function () {
+      showPage("diner");
+    });
+  }
+
   /* Pop quiz at the end of the History of Vegas page. */
   var vegasQuizForm = document.getElementById("vegasQuizForm");
   var vegasQuizResult = document.getElementById("vegasQuizResult");
@@ -1037,6 +1062,7 @@
 
       if (correctCount === questions.length) {
         vegasQuizResult.textContent = "5 for 5! You were paying attention.";
+        unlockDinerSection();
         if (vegasQuizReward) vegasQuizReward.hidden = false;
       } else {
         vegasQuizResult.textContent = "You got " + correctCount + " of " + questions.length + " right. Give it another shot!";

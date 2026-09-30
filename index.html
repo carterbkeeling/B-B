@@ -56,6 +56,8 @@
       <li><button class="toc-btn" data-target="vegas-history">07. HISTORY OF VEGAS</button></li>
       <!-- Secret 7th tab — hidden until the Konami code is entered. See script.js -->
       <li id="secretTocItem" hidden><button class="toc-btn secret-toc-btn" data-target="secret">BONUS BANANA ROOM</button></li>
+      <!-- The Diner — hidden until the History of Vegas quiz is aced. See script.js -->
+      <li id="dinerTocItem" hidden><button class="toc-btn diner-toc-btn" data-target="diner">THE DINER</button></li>
     </ul>
   </nav>
 </header>
@@ -805,8 +807,20 @@
 
     <p class="vegas-quiz-result" id="vegasQuizResult" role="status" aria-live="polite"></p>
 
-    <!-- Reward content goes here once decided -->
-    <div class="vegas-quiz-reward" id="vegasQuizReward" hidden></div>
+    <div class="vegas-quiz-reward" id="vegasQuizReward" hidden>
+      <p class="quiz-reward-text">🎉 You unlocked a secret room — check the Table of Contents for <strong>THE DINER</strong>.</p>
+      <button type="button" class="quiz-reward-btn" id="vegasQuizRewardBtn">Enter The Diner &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THE DINER — unlocked by acing the History of Vegas quiz
+     ============================================================ -->
+<section id="diner" class="page diner-page" aria-labelledby="diner-heading" hidden>
+  <h2 id="diner-heading" class="diner-title">Welcome to The Diner</h2>
+  <div class="diner-photo-frame">
+    <img src="images/diner-chicken-waffles.jpg" alt="A plate of chicken and waffles with hot sauce and syrup">
   </div>
 </section>
 
@@ -934,6 +948,9 @@
 
 <!-- Persistent background music, loops on every page except the Jackpot page -->
 <audio id="siteAudio" src="audio/site-theme.mp3" loop preload="auto"></audio>
+
+<!-- Diner theme, loops only while The Diner page is open -->
+<audio id="dinerAudio" src="audio/diner-theme.mp3" loop preload="none"></audio>
 
 <script src="script.js"></script>
 </body>

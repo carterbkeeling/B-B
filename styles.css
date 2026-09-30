@@ -294,6 +294,7 @@ h1,h2,h3{ font-family: var(--font-display); letter-spacing: .02em; }
   transform: rotate(0) scale(1.06);
 }
 .secret-toc-btn{ background: var(--acid); }
+.diner-toc-btn{ background: var(--yellow); }
 
 /* ---------------------------------------------------------------------
    4. PAGE / SECTION SWITCHING
@@ -1376,6 +1377,46 @@ main{ display: block; }
 }
 
 /* ---------------------------------------------------------------------
+   11b. THE DINER — unlocked by acing the History of Vegas quiz
+   --------------------------------------------------------------------- */
+.diner-page{
+  text-align: center;
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, var(--hotpink) 25%, transparent 25%, transparent 75%, var(--hotpink) 75%, var(--hotpink)),
+    linear-gradient(45deg, var(--hotpink) 25%, transparent 25%, transparent 75%, var(--hotpink) 75%, var(--hotpink));
+  background-size: 80px 80px;
+  background-position: 0 0, 40px 40px;
+}
+.diner-title{
+  display: inline-block;
+  margin: 20px auto 30px;
+  padding: .3em .6em;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  color: var(--ink);
+  background: #fff;
+  border: var(--border-thick);
+  box-shadow: 6px 6px 0 var(--ink);
+  transform: rotate(-1.2deg);
+}
+.diner-photo-frame{
+  display: inline-block;
+  max-width: 560px;
+  width: 100%;
+  padding: 14px;
+  background: #fff;
+  border: var(--border-thick);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+.diner-photo-frame img{
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--ink);
+}
+
+/* ---------------------------------------------------------------------
    12. FOOTER
    --------------------------------------------------------------------- */
 .site-footer{
@@ -1730,6 +1771,24 @@ body.page-quake{ animation: page-quake .5s ease-in-out; }
   color: var(--acid);
 }
 .vegas-quiz-reward{ margin-top: 20px; }
+.quiz-reward-text{
+  margin: 0 0 12px;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  color: var(--yellow);
+}
+.quiz-reward-btn{
+  font-family: var(--font-zine);
+  font-weight: 700;
+  padding: 10px 22px;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.quiz-reward-btn:hover{ transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
 .pattern-check{
   background-color: var(--paper);
   background-image:
