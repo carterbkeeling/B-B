@@ -844,6 +844,95 @@
     });
   }
 
+  /* Slot machine mini-game: pull the lever to spin; three of a kind lines up every 4th pull. */
+  var SLOT_IMAGES = [
+    "images/slots/slot-1.jpg",
+    "images/slots/slot-2.webp",
+    "images/slots/slot-3.png",
+    "images/slots/slot-4.webp",
+    "images/slots/slot-5.webp",
+    "images/slots/slot-6.webp",
+    "images/slots/slot-7.webp",
+    "images/slots/slot-8.jpg",
+    "images/slots/slot-9.webp"
+  ];
+  var SLOT_CELL = 76;
+  var SLOT_LOOPS = 6;
+  var slotLeverBtn = document.getElementById("slotLeverBtn");
+  var slotHint = document.getElementById("slotHint");
+  var slotReels = [
+    document.getElementById("slotReel1"),
+    document.getElementById("slotReel2"),
+    document.getElementById("slotReel3")
+  ];
+  var slotPullCount = 0;
+  var slotSpinning = false;
+
+  function buildSlotStrip(reelEl) {
+    var html = "";
+    for (var pass = 0; pass < SLOT_LOOPS + 1; pass++) {
+      for (var i = 0; i < SLOT_IMAGES.length; i++) {
+        html += '<img src="' + SLOT_IMAGES[i] + '" alt="">';
+      }
+    }
+    reelEl.innerHTML = html;
+  }
+
+  function pickSlotResult() {
+    slotPullCount++;
+    var win = slotPullCount % 4 === 0;
+    if (win) {
+      var w = Math.floor(Math.random() * SLOT_IMAGES.length);
+      return { win: true, idxs: [w, w, w] };
+    }
+    var a = Math.floor(Math.random() * SLOT_IMAGES.length);
+    var b = Math.floor(Math.random() * SLOT_IMAGES.length);
+    var c = Math.floor(Math.random() * SLOT_IMAGES.length);
+    if (a === b && b === c) c = (c + 1) % SLOT_IMAGES.length;
+    return { win: false, idxs: [a, b, c] };
+  }
+
+  function spinSlotReel(reelEl, finalIndex, duration, delay) {
+    return new Promise(function (resolve) {
+      reelEl.style.transition = "none";
+      reelEl.style.transform = "translateY(0px)";
+      void reelEl.offsetHeight;
+      var totalItems = SLOT_LOOPS * SLOT_IMAGES.length + finalIndex;
+      var targetY = -(totalItems * SLOT_CELL);
+      setTimeout(function () {
+        requestAnimationFrame(function () {
+          reelEl.style.transition = "transform " + duration + "ms cubic-bezier(.12,.85,.24,1)";
+          reelEl.style.transform = "translateY(" + targetY + "px)";
+        });
+        setTimeout(resolve, duration);
+      }, delay);
+    });
+  }
+
+  if (slotLeverBtn && slotReels[0] && slotReels[1] && slotReels[2] && slotHint) {
+    slotReels.forEach(buildSlotStrip);
+    slotLeverBtn.addEventListener("click", function () {
+      if (slotSpinning) return;
+      slotSpinning = true;
+      slotLeverBtn.disabled = true;
+      slotLeverBtn.classList.add("pulled");
+      setTimeout(function () { slotLeverBtn.classList.remove("pulled"); }, 300);
+
+      var result = pickSlotResult();
+      slotHint.textContent = "spinning...";
+
+      Promise.all([
+        spinSlotReel(slotReels[0], result.idxs[0], 1600, 0),
+        spinSlotReel(slotReels[1], result.idxs[1], 1900, 150),
+        spinSlotReel(slotReels[2], result.idxs[2], 2200, 300)
+      ]).then(function () {
+        slotSpinning = false;
+        slotLeverBtn.disabled = false;
+        slotHint.textContent = result.win ? "JACKPOT!" : "pull the lever";
+      });
+    });
+  }
+
   /* Tofu duo on Carter's To-Do page -> Konami code clue. */
   var todoClueBtn = document.getElementById("todoClueBtn");
   var todoCluePopup = document.getElementById("todoCluePopup");

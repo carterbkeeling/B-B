@@ -936,10 +936,127 @@ main{ display: block; }
   .fishbowl-fish{ position: static; margin: 14px auto 0; display: block; }
   .fishbowl-fish::after, .fishbowl-fish-tail-fill{ display: none; }
 }
+.slot-machine{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: fit-content;
+  margin: 30px 5vw 10px auto;
+}
+.slot-marquee{
+  position: relative;
+  background: var(--ink);
+  color: var(--yellow);
+  font-family: var(--font-zine);
+  font-weight: 700;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-align: center;
+  padding: 6px 20px;
+  border: 3px solid var(--ink);
+  border-bottom: none;
+  box-shadow: inset 0 0 0 2px var(--yellow);
+}
+.slot-marquee::before, .slot-marquee::after{
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--yellow);
+  transform: translateY(-50%);
+  box-shadow: 0 0 4px var(--yellow);
+}
+.slot-marquee::before{ left: 6px; }
+.slot-marquee::after{ right: 6px; }
+.slot-body{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--hotpink);
+  border: 3px solid var(--ink);
+  padding: 12px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.slot-screen{
+  display: flex;
+  gap: 6px;
+  background: var(--ink);
+  padding: 8px;
+  border: 2px solid #000;
+}
+.slot-reel-window{
+  width: 76px;
+  height: 76px;
+  overflow: hidden;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  position: relative;
+}
+.slot-reel-window::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.35), transparent 25%, transparent 75%, rgba(0,0,0,.35));
+  pointer-events: none;
+}
+.slot-reel img{
+  display: block;
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  background: var(--paper);
+  padding: 4px;
+}
+.slot-lever-btn{
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 30px;
+  height: 100px;
+}
+.slot-lever-btn:disabled{ cursor: not-allowed; opacity: .7; }
+.slot-lever-track{
+  display: block;
+  width: 8px;
+  height: 84px;
+  margin: 0 auto;
+  background: #8a8a8a;
+  border-radius: 6px;
+  position: relative;
+}
+.slot-lever-knob{
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--hotpink);
+  border: 2px solid var(--ink);
+  transform: translate(-50%, 0);
+  transition: top .25s cubic-bezier(.6, -0.28, .74, .05);
+}
+.slot-lever-btn.pulled .slot-lever-knob{
+  top: 58px;
+  transition: top .15s ease-in;
+}
+.slot-hint{
+  margin: 6px 0 0;
+  font-family: var(--font-zine);
+  font-size: .62rem;
+  text-align: center;
+  opacity: .7;
+}
+@media (max-width: 640px){
+  .slot-machine{ align-items: center; margin: 20px auto; }
+}
 .cursive-clue-icon{
   position: absolute;
   bottom: 10px;
-  right: 5vw;
+  left: 5vw;
   background: none;
   border: none;
   font-family: "Brush Script MT", "Segoe Script", cursive;
@@ -951,7 +1068,7 @@ main{ display: block; }
 .clue-popup{
   position: absolute;
   bottom: 44px;
-  right: 5vw;
+  left: 5vw;
   background: #fff;
   color: var(--ink);
   border: 2px solid var(--ink);

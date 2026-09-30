@@ -550,6 +550,22 @@
 
   </div>
 
+  <!-- Easter egg: pull the lever for a spin; three of a kind lines up every 4th pull -->
+  <div class="slot-machine">
+    <div class="slot-marquee"><span>B+B JACKPOT</span></div>
+    <div class="slot-body">
+      <div class="slot-screen">
+        <div class="slot-reel-window"><div class="slot-reel" id="slotReel1"></div></div>
+        <div class="slot-reel-window"><div class="slot-reel" id="slotReel2"></div></div>
+        <div class="slot-reel-window"><div class="slot-reel" id="slotReel3"></div></div>
+      </div>
+      <button type="button" id="slotLeverBtn" class="slot-lever-btn" aria-label="Pull the lever to spin">
+        <span class="slot-lever-track"><span class="slot-lever-knob"></span></span>
+      </button>
+    </div>
+    <p class="slot-hint" id="slotHint">pull the lever</p>
+  </div>
+
   <button type="button" id="dateIdeasClueBtn" class="cursive-clue-icon">Las Vegas</button>
   <p id="dateIdeasCluePopup" class="clue-popup" hidden>the code starts with ↑ ↑ ↓ ↓ </p>
 </section>
