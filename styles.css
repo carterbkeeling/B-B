@@ -759,6 +759,17 @@ main{ display: block; }
 }
 .slot-result{ font-family: var(--font-hand); font-size: 1rem; margin-top: 10px; min-height: 1.4em; }
 
+#itinerary{ position: relative; }
+.itin-calendar-link{
+  position: absolute;
+  bottom: 10px;
+  right: 5vw;
+  display: inline-block;
+  line-height: 0;
+  transition: transform .15s ease;
+}
+.itin-calendar-link:hover{ transform: scale(1.12) rotate(-4deg); }
+
 /* ---------------------------------------------------------------------
    8. HISTORY OF VEGAS
    --------------------------------------------------------------------- */
