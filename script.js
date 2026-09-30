@@ -806,14 +806,24 @@
   var FISHBOWL_COLORS = ["var(--hotpink)", "var(--cyan)", "var(--acid)", "var(--yellow)", "var(--orange)"];
   var lastFishText = "";
 
+  // The site editor tool can overlay a reference-number badge as a child of
+  // any element (including these headings/list items), which would otherwise
+  // pollute a plain .textContent read (e.g. "Out & About#187").
+  function getCleanText(el) {
+    var clone = el.cloneNode(true);
+    var badges = clone.querySelectorAll(".editor-num-badge");
+    for (var i = 0; i < badges.length; i++) badges[i].remove();
+    return clone.textContent.trim();
+  }
+
   function getFishbowlPool() {
     var headings = ["Out & About", "Events & Live Entertainment", "At Home"];
     var pool = [];
     document.querySelectorAll("#date-ideas .prep-card").forEach(function (card) {
       var h3 = card.querySelector("h3");
-      if (!h3 || headings.indexOf(h3.textContent.trim()) === -1) return;
+      if (!h3 || headings.indexOf(getCleanText(h3)) === -1) return;
       card.querySelectorAll("li").forEach(function (li) {
-        pool.push(li.textContent.trim());
+        pool.push(getCleanText(li));
       });
     });
     return pool;
