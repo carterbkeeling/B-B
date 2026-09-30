@@ -1380,6 +1380,8 @@ main{ display: block; }
    11b. THE DINER — unlocked by acing the History of Vegas quiz
    --------------------------------------------------------------------- */
 .diner-page{
+  position: relative;
+  overflow: hidden;
   text-align: center;
   background-color: #fff;
   background-image:
@@ -1388,7 +1390,31 @@ main{ display: block; }
   background-size: 80px 80px;
   background-position: 0 0, 40px 40px;
 }
+.diner-blanket{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.diner-deco{
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  filter: drop-shadow(2px 3px 5px rgba(0,0,0,.35));
+  animation-name: diner-spin;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes diner-spin{
+  0%{ transform: translate(-50%, -50%) rotate(var(--start-rot, 0deg)); }
+  100%{ transform: translate(-50%, -50%) rotate(calc(var(--start-rot, 0deg) + 360deg)); }
+}
 .diner-title{
+  position: relative;
+  z-index: 1;
   display: inline-block;
   margin: 20px auto 30px;
   padding: .3em .6em;
@@ -1401,6 +1427,8 @@ main{ display: block; }
   transform: rotate(-1.2deg);
 }
 .diner-photo-frame{
+  position: relative;
+  z-index: 1;
   display: inline-block;
   max-width: 560px;
   width: 100%;

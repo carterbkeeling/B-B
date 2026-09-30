@@ -1018,12 +1018,36 @@
 
   /* The Diner: unlocked by acing the History of Vegas quiz below. */
   var dinerUnlocked = false;
+  var dinerBlanket = document.getElementById("dinerBlanket");
+  var dinerDecoSources = ["images/diner-chicken-mascot.webp", "images/diner-waffle-mascot.webp"];
+  function fillDinerBlanket() {
+    if (!dinerBlanket || dinerBlanket.dataset.filled) return;
+    dinerBlanket.dataset.filled = "true";
+    var count = 50;
+    for (var i = 0; i < count; i++) {
+      var img = document.createElement("img");
+      img.src = dinerDecoSources[Math.floor(Math.random() * dinerDecoSources.length)];
+      img.alt = "";
+      img.className = "diner-deco";
+      var size = 50 + Math.random() * 130;
+      img.style.width = size + "px";
+      img.style.top = Math.random() * 100 + "%";
+      img.style.left = Math.random() * 100 + "%";
+      img.style.setProperty("--start-rot", (Math.random() * 360) + "deg");
+      img.style.opacity = 0.8 + Math.random() * 0.2;
+      img.style.animationDuration = (5 + Math.random() * 8) + "s";
+      img.style.animationDelay = "-" + (Math.random() * 10) + "s";
+      dinerBlanket.appendChild(img);
+    }
+  }
+
   function unlockDinerSection() {
     if (!dinerUnlocked) {
       dinerUnlocked = true;
       var dinerTocItem = document.getElementById("dinerTocItem");
       if (dinerTocItem) dinerTocItem.hidden = false;
     }
+    fillDinerBlanket();
   }
   var vegasQuizRewardBtn = document.getElementById("vegasQuizRewardBtn");
   if (vegasQuizRewardBtn) {
