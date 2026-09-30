@@ -919,8 +919,59 @@
     });
   }
 
+  // Slot machine jackpot celebration: hearts shower out of the machine and
+  // settle into a growing pile at the bottom-right of the screen, plus a
+  // giant scrolling banner (shares the same look as the countdown's banner).
+  var slotScrollText = document.getElementById("slotScrollText");
+  var jackpotHeartPile = document.getElementById("jackpotHeartPile");
+  var JACKPOT_HEART_EMOJI = ["💕", "💖", "💗", "💓", "💞"];
+  var JACKPOT_HEART_CAP = 60;
+
+  function rainJackpotHearts(sourceEl) {
+    if (!jackpotHeartPile || !sourceEl) return;
+    var rect = sourceEl.getBoundingClientRect();
+    var count = 24;
+    for (var i = 0; i < count; i++) {
+      setTimeout(function () {
+        var h = document.createElement("span");
+        h.className = "jackpot-heart";
+        h.textContent = JACKPOT_HEART_EMOJI[Math.floor(Math.random() * JACKPOT_HEART_EMOJI.length)];
+        h.style.fontSize = (1.1 + Math.random() * 1.3) + "rem";
+        h.style.left = (rect.left + Math.random() * rect.width) + "px";
+        h.style.top = (rect.top + rect.height * 0.3) + "px";
+        jackpotHeartPile.appendChild(h);
+
+        var endX = window.innerWidth - (20 + Math.random() * 130);
+        var endY = window.innerHeight - (20 + Math.random() * 110);
+        var endRot = Math.round(Math.random() * 70) - 35;
+
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            h.style.opacity = "1";
+            h.style.left = endX + "px";
+            h.style.top = endY + "px";
+            h.style.transform = "rotate(" + endRot + "deg) scale(1)";
+          });
+        });
+
+        while (jackpotHeartPile.children.length > JACKPOT_HEART_CAP) {
+          jackpotHeartPile.removeChild(jackpotHeartPile.firstChild);
+        }
+      }, i * 55);
+    }
+  }
+
+  function triggerSlotWinBanner() {
+    if (!slotScrollText) return;
+    slotScrollText.textContent = "Win Money";
+    slotScrollText.classList.remove("scrolling");
+    void slotScrollText.offsetWidth;
+    slotScrollText.classList.add("scrolling");
+  }
+
   if (slotLeverBtn && slotReels[0] && slotReels[1] && slotReels[2] && slotHint) {
     slotReels.forEach(buildSlotStrip);
+    var slotScreenEl = slotLeverBtn.closest(".slot-body").querySelector(".slot-screen");
     slotLeverBtn.addEventListener("click", function () {
       if (slotSpinning) return;
       slotSpinning = true;
@@ -939,6 +990,10 @@
         slotSpinning = false;
         slotLeverBtn.disabled = false;
         slotHint.textContent = result.win ? "JACKPOT!" : "pull the lever";
+        if (result.win) {
+          rainJackpotHearts(slotScreenEl);
+          triggerSlotWinBanner();
+        }
       });
     });
   }

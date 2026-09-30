@@ -1477,6 +1477,22 @@ body.page-quake{ animation: page-quake .5s ease-in-out; }
 @keyframes heartFall{
   to{ transform: translateY(110vh) rotate(360deg); opacity: .2; }
 }
+#jackpotHeartPile{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  overflow: hidden;
+}
+.jackpot-heart{
+  position: fixed;
+  opacity: 0;
+  transform: rotate(0deg) scale(.4);
+  transition: left .8s cubic-bezier(.34, 1.56, .64, 1),
+              top .8s cubic-bezier(.34, 1.56, .64, 1),
+              transform .8s cubic-bezier(.34, 1.56, .64, 1),
+              opacity .3s ease;
+}
 
 /* ---------------------------------------------------------------------
    14. HERO CORKBOARD CLUTTER (decorative elements pinned over the photo)
