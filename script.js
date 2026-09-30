@@ -799,6 +799,51 @@
     });
   }
 
+  /* Fishbowl mini-game: click pulls a random date idea out as a fish-shaped tag. */
+  var fishbowlBtn = document.getElementById("fishbowlBtn");
+  var fishbowlFish = document.getElementById("fishbowlFish");
+  var fishbowlFishText = fishbowlFish ? fishbowlFish.querySelector(".fishbowl-fish-text") : null;
+  var FISHBOWL_COLORS = ["var(--hotpink)", "var(--cyan)", "var(--acid)", "var(--yellow)", "var(--orange)"];
+  var lastFishText = "";
+
+  function getFishbowlPool() {
+    var headings = ["Out & About", "Events & Live Entertainment", "At Home"];
+    var pool = [];
+    document.querySelectorAll("#date-ideas .prep-card").forEach(function (card) {
+      var h3 = card.querySelector("h3");
+      if (!h3 || headings.indexOf(h3.textContent.trim()) === -1) return;
+      card.querySelectorAll("li").forEach(function (li) {
+        pool.push(li.textContent.trim());
+      });
+    });
+    return pool;
+  }
+
+  if (fishbowlBtn && fishbowlFish && fishbowlFishText) {
+    fishbowlBtn.addEventListener("click", function () {
+      var pool = getFishbowlPool();
+      if (pool.length === 0) return;
+      var pick;
+      if (pool.length === 1) {
+        pick = pool[0];
+      } else {
+        do {
+          pick = pool[Math.floor(Math.random() * pool.length)];
+        } while (pick === lastFishText);
+      }
+      lastFishText = pick;
+
+      var color = FISHBOWL_COLORS[Math.floor(Math.random() * FISHBOWL_COLORS.length)];
+      fishbowlFish.style.setProperty("--fish-color", color);
+      fishbowlFishText.textContent = pick;
+
+      fishbowlFish.hidden = false;
+      fishbowlFish.classList.remove("swim-in");
+      void fishbowlFish.offsetWidth;
+      fishbowlFish.classList.add("swim-in");
+    });
+  }
+
   /* Tofu duo on Carter's To-Do page -> Konami code clue. */
   var todoClueBtn = document.getElementById("todoClueBtn");
   var todoCluePopup = document.getElementById("todoCluePopup");

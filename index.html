@@ -393,6 +393,27 @@
   <h2 id="date-ideas-heading" class="section-title letters">04. DATE IDEAS</h2>
   <p class="section-kicker">A non-comprehensive list of things to do in Las Vegas</p>
 
+  <!-- Easter egg: click the fishbowl to pull out a random date idea -->
+  <div class="fishbowl-game">
+    <div id="fishbowlFish" class="fishbowl-fish" hidden>
+      <span class="fishbowl-fish-fin"></span>
+      <span class="fishbowl-fish-tail-fill"></span>
+      <span class="fishbowl-fish-text"></span>
+    </div>
+    <button type="button" id="fishbowlBtn" class="fishbowl-btn" aria-label="Click the fishbowl for a date idea">
+      <svg viewBox="0 0 110 100" width="92" height="84" aria-hidden="true">
+        <ellipse cx="55" cy="60" rx="48" ry="34" fill="#bfe8ff" stroke="#16121f" stroke-width="3"/>
+        <ellipse cx="55" cy="32" rx="40" ry="10" fill="#eaf9ff" stroke="#16121f" stroke-width="3"/>
+        <path d="M15 58 Q55 76 95 58" stroke="#3ddcff" stroke-width="2" fill="none" opacity=".55"/>
+        <ellipse cx="52" cy="70" rx="10" ry="5" fill="#ffb454" stroke="#16121f" stroke-width="1.5"/>
+        <polygon points="42,70 33,64 33,76" fill="#ffb454" stroke="#16121f" stroke-width="1.5"/>
+        <circle cx="35" cy="68" r="2.4" fill="#fff" opacity=".85"/>
+        <circle cx="72" cy="76" r="1.8" fill="#fff" opacity=".85"/>
+      </svg>
+    </button>
+    <p class="fishbowl-hint">tap the bowl</p>
+  </div>
+
   <div class="prep-grid">
 
     <div class="prep-card scroll-card">

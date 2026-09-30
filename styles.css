@@ -816,6 +816,126 @@ main{ display: block; }
   padding-right: 10px;
 }
 #date-ideas{ position: relative; }
+.fishbowl-game{
+  position: absolute;
+  top: 26px;
+  right: 5vw;
+  z-index: 3;
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.fishbowl-btn{
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 0;
+  cursor: pointer;
+  transition: transform .15s ease;
+}
+.fishbowl-btn:hover{ transform: scale(1.06) rotate(-2deg); }
+.fishbowl-btn:active{ transform: scale(.94); }
+.fishbowl-hint{
+  margin: 2px 0 0;
+  font-family: var(--font-zine);
+  font-size: .6rem;
+  text-align: center;
+  opacity: .6;
+}
+.fishbowl-fish{
+  position: absolute;
+  top: 10px;
+  right: 96px;
+  z-index: 2;
+  max-width: 220px;
+  padding: 14px 32px 14px 20px;
+  background: var(--fish-color, var(--hotpink));
+  border: 3px solid var(--ink);
+  border-radius: 50% 50% 46% 46% / 65% 65% 35% 35%;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.fishbowl-fish::before{
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.fishbowl-fish::after{
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 22px solid var(--ink);
+}
+.fishbowl-fish-tail-fill{
+  position: absolute;
+  right: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 15px solid var(--fish-color, var(--hotpink));
+  z-index: 1;
+}
+.fishbowl-fish-fin{
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid var(--ink);
+}
+.fishbowl-fish-fin::after{
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: -5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 9px solid var(--fish-color, var(--hotpink));
+}
+.fishbowl-fish-text{
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: .82rem;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ink);
+}
+.fishbowl-fish.swim-in{
+  animation: fishbowl-swim-in .6s cubic-bezier(.34, 1.56, .64, 1);
+}
+@keyframes fishbowl-swim-in{
+  0%{ transform: translate(50px, 40px) scale(.3) rotate(-25deg); opacity: 0; }
+  60%{ transform: translate(-6px, -6px) scale(1.08) rotate(6deg); opacity: 1; }
+  100%{ transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+}
+@media (max-width: 640px){
+  .fishbowl-game{ position: static; margin: 0 0 20px; width: auto; }
+  .fishbowl-fish{ position: static; margin: 14px auto 0; display: block; }
+  .fishbowl-fish::after, .fishbowl-fish-tail-fill{ display: none; }
+}
 .cursive-clue-icon{
   position: absolute;
   bottom: 10px;
