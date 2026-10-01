@@ -10,6 +10,14 @@
 (function () {
   "use strict";
 
+  // Always open fully scrolled to the top of the home page — overrides the
+  // browser's own scroll-position restore on reload/back-forward, which
+  // would otherwise reopen wherever the hero was last scrolled to.
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+  window.scrollTo(0, 0);
+
   /* -------------------------------------------------------------------
      TRIP CONFIG — edit here if the date ever changes
      ------------------------------------------------------------------- */
@@ -1371,5 +1379,8 @@
       }, 1800);
     });
   })();
+
+  // Confetti fires immediately on every page load, as a little welcome.
+  launchConfetti(3000);
 
 })();
