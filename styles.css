@@ -529,7 +529,6 @@ main{ display: block; }
   padding: 16px;
   font-family: var(--font-zine);
 }
-.fake-error-title{ color: var(--hotpink); font-weight: 700; margin-top: 0; }
 .fake-error-close{
   margin-top: 10px;
   background: var(--ink);
