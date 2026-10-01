@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>November 2026</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
+  .calendar {
+    width: 90%;
+    max-width: 1000px;
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 800;
+    font-size: clamp(24px, 5vw, 40px);
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+    margin: 0 0 20px;
+  }
+
+  .weekdays, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .weekdays {
+    margin-bottom: 8px;
+  }
+
+  .weekdays div {
+    text-align: center;
+    font-weight: 700;
+    color: #555;
+    font-size: clamp(11px, 2vw, 15px);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .day {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 6px 8px;
+  }
+
+  .day.empty {
+    border-color: #f0f0f0;
+  }
+
+  .day-number {
+    font-size: clamp(12px, 2.4vw, 18px);
+    color: #333;
+    font-weight: 600;
+  }
+
+  .heart-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .heart-link svg {
+    width: 70%;
+    height: 70%;
+    transition: transform 0.2s ease;
+  }
+
+  .heart-link:hover svg {
+    transform: scale(1.12);
+  }
+</style>
+</head>
+<body>
+
+  <div class="calendar">
+    <h1>November 2026</h1>
+
+    <div class="weekdays">
+      <div>Sun</div>
+      <div>Mon</div>
+      <div>Tue</div>
+      <div>Wed</div>
+      <div>Thu</div>
+      <div>Fri</div>
+      <div>Sat</div>
+    </div>
+
+    <div class="days">
+      <div class="day">
+        <span class="day-number">1</span>
+        <a class="heart-link" href="https://carterbkeeling.github.io/B-B/#home" target="_self" aria-label="Open B-B">
+          <svg viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 29 C16 29 0 18.5 0 8.6 C0 3.2 4 0 8.4 0 C11.6 0 14.4 1.9 16 4.6 C17.6 1.9 20.4 0 23.6 0 C28 0 32 3.2 32 8.6 C32 18.5 16 29 16 29 Z" fill="#e8102a"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="day"><span class="day-number">2</span></div>
+      <div class="day"><span class="day-number">3</span></div>
+      <div class="day"><span class="day-number">4</span></div>
+      <div class="day"><span class="day-number">5</span></div>
+      <div class="day"><span class="day-number">6</span></div>
+      <div class="day"><span class="day-number">7</span></div>
+
+      <div class="day"><span class="day-number">8</span></div>
+      <div class="day"><span class="day-number">9</span></div>
+      <div class="day"><span class="day-number">10</span></div>
+      <div class="day"><span class="day-number">11</span></div>
+      <div class="day"><span class="day-number">12</span></div>
+      <div class="day"><span class="day-number">13</span></div>
+      <div class="day"><span class="day-number">14</span></div>
+
+      <div class="day"><span class="day-number">15</span></div>
+      <div class="day"><span class="day-number">16</span></div>
+      <div class="day"><span class="day-number">17</span></div>
+      <div class="day"><span class="day-number">18</span></div>
+      <div class="day"><span class="day-number">19</span></div>
+      <div class="day"><span class="day-number">20</span></div>
+      <div class="day"><span class="day-number">21</span></div>
+
+      <div class="day"><span class="day-number">22</span></div>
+      <div class="day"><span class="day-number">23</span></div>
+      <div class="day"><span class="day-number">24</span></div>
+      <div class="day"><span class="day-number">25</span></div>
+      <div class="day"><span class="day-number">26</span></div>
+      <div class="day"><span class="day-number">27</span></div>
+      <div class="day"><span class="day-number">28</span></div>
+
+      <div class="day"><span class="day-number">29</span></div>
+      <div class="day"><span class="day-number">30</span></div>
+      <div class="day empty"></div>
+      <div class="day empty"></div>
+      <div class="day empty"></div>
+      <div class="day empty"></div>
+      <div class="day empty"></div>
+    </div>
+  </div>
+
+</body>
+</html>
