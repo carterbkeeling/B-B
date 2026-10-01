@@ -1113,6 +1113,17 @@ main{ display: block; }
   text-decoration: line-through;
   opacity: .7;
 }
+.todo-photo-item{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+.todo-photo-item img{
+  max-width: 220px;
+  width: 100%;
+  display: block;
+  border: 2px solid var(--ink);
+}
 .todo-progress{
   margin-top: 20px;
   font-family: var(--font-hand);
