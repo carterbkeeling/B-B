@@ -760,17 +760,6 @@ main{ display: block; }
 }
 .slot-result{ font-family: var(--font-hand); font-size: 1rem; margin-top: 10px; min-height: 1.4em; }
 
-#itinerary{ position: relative; }
-.itin-calendar-link{
-  position: absolute;
-  bottom: 10px;
-  right: 5vw;
-  display: inline-block;
-  line-height: 0;
-  transition: transform .15s ease;
-}
-.itin-calendar-link:hover{ transform: scale(1.12) rotate(-4deg); }
-
 /* ---------------------------------------------------------------------
    8. HISTORY OF VEGAS
    --------------------------------------------------------------------- */
@@ -815,6 +804,16 @@ main{ display: block; }
   max-height: 190px;
   overflow-y: auto;
   padding-right: 10px;
+}
+/* Prep Guide's scroll-cards should fill the full stretched grid-row height
+   (which Date Ideas' capped scroll-cards don't need) and only scroll past that. */
+#prep-guide .prep-card.scroll-card{
+  display: flex;
+  flex-direction: column;
+}
+#prep-guide .prep-card .scroll-list{
+  flex: 1;
+  max-height: 480px;
 }
 #date-ideas{ position: relative; }
 #prep-guide{ position: relative; }
