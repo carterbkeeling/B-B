@@ -45,6 +45,65 @@
   var tocButtons = document.querySelectorAll(".toc-btn");
   var pages = document.querySelectorAll(".page");
 
+  var jackpotAudio = document.getElementById("jackpotAudio");
+  var siteAudio = document.getElementById("siteAudio");
+  var dinerAudio = document.getElementById("dinerAudio");
+  var boogiePausedByUser = false;
+
+  // Autoplay-with-sound is blocked by browsers until a user gesture happens,
+  // so try immediately, then fall back to starting on the first interaction.
+  if (siteAudio) {
+    var trySitePlay = function () {
+      if (boogiePausedByUser) return;
+      siteAudio.play().catch(function () {});
+    };
+    trySitePlay();
+    ["pointerdown", "keydown"].forEach(function (evt) {
+      window.addEventListener(evt, function startOnGesture() {
+        if (siteAudio.paused) trySitePlay();
+        window.removeEventListener(evt, startOnGesture);
+      });
+    });
+  }
+
+  /* Egg 13: "Pause/Resume the Boogie" button toggles the background music. */
+  var boogieToggleBtn = document.getElementById("boogieToggleBtn");
+  if (boogieToggleBtn && siteAudio) {
+    boogieToggleBtn.addEventListener("click", function () {
+      if (siteAudio.paused) {
+        boogiePausedByUser = false;
+        siteAudio.play().catch(function () {});
+        boogieToggleBtn.textContent = "Pause the Boogie";
+      } else {
+        boogiePausedByUser = true;
+        siteAudio.pause();
+        boogieToggleBtn.textContent = "Resume the Boogie";
+      }
+    });
+  }
+
+  /* Pause the music when the washi tape link opens YouTube in a new tab,
+     and resume it when the user comes back to this tab. */
+  var washiTapeLink = document.getElementById("washiTapeLink");
+  var pausedForWashiTape = false;
+  if (washiTapeLink && siteAudio) {
+    washiTapeLink.addEventListener("click", function () {
+      if (!siteAudio.paused) {
+        pausedForWashiTape = true;
+        siteAudio.pause();
+      }
+    });
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState !== "visible" || !pausedForWashiTape) return;
+      pausedForWashiTape = false;
+      var activePage = document.querySelector(".page.active");
+      var onMusicFreePage = activePage && (activePage.id === "secret" || activePage.id === "diner");
+      if (!boogiePausedByUser && !onMusicFreePage) {
+        siteAudio.play().catch(function () {});
+      }
+    });
+  }
+
   function showPage(id, opts) {
     opts = opts || {};
     var found = false;
@@ -55,6 +114,29 @@
       if (match) p.hidden = false;
     });
     if (!found) return;
+    if (jackpotAudio) {
+      if (id === "secret") {
+        jackpotAudio.currentTime = 0;
+        jackpotAudio.play().catch(function () {});
+      } else {
+        jackpotAudio.pause();
+      }
+    }
+    if (dinerAudio) {
+      if (id === "diner") {
+        dinerAudio.currentTime = 0;
+        dinerAudio.play().catch(function () {});
+      } else {
+        dinerAudio.pause();
+      }
+    }
+    if (siteAudio) {
+      if (id === "secret" || id === "diner") {
+        siteAudio.pause();
+      } else if (!boogiePausedByUser) {
+        siteAudio.play().catch(function () {});
+      }
+    }
     tocButtons.forEach(function (b) {
       var isMatch = b.dataset.target === id;
       if (isMatch) {
@@ -167,7 +249,7 @@
     var original = countdownEl.innerHTML;
     countdownEl.innerHTML =
       '<p style="font-family:var(--font-hand);font-size:1.1rem;max-width:22em;">' +
-      "fun fact: this number is smaller than the number of times Carter has checked flight prices today. [PLACEHOLDER: swap in a real fun stat]" +
+      "regardless of how many days this countdown clock reads at time of viewing I can confidently say it's way too long" +
       "</p>";
     setTimeout(function () {
       countdownEl.innerHTML = original;
@@ -198,6 +280,7 @@
 
   function makePiece() {
     return {
+      type: "confetti",
       x: Math.random() * canvas.width,
       y: -20 - Math.random() * canvas.height * 0.5,
       w: 6 + Math.random() * 6,
@@ -210,10 +293,52 @@
     };
   }
 
+  var bananaSources = [
+    "images/bananas/banana-1.webp",
+    "images/bananas/banana-2.png",
+    "images/bananas/banana-3.webp",
+    "images/bananas/banana-4.webp",
+    "images/bananas/banana-5.webp"
+  ];
+  var bananaImages = bananaSources.map(function (src) {
+    var img = new Image();
+    img.src = src;
+    return img;
+  });
+
+  function makeBananaPiece() {
+    var size = 30 + Math.random() * 55;
+    return {
+      type: "banana",
+      img: bananaImages[Math.floor(Math.random() * bananaImages.length)],
+      x: Math.random() * canvas.width,
+      y: -40 - Math.random() * canvas.height * 0.5,
+      size: size,
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 6,
+      speedY: 1.5 + Math.random() * 2.5,
+      speedX: (Math.random() - 0.5) * 1.5
+    };
+  }
+
   var confettiTimer = null;
   function launchConfetti(durationMs) {
     var count = 160;
     for (var i = 0; i < count; i++) confettiPieces.push(makePiece());
+    canvas.style.display = "block";
+    if (!confettiRunning) {
+      confettiRunning = true;
+      requestAnimationFrame(confettiLoop);
+    }
+    if (confettiTimer) clearTimeout(confettiTimer);
+    confettiTimer = setTimeout(function () {
+      confettiPieces = [];
+    }, durationMs || 3000);
+  }
+
+  function launchBananaRain(durationMs) {
+    var count = 70;
+    for (var i = 0; i < count; i++) confettiPieces.push(makeBananaPiece());
     canvas.style.display = "block";
     if (!confettiRunning) {
       confettiRunning = true;
@@ -239,12 +364,223 @@
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate((p.rotation * Math.PI) / 180);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      if (p.type === "banana") {
+        ctx.drawImage(p.img, -p.size / 2, -p.size / 2, p.size, p.size);
+      } else {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      }
       ctx.restore();
     });
     confettiPieces = confettiPieces.filter(function (p) { return p.y < canvas.height + 30; });
     requestAnimationFrame(confettiLoop);
+  }
+
+  /* Static banana wallpaper for the Jackpot page, filled once on first unlock. */
+  var bananaBlanket = document.getElementById("bananaBlanket");
+  function fillBananaBlanket() {
+    if (!bananaBlanket || bananaBlanket.dataset.filled) return;
+    bananaBlanket.dataset.filled = "true";
+    var count = 90;
+    for (var i = 0; i < count; i++) {
+      var img = document.createElement("img");
+      img.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+      img.alt = "";
+      img.className = "banana-deco";
+      var size = 40 + Math.random() * 150;
+      img.style.width = size + "px";
+      img.style.top = Math.random() * 100 + "%";
+      img.style.left = Math.random() * 100 + "%";
+      img.style.setProperty("--start-rot", (Math.random() * 360) + "deg");
+      img.style.opacity = 0.85 + Math.random() * 0.15;
+      img.style.animationDuration = (14 + Math.random() * 12) + "s";
+      img.style.animationDelay = "-" + (Math.random() * 20) + "s";
+      bananaBlanket.appendChild(img);
+    }
+  }
+
+  /* Shared giant scrolling banner for Jackpot mini-game milestones. */
+  var jackpotScrollText = document.getElementById("jackpotScrollText");
+  function showJackpotScrollText(text, targetEl) {
+    if (!jackpotScrollText || !targetEl) return;
+    var rect = targetEl.getBoundingClientRect();
+    jackpotScrollText.style.top = (rect.top + rect.height / 2) + "px";
+    jackpotScrollText.textContent = text;
+    jackpotScrollText.classList.remove("scrolling");
+    void jackpotScrollText.offsetWidth;
+    jackpotScrollText.classList.add("scrolling");
+  }
+
+  /* Banana Collector mini-game: hover over a banana to "collect" it; it
+     reappears in the same grid cell a moment later so it can be re-collected. */
+  var bananaGameGrid = document.getElementById("bananaGameGrid");
+  var bananaGameCount = document.getElementById("bananaGameCount");
+  var BANANA_MILESTONES = {
+    30: "MANY BANANA",
+    75: "WHOA MAMA",
+    100: "TOO MANY TO CARRY",
+    500: "ECOLOGICAL DESTRUCTION"
+  };
+  function initBananaGame() {
+    if (!bananaGameGrid || !bananaGameCount || bananaGameGrid.dataset.filled) return;
+    bananaGameGrid.dataset.filled = "true";
+    var totalCollected = 0;
+    var CELL_COUNT = 30;
+    for (var gi = 0; gi < CELL_COUNT; gi++) {
+      (function () {
+        var cell = document.createElement("div");
+        cell.className = "banana-game-cell";
+        var img = document.createElement("img");
+        img.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+        img.alt = "";
+        cell.appendChild(img);
+        bananaGameGrid.appendChild(cell);
+
+        var collecting = false;
+        cell.addEventListener("mouseenter", function () {
+          if (collecting) return;
+          collecting = true;
+          cell.classList.add("collected");
+          totalCollected++;
+          bananaGameCount.textContent = totalCollected;
+          if (BANANA_MILESTONES[totalCollected]) {
+            showJackpotScrollText(BANANA_MILESTONES[totalCollected], bananaGameGrid.closest(".banana-game"));
+          }
+          setTimeout(function () {
+            cell.classList.remove("collected");
+            collecting = false;
+          }, 900);
+        });
+      })();
+    }
+  }
+
+  /* Banana Toppler mini-game: click a tower to throw a heart and knock the
+     top banana loose; each tower quietly refills once fully emptied. */
+  var towerGameArea = document.getElementById("towerGameArea");
+  var TOWER_COUNT = 4;
+  var TOWER_HEIGHT = 12;
+
+  function addTowerBanana(stack, bananas) {
+    var img = document.createElement("img");
+    img.className = "tower-banana";
+    img.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+    img.alt = "";
+    stack.appendChild(img);
+    bananas.push(img);
+  }
+
+  function spillOneBanana(bananas) {
+    if (bananas.length === 0) return;
+    var b = bananas.pop();
+    var dir = Math.random() > 0.5 ? 1 : -1;
+    b.style.setProperty("--spill-x", (dir * (30 + Math.random() * 50)) + "px");
+    b.style.setProperty("--spill-rot", (dir * (90 + Math.random() * 220)) + "deg");
+    b.classList.add("spilling");
+    setTimeout(function () { b.remove(); }, 650);
+  }
+
+  function throwHeartAt(stack, bananas) {
+    if (stack.dataset.busy === "true" || bananas.length === 0) return;
+    stack.dataset.busy = "true";
+    var target = bananas[bananas.length - 1];
+
+    var areaRect = towerGameArea.getBoundingClientRect();
+    var targetRect = target.getBoundingClientRect();
+    var startX = stack.offsetLeft + stack.offsetWidth / 2;
+    var startY = areaRect.height;
+    var endX = targetRect.left - areaRect.left + targetRect.width / 2;
+    var endY = targetRect.top - areaRect.top + targetRect.height / 2;
+
+    var heart = document.createElement("span");
+    heart.className = "tower-heart";
+    heart.textContent = "💗";
+    heart.style.left = startX + "px";
+    heart.style.top = startY + "px";
+    towerGameArea.appendChild(heart);
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        heart.style.left = endX + "px";
+        heart.style.top = endY + "px";
+      });
+    });
+
+    setTimeout(function () {
+      heart.remove();
+      stack.classList.remove("wobble");
+      void stack.offsetWidth;
+      stack.classList.add("wobble");
+
+      var crumbleCount = Math.min(bananas.length, 2 + Math.floor(Math.random() * 3));
+      for (var c = 0; c < crumbleCount; c++) {
+        setTimeout(function () { spillOneBanana(bananas); }, c * 130);
+      }
+
+      var settleDelay = (crumbleCount - 1) * 130 + 650;
+      setTimeout(function () {
+        stack.dataset.busy = "false";
+        if (bananas.length === 0) {
+          var toppleMessages = ["BANANA DESTRUCTION", "9/11 NEVER FORGET", "KING KONG"];
+          showJackpotScrollText(
+            toppleMessages[Math.floor(Math.random() * toppleMessages.length)],
+            towerGameArea.closest(".tower-game")
+          );
+          setTimeout(function () {
+            for (var i = 0; i < TOWER_HEIGHT; i++) addTowerBanana(stack, bananas);
+          }, 1200);
+        }
+      }, settleDelay);
+    }, 380);
+  }
+
+  function initTowerGame() {
+    if (!towerGameArea || towerGameArea.dataset.filled) return;
+    towerGameArea.dataset.filled = "true";
+    for (var t = 0; t < TOWER_COUNT; t++) {
+      (function () {
+        var stack = document.createElement("div");
+        stack.className = "tower-stack";
+        towerGameArea.appendChild(stack);
+        var bananas = [];
+        for (var i = 0; i < TOWER_HEIGHT; i++) addTowerBanana(stack, bananas);
+        stack.addEventListener("click", function () {
+          throwHeartAt(stack, bananas);
+        });
+      })();
+    }
+  }
+
+  /* Grow the Banana mini-game: every click makes it bigger, until it pops
+     back down to a fresh, freshly-randomized tiny banana. */
+  var growBananaBtn = document.getElementById("growBananaBtn");
+  var growBananaImg = document.getElementById("growBananaImg");
+  var growGameCount = document.getElementById("growGameCount");
+  if (growBananaBtn && growBananaImg && growGameCount) {
+    var GROW_MIN = 60;
+    var GROW_MAX = 320;
+    var GROW_STEP = 14;
+    var growClicks = 0;
+    var growSize = GROW_MIN;
+    growBananaImg.style.width = growSize + "px";
+    growBananaBtn.addEventListener("click", function () {
+      growClicks++;
+      growGameCount.textContent = growClicks;
+      growSize += GROW_STEP;
+      if (growSize > GROW_MAX) {
+        growSize = GROW_MIN;
+        growBananaImg.src = bananaSources[Math.floor(Math.random() * bananaSources.length)];
+        var growMessages = ["BIG BANANA", "GENETICALLY MODIFIED", "POTASSIUM OVERLOAD"];
+        showJackpotScrollText(
+          growMessages[Math.floor(Math.random() * growMessages.length)],
+          growBananaBtn.closest(".grow-game")
+        );
+      }
+      growBananaImg.style.width = growSize + "px";
+      growBananaBtn.classList.remove("pop");
+      void growBananaBtn.offsetWidth;
+      growBananaBtn.classList.add("pop");
+    });
   }
 
   /* -------------------------------------------------------------------
@@ -275,8 +611,8 @@
     var total = todoInputs.length;
     var done = 0;
     todoInputs.forEach(function (i) { if (i.checked) done++; });
-    todoProgress.textContent = done + " / " + total + " done. " +
-      (done === total ? "EVERYTHING IS DONE?! who even are you." : "no pressure. (some pressure.)");
+    todoProgress.textContent = done + " / " + total + " done - " +
+      (done === total ? "EVERYTHING IS DONE?! who even are you." : "no pressure but maybe also a little pressure");
     todoProgress.classList.toggle("all-done", done === total && total > 0);
     if (done === total && total > 0) {
       launchConfetti(2500);
@@ -366,13 +702,15 @@
   var quizOptions = document.getElementById("quizOptions");
   var quizResult = document.getElementById("quizResult");
   if (quizOptions) {
-    quizOptions.querySelectorAll("button").forEach(function (btn) {
+    var quizButtons = quizOptions.querySelectorAll("button");
+    var quizClicked = new Set();
+    quizButtons.forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var correct = btn.dataset.correct === "true";
+        quizClicked.add(btn);
         quizResult.hidden = false;
-        quizResult.textContent = correct
-          ? "Correct! (this was a trick question, both answers were the same, love is not a logic puzzle)"
-          : "Wrong! Try again. (there is a correct answer somewhere in here, probably)";
+        quizResult.textContent = quizClicked.size >= quizButtons.length
+          ? "Heheh trick question I'm just trying not to go completely crazy in anticipation for your arrival"
+          : "Wrong - try again";
       });
     });
   }
@@ -381,14 +719,15 @@
   var slotBtn = document.getElementById("slotMachineBtn");
   var slotResult = document.getElementById("slotResult");
   var slotIdeas = [
-    "Order the weirdest thing on a diner menu at 2am.",
-    "Find the tackiest souvenir shop on the Strip and buy each other something ugly.",
-    "Photobooth strip at a random casino, no questions asked.",
-    "Karaoke. Yes, really. [PLACEHOLDER: pick a spot]",
-    "Rooftop bar, one drink each, watch the lights.",
-    "Rent bikes and ride somewhere neither of you has been.",
-    "Skip the plan entirely and just wander until something looks fun.",
-    "Ice cream at midnight. No justification needed."
+    "Go-Kart ride through the desert",
+    "Go on an evening walk with the Jewish men",
+    "Visit every casino on the strip and leave a Yelp review for each one",
+    "Hit the shooting range with Ruben",
+    "$2 Shrimp Cocktail Special at Durango Station",
+    "Find a solution to water scarcity in the Las Vegas valley",
+    "New car shopping with Carter",
+    "Get into pickleball or golf together",
+    "Clue: cursive icon & invisible text!"
   ];
   if (slotBtn) {
     slotBtn.addEventListener("click", function () {
@@ -416,12 +755,364 @@
     });
   });
 
-  /* Egg 8: footer year click -> joke "established" date. */
+  /* Egg 7b: zine-strip background cycles through a psychedelic disco swirl,
+     speeding up while the cursor moves over it. */
+  var zineStrip = document.querySelector(".zine-strip");
+  if (zineStrip) {
+    var zineHue = 0;
+    var zineMoving = false;
+    (function zineTick() {
+      zineHue = (zineHue + (zineMoving ? 6 : 0.6)) % 360;
+      zineStrip.style.setProperty("--zine-hue", zineHue + "deg");
+      requestAnimationFrame(zineTick);
+    })();
+    zineStrip.addEventListener("mousemove", function (e) {
+      zineMoving = true;
+      var rect = zineStrip.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width) * 100;
+      var y = ((e.clientY - rect.top) / rect.height) * 100;
+      zineStrip.style.setProperty("--zine-bg-x", x + "%");
+      zineStrip.style.setProperty("--zine-bg-y", y + "%");
+    });
+    zineStrip.addEventListener("mouseleave", function () {
+      zineMoving = false;
+    });
+  }
+
+  /* Egg 8: footer year click -> joke "established" date, crashing in with
+     a quake on the way in. */
   var footerYear = document.getElementById("footerYear");
   var footerSecret = document.getElementById("footerSecret");
+  var quakeTimer = null;
   if (footerYear) {
     footerYear.addEventListener("click", function () {
+      var wasHidden = footerSecret.hidden;
       footerSecret.hidden = !footerSecret.hidden;
+      if (wasHidden) {
+        footerSecret.classList.remove("crash-in");
+        void footerSecret.offsetWidth;
+        footerSecret.classList.add("crash-in");
+        document.body.classList.remove("page-quake");
+        void document.body.offsetWidth;
+        document.body.classList.add("page-quake");
+        if (quakeTimer) clearTimeout(quakeTimer);
+        quakeTimer = setTimeout(function () {
+          document.body.classList.remove("page-quake");
+        }, 500);
+      }
+    });
+  }
+
+  /* Egg 14: click the countdown clock -> huge scrolling banner text. */
+  var countdownScrollEl = document.getElementById("countdownScrollText");
+  var countdownScrollPhrases = [
+    "BETTY",
+    "NOT SOON ENOUGH",
+    "TIME TORMENTS THE SOUL",
+    "I AWAIT YOUR ARRIVAL"
+  ];
+  if (countdownEl && countdownScrollEl) {
+    countdownEl.addEventListener("click", function () {
+      var phrase = countdownScrollPhrases[Math.floor(Math.random() * countdownScrollPhrases.length)];
+      countdownScrollEl.textContent = phrase;
+      countdownScrollEl.classList.remove("scrolling");
+      void countdownScrollEl.offsetWidth;
+      countdownScrollEl.classList.add("scrolling");
+    });
+  }
+
+  /* Egg 12: cursive "Las Vegas" icon on Date Ideas page -> Konami code clue. */
+  var dateIdeasClueBtn = document.getElementById("dateIdeasClueBtn");
+  var dateIdeasCluePopup = document.getElementById("dateIdeasCluePopup");
+  if (dateIdeasClueBtn) {
+    dateIdeasClueBtn.addEventListener("click", function () {
+      dateIdeasCluePopup.hidden = !dateIdeasCluePopup.hidden;
+    });
+  }
+
+  /* Fishbowl mini-game: click pulls a random date idea out as a fish-shaped tag. */
+  var fishbowlBtn = document.getElementById("fishbowlBtn");
+  var fishbowlFish = document.getElementById("fishbowlFish");
+  var fishbowlFishText = fishbowlFish ? fishbowlFish.querySelector(".fishbowl-fish-text") : null;
+  var FISHBOWL_COLORS = ["var(--hotpink)", "var(--cyan)", "var(--acid)", "var(--yellow)", "var(--orange)"];
+  var lastFishText = "";
+
+  // The site editor tool can overlay a reference-number badge as a child of
+  // any element (including these headings/list items), which would otherwise
+  // pollute a plain .textContent read (e.g. "Out & About#187").
+  function getCleanText(el) {
+    var clone = el.cloneNode(true);
+    var badges = clone.querySelectorAll(".editor-num-badge");
+    for (var i = 0; i < badges.length; i++) badges[i].remove();
+    return clone.textContent.trim();
+  }
+
+  function getFishbowlPool() {
+    var headings = ["Out & About", "Events & Live Entertainment", "At Home"];
+    var pool = [];
+    document.querySelectorAll("#date-ideas .prep-card").forEach(function (card) {
+      var h3 = card.querySelector("h3");
+      if (!h3 || headings.indexOf(getCleanText(h3)) === -1) return;
+      card.querySelectorAll("li").forEach(function (li) {
+        pool.push(getCleanText(li));
+      });
+    });
+    return pool;
+  }
+
+  if (fishbowlBtn && fishbowlFish && fishbowlFishText) {
+    fishbowlBtn.addEventListener("click", function () {
+      var pool = getFishbowlPool();
+      if (pool.length === 0) return;
+      var pick;
+      if (pool.length === 1) {
+        pick = pool[0];
+      } else {
+        do {
+          pick = pool[Math.floor(Math.random() * pool.length)];
+        } while (pick === lastFishText);
+      }
+      lastFishText = pick;
+
+      var color = FISHBOWL_COLORS[Math.floor(Math.random() * FISHBOWL_COLORS.length)];
+      fishbowlFish.style.setProperty("--fish-color", color);
+      fishbowlFishText.textContent = pick;
+
+      fishbowlFish.hidden = false;
+      fishbowlFish.classList.remove("swim-in");
+      void fishbowlFish.offsetWidth;
+      fishbowlFish.classList.add("swim-in");
+    });
+  }
+
+  /* Slot machine mini-game: pull the lever to spin; three of a kind lines up every 4th pull. */
+  var SLOT_IMAGES = [
+    "images/slots/slot-1.jpg",
+    "images/slots/slot-2.webp",
+    "images/slots/slot-3.png",
+    "images/slots/slot-4.webp",
+    "images/slots/slot-5.webp",
+    "images/slots/slot-6.webp",
+    "images/slots/slot-7.webp",
+    "images/slots/slot-8.jpg",
+    "images/slots/slot-9.webp"
+  ];
+  var SLOT_CELL = 76;
+  var SLOT_LOOPS = 6;
+  var slotLeverBtn = document.getElementById("slotLeverBtn");
+  var slotHint = document.getElementById("slotHint");
+  var slotReels = [
+    document.getElementById("slotReel1"),
+    document.getElementById("slotReel2"),
+    document.getElementById("slotReel3")
+  ];
+  var slotPullCount = 0;
+  var slotSpinning = false;
+
+  function buildSlotStrip(reelEl) {
+    var html = "";
+    for (var pass = 0; pass < SLOT_LOOPS + 1; pass++) {
+      for (var i = 0; i < SLOT_IMAGES.length; i++) {
+        html += '<img src="' + SLOT_IMAGES[i] + '" alt="">';
+      }
+    }
+    reelEl.innerHTML = html;
+  }
+
+  function pickSlotResult() {
+    slotPullCount++;
+    var win = slotPullCount % 4 === 0;
+    if (win) {
+      var w = Math.floor(Math.random() * SLOT_IMAGES.length);
+      return { win: true, idxs: [w, w, w] };
+    }
+    var a = Math.floor(Math.random() * SLOT_IMAGES.length);
+    var b = Math.floor(Math.random() * SLOT_IMAGES.length);
+    var c = Math.floor(Math.random() * SLOT_IMAGES.length);
+    if (a === b && b === c) c = (c + 1) % SLOT_IMAGES.length;
+    return { win: false, idxs: [a, b, c] };
+  }
+
+  function spinSlotReel(reelEl, finalIndex, duration, delay) {
+    return new Promise(function (resolve) {
+      reelEl.style.transition = "none";
+      reelEl.style.transform = "translateY(0px)";
+      void reelEl.offsetHeight;
+      var totalItems = SLOT_LOOPS * SLOT_IMAGES.length + finalIndex;
+      var targetY = -(totalItems * SLOT_CELL);
+      setTimeout(function () {
+        requestAnimationFrame(function () {
+          reelEl.style.transition = "transform " + duration + "ms cubic-bezier(.12,.85,.24,1)";
+          reelEl.style.transform = "translateY(" + targetY + "px)";
+        });
+        setTimeout(resolve, duration);
+      }, delay);
+    });
+  }
+
+  // Slot machine jackpot celebration: hearts shower out of the machine and
+  // settle into a growing pile at the bottom-right of the screen, plus a
+  // giant scrolling banner (shares the same look as the countdown's banner).
+  var slotScrollText = document.getElementById("slotScrollText");
+  var jackpotHeartPile = document.getElementById("jackpotHeartPile");
+  var JACKPOT_HEART_EMOJI = ["💕", "💖", "💗", "💓", "💞"];
+  var JACKPOT_HEART_CAP = 60;
+
+  function rainJackpotHearts(sourceEl) {
+    if (!jackpotHeartPile || !sourceEl) return;
+    var rect = sourceEl.getBoundingClientRect();
+    var count = 24;
+    for (var i = 0; i < count; i++) {
+      setTimeout(function () {
+        var h = document.createElement("span");
+        h.className = "jackpot-heart";
+        h.textContent = JACKPOT_HEART_EMOJI[Math.floor(Math.random() * JACKPOT_HEART_EMOJI.length)];
+        h.style.fontSize = (1.1 + Math.random() * 1.3) + "rem";
+        h.style.left = (rect.left + Math.random() * rect.width) + "px";
+        h.style.top = (rect.top + rect.height * 0.3) + "px";
+        jackpotHeartPile.appendChild(h);
+
+        var endX = window.innerWidth - (20 + Math.random() * 130);
+        var endY = window.innerHeight - (20 + Math.random() * 110);
+        var endRot = Math.round(Math.random() * 70) - 35;
+
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            h.style.opacity = "1";
+            h.style.left = endX + "px";
+            h.style.top = endY + "px";
+            h.style.transform = "rotate(" + endRot + "deg) scale(1)";
+          });
+        });
+
+        while (jackpotHeartPile.children.length > JACKPOT_HEART_CAP) {
+          jackpotHeartPile.removeChild(jackpotHeartPile.firstChild);
+        }
+      }, i * 55);
+    }
+  }
+
+  function triggerSlotWinBanner() {
+    if (!slotScrollText) return;
+    slotScrollText.textContent = "Win Money";
+    slotScrollText.classList.remove("scrolling");
+    void slotScrollText.offsetWidth;
+    slotScrollText.classList.add("scrolling");
+  }
+
+  if (slotLeverBtn && slotReels[0] && slotReels[1] && slotReels[2] && slotHint) {
+    slotReels.forEach(buildSlotStrip);
+    var slotScreenEl = slotLeverBtn.closest(".slot-body").querySelector(".slot-screen");
+    slotLeverBtn.addEventListener("click", function () {
+      if (slotSpinning) return;
+      slotSpinning = true;
+      slotLeverBtn.disabled = true;
+      slotLeverBtn.classList.add("pulled");
+      setTimeout(function () { slotLeverBtn.classList.remove("pulled"); }, 300);
+
+      var result = pickSlotResult();
+      slotHint.textContent = "spinning...";
+
+      Promise.all([
+        spinSlotReel(slotReels[0], result.idxs[0], 1600, 0),
+        spinSlotReel(slotReels[1], result.idxs[1], 1900, 150),
+        spinSlotReel(slotReels[2], result.idxs[2], 2200, 300)
+      ]).then(function () {
+        slotSpinning = false;
+        slotLeverBtn.disabled = false;
+        slotHint.textContent = result.win ? "JACKPOT!" : "pull the lever";
+        if (result.win) {
+          rainJackpotHearts(slotScreenEl);
+          triggerSlotWinBanner();
+        }
+      });
+    });
+  }
+
+  /* Tofu duo on Carter's To-Do page -> Konami code clue. */
+  var todoClueBtn = document.getElementById("todoClueBtn");
+  var todoCluePopup = document.getElementById("todoCluePopup");
+  if (todoClueBtn) {
+    todoClueBtn.addEventListener("click", function () {
+      todoCluePopup.hidden = !todoCluePopup.hidden;
+    });
+  }
+
+  /* The Diner: unlocked by acing the History of Vegas quiz below. */
+  var dinerUnlocked = false;
+  var dinerBlanket = document.getElementById("dinerBlanket");
+  var dinerDecoSources = ["images/diner-chicken-mascot.webp", "images/diner-waffle-mascot.webp"];
+  function fillDinerBlanket() {
+    if (!dinerBlanket || dinerBlanket.dataset.filled) return;
+    dinerBlanket.dataset.filled = "true";
+    var count = 50;
+    for (var i = 0; i < count; i++) {
+      var img = document.createElement("img");
+      img.src = dinerDecoSources[Math.floor(Math.random() * dinerDecoSources.length)];
+      img.alt = "";
+      img.className = "diner-deco";
+      var size = 50 + Math.random() * 130;
+      img.style.width = size + "px";
+      img.style.top = Math.random() * 100 + "%";
+      img.style.left = Math.random() * 100 + "%";
+      img.style.setProperty("--start-rot", (Math.random() * 360) + "deg");
+      img.style.opacity = 0.8 + Math.random() * 0.2;
+      img.style.animationDuration = (5 + Math.random() * 8) + "s";
+      img.style.animationDelay = "-" + (Math.random() * 10) + "s";
+      dinerBlanket.appendChild(img);
+    }
+  }
+
+  function unlockDinerSection() {
+    if (!dinerUnlocked) {
+      dinerUnlocked = true;
+      var dinerTocItem = document.getElementById("dinerTocItem");
+      if (dinerTocItem) dinerTocItem.hidden = false;
+    }
+    fillDinerBlanket();
+  }
+  var vegasQuizRewardBtn = document.getElementById("vegasQuizRewardBtn");
+  if (vegasQuizRewardBtn) {
+    vegasQuizRewardBtn.addEventListener("click", function () {
+      showPage("diner");
+    });
+  }
+
+  /* Pop quiz at the end of the History of Vegas page. */
+  var vegasQuizForm = document.getElementById("vegasQuizForm");
+  var vegasQuizResult = document.getElementById("vegasQuizResult");
+  var vegasQuizReward = document.getElementById("vegasQuizReward");
+  if (vegasQuizForm && vegasQuizResult) {
+    vegasQuizForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var questions = vegasQuizForm.querySelectorAll(".quiz-question");
+      var correctCount = 0;
+
+      questions.forEach(function (fieldset) {
+        var name = fieldset.querySelector("input[type=radio]").name;
+        var selected = fieldset.querySelector('input[name="' + name + '"]:checked');
+        var correctValue = fieldset.dataset.answer;
+
+        fieldset.classList.remove("quiz-correct", "quiz-incorrect", "quiz-unanswered");
+        if (!selected) {
+          fieldset.classList.add("quiz-unanswered");
+          return;
+        }
+        if (selected.value === correctValue) {
+          correctCount++;
+          fieldset.classList.add("quiz-correct");
+        } else {
+          fieldset.classList.add("quiz-incorrect");
+        }
+      });
+
+      if (correctCount === questions.length) {
+        vegasQuizResult.textContent = "5 for 5 - you were paying attention!";
+        unlockDinerSection();
+        if (vegasQuizReward) vegasQuizReward.hidden = false;
+      } else {
+        vegasQuizResult.textContent = "You got " + correctCount + " of " + questions.length + " right. Give it another shot!";
+      }
     });
   }
 
@@ -473,12 +1164,25 @@
   });
 
   function unlockSecretSection() {
-    launchConfetti(5000);
+    launchBananaRain(9000);
+    fillBananaBlanket();
+    initBananaGame();
+    initTowerGame();
     if (!secretUnlocked) {
       secretUnlocked = true;
       document.getElementById("secretTocItem").hidden = false;
     }
     showPage("secret");
+  }
+
+  /* Clicking anywhere on the Jackpot page re-triggers the banana rain,
+     except inside the mini-games, where a click means "play". */
+  var secretPage = document.getElementById("secret");
+  if (secretPage) {
+    secretPage.addEventListener("click", function (e) {
+      if (e.target.closest(".banana-game, .tower-game, .grow-game")) return;
+      launchBananaRain(9000);
+    });
   }
 
   /* Egg 11: console message for anyone who opens devtools. */
@@ -509,5 +1213,163 @@
       }
     });
   });
+
+  /* =====================================================================
+     6. "HOMEMADE WEB" CHROME — letters, typewriter, hit counter,
+        guestbook, webring, cursor customizer + trail, idle mascot.
+     ===================================================================== */
+
+  /* --- Hover-reactive per-letter headers -------------------------------- */
+  function wrapLetters(el) {
+    var text = el.textContent;
+    el.textContent = "";
+    var i = 0;
+    text.split("").forEach(function (ch) {
+      if (ch === " ") {
+        el.appendChild(document.createTextNode(" "));
+        return;
+      }
+      var span = document.createElement("span");
+      span.className = "ch";
+      span.style.setProperty("--i", i);
+      span.textContent = ch;
+      el.appendChild(span);
+      i++;
+    });
+  }
+  document.querySelectorAll(".letters").forEach(wrapLetters);
+
+  /* --- Odometer-style hit counter, increments once per page load ------- */
+  (function initHitCounter() {
+    var el = document.getElementById("hitCounter");
+    if (!el) return;
+    var STORAGE_KEY = "bb-umerica-visitor-count-v1";
+    var count = 1;
+    try {
+      var stored = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+      count = (isNaN(stored) ? 0 : stored) + 1;
+      localStorage.setItem(STORAGE_KEY, String(count));
+    } catch (e) {
+      /* localStorage unavailable (private mode etc.) — just show 1 */
+    }
+    var digits = String(count).padStart(6, "0").split("");
+    el.innerHTML = "";
+    digits.forEach(function (d) {
+      var span = document.createElement("span");
+      span.textContent = d;
+      el.appendChild(span);
+    });
+  })();
+
+  /* --- Webring widget: loops through the site's own tabs ----------------- */
+  (function initWebring() {
+    var prevBtn = document.getElementById("webringPrev");
+    var nextBtn = document.getElementById("webringNext");
+    if (!prevBtn || !nextBtn) return;
+    var order = Array.prototype.map.call(tocButtons, function (b) { return b.dataset.target; })
+      .filter(function (id) { return id !== "secret" && id !== "diner"; });
+    function currentIndex() {
+      var current = document.querySelector(".page.active");
+      var idx = current ? order.indexOf(current.id) : 0;
+      return idx === -1 ? 0 : idx;
+    }
+    nextBtn.addEventListener("click", function () {
+      var idx = (currentIndex() + 1) % order.length;
+      showPage(order[idx]);
+    });
+    prevBtn.addEventListener("click", function () {
+      var idx = (currentIndex() - 1 + order.length) % order.length;
+      showPage(order[idx]);
+    });
+  })();
+
+  /* --- Cursor customizer (2-3 alternate cursors + easy way back) --------- */
+  (function initCursorCustomizer() {
+    var buttons = document.querySelectorAll("#cursorOptions button");
+    if (!buttons.length) return;
+    var CURSOR_KEY = "bb-umerica-cursor-v1";
+    var cursorClasses = ["cursor-heart", "cursor-star", "cursor-sparkle"];
+
+    function applyCursor(choice) {
+      cursorClasses.forEach(function (c) { document.body.classList.remove(c); });
+      if (choice && choice !== "default") document.body.classList.add("cursor-" + choice);
+      buttons.forEach(function (b) { b.classList.toggle("active", b.dataset.cursor === choice); });
+      try { localStorage.setItem(CURSOR_KEY, choice); } catch (e) { /* ignore */ }
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () { applyCursor(btn.dataset.cursor); });
+    });
+
+    var saved = "default";
+    try { saved = localStorage.getItem(CURSOR_KEY) || "default"; } catch (e) { /* ignore */ }
+    applyCursor(saved);
+  })();
+
+  /* --- Cursor-trail sparkles (toggleable in case it's distracting) ------- */
+  (function initCursorTrail() {
+    var toggle = document.getElementById("trailToggle");
+    if (!toggle) return;
+    var TRAIL_KEY = "bb-umerica-trail-v1";
+    var trailChars = ["✨", "💖", "⭐"];
+    var lastSpawn = 0;
+    var enabled = false;
+
+    function spawnTrail(x, y) {
+      var now = Date.now();
+      if (now - lastSpawn < 60) return; // throttle
+      lastSpawn = now;
+      var el = document.createElement("span");
+      el.className = "cursor-sparkle-trail";
+      el.textContent = trailChars[Math.floor(Math.random() * trailChars.length)];
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+      document.body.appendChild(el);
+      setTimeout(function () { el.remove(); }, 750);
+    }
+
+    function onMove(e) { spawnTrail(e.clientX, e.clientY); }
+
+    function setEnabled(val) {
+      enabled = val;
+      toggle.checked = val;
+      if (val) {
+        window.addEventListener("mousemove", onMove);
+      } else {
+        window.removeEventListener("mousemove", onMove);
+      }
+      try { localStorage.setItem(TRAIL_KEY, val ? "1" : "0"); } catch (e) { /* ignore */ }
+    }
+
+    toggle.addEventListener("change", function () { setEnabled(toggle.checked); });
+
+    var saved = false;
+    try { saved = localStorage.getItem(TRAIL_KEY) === "1"; } catch (e) { /* ignore */ }
+    setEnabled(saved);
+  })();
+
+  /* --- Idle pixel mascot: reacts when clicked ----------------------------- */
+  (function initMascot() {
+    var mascot = document.getElementById("mascot");
+    var bubble = document.getElementById("mascotBubble");
+    if (!mascot || !bubble) return;
+    var lines = [
+      "Whoa mama",
+      "is it November yet",
+      "Where are you",
+      "Are u also freaking out"
+    ];
+    var reactTimer = null;
+    mascot.addEventListener("click", function () {
+      mascot.classList.add("reacting");
+      bubble.textContent = lines[Math.floor(Math.random() * lines.length)];
+      bubble.hidden = false;
+      clearTimeout(reactTimer);
+      reactTimer = setTimeout(function () {
+        mascot.classList.remove("reacting");
+        bubble.hidden = true;
+      }, 1800);
+    });
+  })();
 
 })();
