@@ -589,8 +589,8 @@
     var total = todoInputs.length;
     var done = 0;
     todoInputs.forEach(function (i) { if (i.checked) done++; });
-    todoProgress.textContent = done + " / " + total + " done. " +
-      (done === total ? "EVERYTHING IS DONE?! who even are you." : "no pressure. (some pressure.)");
+    todoProgress.textContent = done + " / " + total + " done - " +
+      (done === total ? "EVERYTHING IS DONE?! who even are you." : "no pressure but maybe also a little pressure");
     todoProgress.classList.toggle("all-done", done === total && total > 0);
     if (done === total && total > 0) {
       launchConfetti(2500);
