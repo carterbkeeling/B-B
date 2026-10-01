@@ -329,7 +329,7 @@ main{ display: block; }
 
 .hero{
   position: relative;
-  min-height: 150vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -357,25 +357,25 @@ main{ display: block; }
   font-family: var(--font-zine);
   background: var(--paper);
   color: var(--ink);
-  padding: .35em .8em;
+  padding: .525em 1.2em;
   transform: rotate(-2deg);
-  box-shadow: 3px 3px 0 var(--hotpink);
+  box-shadow: 4.5px 4.5px 0 var(--hotpink);
   margin-bottom: 22px;
-  font-size: .85rem;
+  font-size: 1.275rem;
   letter-spacing: .08em;
 }
 
 .countdown-kicker{
   font-family: var(--font-hand);
   color: var(--yellow);
-  font-size: 1.3rem;
+  font-size: 1.95rem;
   margin: 0 0 14px;
   text-shadow: 2px 2px 0 var(--ink);
 }
 
 .countdown{
   display: flex;
-  gap: 12px;
+  gap: 18px;
   justify-content: center;
   flex-wrap: wrap;
   cursor: pointer;
@@ -383,9 +383,9 @@ main{ display: block; }
 .cd-block{
   background: var(--paper);
   border: var(--border-thick);
-  box-shadow: 4px 4px 0 var(--hotpink);
-  padding: 14px 10px;
-  min-width: 78px;
+  box-shadow: 6px 6px 0 var(--hotpink);
+  padding: 21px 15px;
+  min-width: 117px;
   transition: transform .15s ease;
 }
 .cd-block:nth-child(odd){ transform: rotate(-2deg); }
@@ -394,14 +394,14 @@ main{ display: block; }
 .cd-num{
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-size: clamp(2.7rem, 9vw, 4.2rem);
   color: var(--ink);
   line-height: 1;
 }
 .cd-unit{
   display: block;
   font-family: var(--font-zine);
-  font-size: .7rem;
+  font-size: 1.05rem;
   letter-spacing: .12em;
   text-transform: uppercase;
   margin-top: 4px;
@@ -411,7 +411,7 @@ main{ display: block; }
 .countdown-footnote{
   font-family: var(--font-zine);
   color: var(--paper-dark);
-  font-size: .78rem;
+  font-size: 1.17rem;
   margin-top: 18px;
 }
 
@@ -1604,7 +1604,10 @@ body.page-quake{ animation: page-quake .5s ease-in-out; }
 @media (max-width: 760px){
   .deco-ml, .deco-mr{ display: none; } /* avoid crowding the countdown on small screens */
   .deco-tl, .deco-tr{ transform: scale(.7) rotate(-4deg); }
-  .deco-bl, .deco-br{ transform: scale(.75) rotate(3deg); }
+  .deco-bl, .deco-br{ transform: scale(.75) rotate(3deg); bottom: 6%; }
+  /* The enlarged countdown needs more room to stack on narrow screens
+     before it collides with the corner decorations. */
+  .hero{ min-height: 135vh; }
 }
 .mini-sticker{
   font-family: var(--font-hand);
@@ -2109,7 +2112,7 @@ body.cursor-sparkle, body.cursor-sparkle *{
 @media (max-width: 560px){
   .wiki-infobox{ float: none; width: 100%; margin: 0 0 20px; }
   .zine-strip{ flex-direction: column; }
-  .cd-block{ min-width: 66px; padding: 10px 6px; }
+  .cd-block{ min-width: 99px; padding: 15px 9px; }
   .toc-btn{ font-size: .7rem; padding: 6px 8px; }
 }
 
