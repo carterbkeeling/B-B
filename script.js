@@ -82,6 +82,28 @@
     });
   }
 
+  /* Pause the music when the washi tape link opens YouTube in a new tab,
+     and resume it when the user comes back to this tab. */
+  var washiTapeLink = document.getElementById("washiTapeLink");
+  var pausedForWashiTape = false;
+  if (washiTapeLink && siteAudio) {
+    washiTapeLink.addEventListener("click", function () {
+      if (!siteAudio.paused) {
+        pausedForWashiTape = true;
+        siteAudio.pause();
+      }
+    });
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState !== "visible" || !pausedForWashiTape) return;
+      pausedForWashiTape = false;
+      var activePage = document.querySelector(".page.active");
+      var onMusicFreePage = activePage && (activePage.id === "secret" || activePage.id === "diner");
+      if (!boogiePausedByUser && !onMusicFreePage) {
+        siteAudio.play().catch(function () {});
+      }
+    });
+  }
+
   function showPage(id, opts) {
     opts = opts || {};
     var found = false;
