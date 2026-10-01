@@ -1245,7 +1245,7 @@
     var nextBtn = document.getElementById("webringNext");
     if (!prevBtn || !nextBtn) return;
     var order = Array.prototype.map.call(tocButtons, function (b) { return b.dataset.target; })
-      .filter(function (id) { return id !== "secret"; });
+      .filter(function (id) { return id !== "secret" && id !== "diner"; });
     function currentIndex() {
       var current = document.querySelector(".page.active");
       var idx = current ? order.indexOf(current.id) : 0;
