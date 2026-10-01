@@ -817,6 +817,7 @@ main{ display: block; }
   padding-right: 10px;
 }
 #date-ideas{ position: relative; }
+#prep-guide{ position: relative; }
 .fishbowl-game{
   position: absolute;
   top: 26px;
@@ -1024,7 +1025,7 @@ main{ display: block; }
 .cursive-clue-icon{
   position: absolute;
   bottom: 10px;
-  left: 5vw;
+  right: 5vw;
   background: none;
   border: none;
   font-family: "Brush Script MT", "Segoe Script", cursive;
@@ -1036,7 +1037,7 @@ main{ display: block; }
 .clue-popup{
   position: absolute;
   bottom: 44px;
-  left: 5vw;
+  right: 5vw;
   background: #fff;
   color: var(--ink);
   border: 2px solid var(--ink);
