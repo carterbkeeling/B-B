@@ -114,7 +114,7 @@
 </head>
 <body>
 
-  <audio id="bg-audio" src="audio/drum-loop.wav" loop autoplay playsinline></audio>
+  <audio id="bg-audio" src="audio/drum-loop.wav" loop autoplay muted playsinline></audio>
 
   <div class="calendar">
     <h1>November 2026</h1>
@@ -185,24 +185,33 @@
   <script>
     var audio = document.getElementById('bg-audio');
 
-    function tryPlayAudio() {
-      var playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function () {
-          var resume = function () {
-            audio.play();
-            document.removeEventListener('click', resume);
-            document.removeEventListener('touchstart', resume);
-            document.removeEventListener('keydown', resume);
-          };
-          document.addEventListener('click', resume);
-          document.addEventListener('touchstart', resume);
-          document.addEventListener('keydown', resume);
-        });
-      }
+    function unmute() {
+      audio.muted = false;
+      document.removeEventListener('click', unmute);
+      document.removeEventListener('touchstart', unmute);
+      document.removeEventListener('keydown', unmute);
     }
+    document.addEventListener('click', unmute);
+    document.addEventListener('touchstart', unmute);
+    document.addEventListener('keydown', unmute);
 
-    tryPlayAudio();
+    audio.muted = true;
+    var playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(function () {
+        audio.muted = false;
+      }).catch(function () {
+        var retry = function () {
+          audio.play();
+          document.removeEventListener('click', retry);
+          document.removeEventListener('touchstart', retry);
+          document.removeEventListener('keydown', retry);
+        };
+        document.addEventListener('click', retry);
+        document.addEventListener('touchstart', retry);
+        document.addEventListener('keydown', retry);
+      });
+    }
 
     setTimeout(function () {
       document.getElementById('click-heart-prompt').classList.add('visible');
