@@ -1346,21 +1346,6 @@ main{ display: block; }
   padding: 20px;
   box-shadow: 8px 8px 0 var(--acid);
 }
-.secret-photo-card{
-  position: relative;
-  z-index: 1;
-  margin: 20px auto 0;
-  max-width: 420px;
-  background: var(--paper);
-  border: var(--border-thick);
-  padding: 12px;
-  box-shadow: 8px 8px 0 var(--yellow);
-}
-.secret-photo-card img{
-  width: 100%;
-  display: block;
-  border: 2px solid var(--ink);
-}
 .grow-game-title{
   margin: 0 0 4px;
   font-family: var(--font-display);
