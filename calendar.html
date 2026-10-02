@@ -91,9 +91,30 @@
   .heart-link:hover svg {
     transform: scale(1.12);
   }
+
+  .click-heart-prompt {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 32px;
+    text-align: center;
+    pointer-events: none;
+    font-size: clamp(28px, 6vw, 56px);
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.35);
+    letter-spacing: -0.01em;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+
+  .click-heart-prompt.visible {
+    opacity: 1;
+  }
 </style>
 </head>
 <body>
+
+  <audio id="bg-audio" src="audio/drum-loop.wav" loop autoplay playsinline></audio>
 
   <div class="calendar">
     <h1>November 2026</h1>
@@ -158,6 +179,35 @@
       <div class="day empty"></div>
     </div>
   </div>
+
+  <div class="click-heart-prompt" id="click-heart-prompt">Click the Heart</div>
+
+  <script>
+    var audio = document.getElementById('bg-audio');
+
+    function tryPlayAudio() {
+      var playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function () {
+          var resume = function () {
+            audio.play();
+            document.removeEventListener('click', resume);
+            document.removeEventListener('touchstart', resume);
+            document.removeEventListener('keydown', resume);
+          };
+          document.addEventListener('click', resume);
+          document.addEventListener('touchstart', resume);
+          document.addEventListener('keydown', resume);
+        });
+      }
+    }
+
+    tryPlayAudio();
+
+    setTimeout(function () {
+      document.getElementById('click-heart-prompt').classList.add('visible');
+    }, 15000);
+  </script>
 
 </body>
 </html>
