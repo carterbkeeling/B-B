@@ -213,9 +213,28 @@
       });
     }
 
-    setTimeout(function () {
-      document.getElementById('click-heart-prompt').classList.add('visible');
-    }, 15000);
+    var prompts = [
+      "Click the Heart",
+      "Just gotta tap that thang",
+      "What are u doin",
+      "I'm begging you"
+    ];
+    var promptEl = document.getElementById('click-heart-prompt');
+    var promptIndex = 0;
+
+    function showNextPrompt() {
+      promptEl.textContent = prompts[promptIndex];
+      promptEl.classList.add('visible');
+      promptIndex++;
+      if (promptIndex < prompts.length) {
+        setTimeout(function () {
+          promptEl.classList.remove('visible');
+          setTimeout(showNextPrompt, 1200);
+        }, 10000);
+      }
+    }
+
+    setTimeout(showNextPrompt, 15000);
   </script>
 
 </body>
