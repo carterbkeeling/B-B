@@ -717,7 +717,7 @@
         quizClicked.add(btn);
         quizResult.hidden = false;
         quizResult.textContent = quizClicked.size >= quizButtons.length
-          ? "Heheh trick question I'm just trying not to go completely crazy in anticipation for your arrival"
+          ? "GOTCHA trick question I'm doing all these but trying not to go crazy in anticipation of your arrival"
           : "Wrong - try again";
       });
     });
