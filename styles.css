@@ -558,7 +558,7 @@ main{ display: block; }
    6. HISTORY OF US
    --------------------------------------------------------------------- */
 #history-of-us{ position: relative; }
-.tiny-hint{ color: var(--ink); font-size: .55rem; text-align: right; margin: 24px 0 0; opacity: .8; }
+.tiny-hint{ color: var(--ink); font-size: .55rem; text-align: right; margin: 48px 0 0; opacity: .8; }
 .history-photo-attach{
   position: absolute;
   right: 5vw;
@@ -799,6 +799,7 @@ main{ display: block; }
 .prep-card ul{ margin: 0; padding-left: 18px; }
 .prep-card li{ margin-bottom: 8px; font-size: .95rem; }
 .prep-card.photo-card img{ border: 2px solid var(--ink); margin-bottom: 10px; }
+.prep-card.photo-card-right{ grid-column: -1; }
 .prep-card .scroll-list{
   max-height: 190px;
   overflow-y: auto;
