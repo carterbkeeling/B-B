@@ -1914,9 +1914,9 @@ body.page-quake{ animation: page-quake .5s ease-in-out; }
 .blinkie-1{ background: repeating-linear-gradient(90deg, var(--hotpink) 0 6px, #d41a41 6px 12px); }
 .blinkie-2{ background: linear-gradient(180deg, var(--purple), #6a35c9); }
 .blinkie-3{ background: repeating-linear-gradient(45deg, var(--cyan) 0 6px, #1fb8de 6px 12px); }
-.blinkie-4{ background: linear-gradient(180deg, var(--acid), #a6cc1e); color: var(--ink); text-shadow: none; }
+.blinkie-4{ background: linear-gradient(180deg, var(--acid), #a6cc1e); }
 .blinkie-5{ background: linear-gradient(180deg, var(--orange), #cc6f00); }
-.blinkie-6{ background: linear-gradient(180deg, var(--yellow), #d4a600); color: var(--ink); text-shadow: none; }
+.blinkie-6{ background: linear-gradient(180deg, var(--yellow), #d4a600); }
 .blinkie.blink{ animation: tagBlink 1.4s steps(1,end) infinite; }
 
 .chrome-widgets{
